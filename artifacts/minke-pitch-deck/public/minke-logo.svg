@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 56" fill="none">
+  <g fill="#FFFFFF">
+    <path d="M14 36 C14 22, 26 14, 38 14 C50 14, 58 20, 58 28 C58 30, 56 32, 54 32 L46 32 C44 32, 42 33, 41 35 L38 41 C37 43, 35 44, 33 44 L18 44 C15.8 44, 14 42.2, 14 40 Z M50 24 C51.7 24, 53 22.7, 53 21 C53 19.3, 51.7 18, 50 18 C48.3 18, 47 19.3, 47 21 C47 22.7, 48.3 24, 50 24 Z"/>
+  </g>
+  <g fill="#FFFFFF" font-family="Space Grotesk, sans-serif" font-weight="700" font-size="22" letter-spacing="-0.5">
+    <text x="74" y="37">MINKE</text>
+  </g>
+</svg>

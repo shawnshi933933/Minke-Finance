@@ -1,1 +1,82 @@
-[]
+[
+  {
+    "id": "11111111-0001-4000-8000-000000000001",
+    "position": 1,
+    "filepath": "src/pages/slides/Cover.tsx",
+    "title": "Cover",
+    "description": "Minke Finance — Unlocking the Value of Locked Assets",
+    "speakerNotes": ""
+  },
+  {
+    "id": "11111111-0002-4000-8000-000000000002",
+    "position": 2,
+    "filepath": "src/pages/slides/Problem.tsx",
+    "title": "Problem",
+    "description": "Trillions in tokens are locked, illiquid, and unhedgeable.",
+    "speakerNotes": ""
+  },
+  {
+    "id": "11111111-0003-4000-8000-000000000003",
+    "position": 3,
+    "filepath": "src/pages/slides/Market.tsx",
+    "title": "Market",
+    "description": "The FDV vs Market Cap Gap — a $1.5T+ liquidity opportunity.",
+    "speakerNotes": ""
+  },
+  {
+    "id": "11111111-0004-4000-8000-000000000004",
+    "position": 4,
+    "filepath": "src/pages/slides/DRI.tsx",
+    "title": "DRI",
+    "description": "Deterministic Future Income — a new asset class.",
+    "speakerNotes": ""
+  },
+  {
+    "id": "11111111-0005-4000-8000-000000000005",
+    "position": 5,
+    "filepath": "src/pages/slides/Solution.tsx",
+    "title": "Solution",
+    "description": "VT for DRI assets. YT for non-DRI yield.",
+    "speakerNotes": ""
+  },
+  {
+    "id": "11111111-0006-4000-8000-000000000006",
+    "position": 6,
+    "filepath": "src/pages/slides/HowItWorks.tsx",
+    "title": "How It Works",
+    "description": "Four steps from locked asset to liquid value.",
+    "speakerNotes": ""
+  },
+  {
+    "id": "11111111-0007-4000-8000-000000000007",
+    "position": 7,
+    "filepath": "src/pages/slides/UseCases.tsx",
+    "title": "Use Cases",
+    "description": "SAFTs, team vesting, node licenses, and tokenized RWA.",
+    "speakerNotes": ""
+  },
+  {
+    "id": "11111111-0008-4000-8000-000000000008",
+    "position": 8,
+    "filepath": "src/pages/slides/Competitive.tsx",
+    "title": "Competitive",
+    "description": "Minke vs traditional OTC.",
+    "speakerNotes": ""
+  },
+  {
+    "id": "11111111-0009-4000-8000-000000000009",
+    "position": 9,
+    "filepath": "src/pages/slides/Vision.tsx",
+    "title": "Vision",
+    "description": "The liquidity layer for every locked token on-chain.",
+    "speakerNotes": ""
+  },
+  {
+    "id": "11111111-0010-4000-8000-000000000010",
+    "position": 10,
+    "filepath": "src/pages/slides/Contact.tsx",
+    "title": "Contact",
+    "description": "Get in touch with the Minke Finance team.",
+    "speakerNotes": ""
+  }
+]

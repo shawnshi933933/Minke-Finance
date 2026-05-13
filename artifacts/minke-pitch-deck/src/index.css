@@ -4,22 +4,27 @@
   --color-primary: var(--slide-primary);
   --color-accent: var(--slide-accent);
   --color-bg: var(--slide-bg);
+  --color-bg-elevated: var(--slide-bg-elevated);
   --color-text: var(--slide-text);
   --color-muted: var(--slide-muted);
+  --color-border: var(--slide-border);
   --font-display: var(--font-display-family);
   --font-body: var(--font-body-family);
+  --font-mono: var(--font-mono-family);
 }
 
 :root {
-  /* Replace these with brand colors */
-  --slide-primary: #4f46e5;
-  --slide-accent: #06b6d4;
-  --slide-bg: #f8fafc;
-  --slide-text: #0f172a;
-  --slide-muted: #64748b;
-  --font-display-family: "Inter", system-ui, sans-serif;
-  --font-body-family: "Inter", system-ui, sans-serif;
-  color-scheme: light;
+  --slide-primary: #185FEA;
+  --slide-accent: #4A8AFF;
+  --slide-bg: #0A1226;
+  --slide-bg-elevated: #111E3D;
+  --slide-text: #F5F8FF;
+  --slide-muted: #8B9BB8;
+  --slide-border: #1F2E50;
+  --font-display-family: "Space Grotesk", system-ui, sans-serif;
+  --font-body-family: "Space Grotesk", system-ui, sans-serif;
+  --font-mono-family: "JetBrains Mono", ui-monospace, monospace;
+  color-scheme: dark;
 }
 
 html,
@@ -33,6 +38,8 @@ body,
 body {
   background: var(--slide-bg);
   color: var(--slide-text);
+  font-family: var(--font-body-family);
+  -webkit-font-smoothing: antialiased;
 }
 
 .slide {

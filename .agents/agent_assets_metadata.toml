@@ -1,0 +1,32 @@
+uploads = []
+outputs = []
+
+[[generated]]
+id = "PcaidvMrbfalmZi1Gw_P1"
+uri = "file://artifacts/minke-pitch-deck/public/icon-deposit.png"
+type = "image"
+title = "deposit vault icon"
+
+[[generated]]
+id = "D0U5mmIhS1ZWuJCmDyxHF"
+uri = "file://artifacts/minke-pitch-deck/public/icon-receive.png"
+type = "image"
+title = "receive token icon"
+
+[[generated]]
+id = "bmcPThqMoRycWJNYvHN_m"
+uri = "file://artifacts/minke-pitch-deck/public/icon-trade.png"
+type = "image"
+title = "trade hold claim icon"
+
+[[generated]]
+id = "nzjpWdvKRdhOOv1x281Gu"
+uri = "file://artifacts/minke-pitch-deck/public/icon-redemption.png"
+type = "image"
+title = "final redemption icon"
+
+[[generated]]
+id = "ORKeMZc_God_a8I3K_UC5"
+uri = "file://artifacts/minke-pitch-deck/public/hero-illustration.png"
+type = "image"
+title = "hero balance illustration"
