@@ -120,6 +120,36 @@ uri = "file://artifacts/minke-pitch-deck/public/illus-cover-concept4-v3.png"
 type = "image"
 title = "concept4 v3 elegant whale ribbon"
 
+[[generated]]
+id = "Omo0w9GM3LYxJRnjZLtT7"
+uri = "file://artifacts/minke-pitch-deck/public/illus-cover-hourglass.png"
+type = "image"
+title = "concept hourglass time value coin"
+
+[[generated]]
+id = "FJSfSaIWjvKc7qIlDYzYx"
+uri = "file://artifacts/minke-pitch-deck/public/illus-cover-prism.png"
+type = "image"
+title = "concept prism light coin"
+
+[[generated]]
+id = "BWQt7AFq7Kz7STbqqhUc1"
+uri = "file://artifacts/minke-pitch-deck/public/illus-cover-calendar.png"
+type = "image"
+title = "concept calendar to coin"
+
+[[generated]]
+id = "8qJoA5p7w5vfsaZoHT0ni"
+uri = "file://artifacts/minke-pitch-deck/public/illus-cover-calendar-whale-v1.png"
+type = "image"
+title = "calendar coin with whale v1"
+
+[[generated]]
+id = "vLaRDAPbyW8TWGEI_Ukld"
+uri = "file://artifacts/minke-pitch-deck/public/illus-cover-calendar-whale-v2.png"
+type = "image"
+title = "calendar coin with whale v2"
+
 [[outputs]]
 id = "I02xF4R8ddo7pabCyDCR1"
 uri = "file://.local/outputs/Minke-Finance.pdf"
@@ -149,3 +179,15 @@ id = "OD0HKkhvbNRZgGW4LRf4E"
 uri = "file://artifacts/minke-pitch-deck/public/illus-cover-concept4-v3.png"
 type = "image"
 title = "方案 4 - V3"
+
+[[outputs]]
+id = "S5sBYrIZvlyvwyzNaLY2O"
+uri = "file://artifacts/minke-pitch-deck/public/illus-cover-calendar-whale-v1.png"
+type = "image"
+title = "日历 + 鲸鱼 V1"
+
+[[outputs]]
+id = "RPMj91fP7509XTzjyRiN5"
+uri = "file://artifacts/minke-pitch-deck/public/illus-cover-calendar-whale-v2.png"
+type = "image"
+title = "日历 + 鲸鱼 V2"
