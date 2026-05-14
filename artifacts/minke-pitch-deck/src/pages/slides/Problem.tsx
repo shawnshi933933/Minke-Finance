@@ -40,12 +40,12 @@ export default function Problem() {
       <div className="absolute left-[5vw] right-[5vw] bottom-[6vh] grid grid-cols-3 gap-[1.8vw]">
         {[
           {
-            t: "No Present Value",
+            t: "Illiquid",
             d: "SAFTs, vesting, staking and node emissions all promise tomorrow's tokens — holders cannot price, sell or use that value today.",
           },
           {
-            t: "No Hedging or Collateral",
-            d: "These positions sit off-balance-sheet. No way to hedge, no way to borrow against them, no way to recycle capital while waiting for payout.",
+            t: "Non-tradable",
+            d: "These positions sit off-balance-sheet. Hedge, or to borrow against them, no way to recycle capital while waiting for payout.",
           },
           {
             t: "Broken Price Discovery",
