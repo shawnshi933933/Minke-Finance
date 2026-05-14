@@ -191,3 +191,9 @@ id = "RPMj91fP7509XTzjyRiN5"
 uri = "file://artifacts/minke-pitch-deck/public/illus-cover-calendar-whale-v2.png"
 type = "image"
 title = "日历 + 鲸鱼 V2"
+
+[[outputs]]
+id = "s4olzgUpj-zb7VP5zePU0"
+uri = "file://.local/outputs/Minke-Finance.pptx"
+type = "slides"
+title = "Minke Finance.pptx"

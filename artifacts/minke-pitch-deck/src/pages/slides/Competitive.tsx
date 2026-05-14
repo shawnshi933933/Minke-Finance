@@ -63,7 +63,7 @@ export default function Competitive() {
               "One transaction from future income to present value.",
               "Smart-contract enforced — no counterparty risk.",
               "Open-market price discovery on every DEX.",
-              "Composable: collateral, lending, structured products.",
+              "Composable: collateralized, lending, structured products.",
               "Permissionless — from $1k vest to $100M SAFT.",
             ].map((b) => (
               <div key={b} className="flex gap-[0.8vw]">
