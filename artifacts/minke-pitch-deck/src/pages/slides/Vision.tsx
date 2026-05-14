@@ -17,19 +17,19 @@ export default function Vision() {
       <div className="absolute left-[5vw] right-[5vw] top-[22vh] grid grid-cols-12 gap-[2vw] items-center">
         <div className="col-span-7">
           <div className="font-mono text-[1.2vw] text-primary tracking-[0.3em] mb-[2vh]">VISION</div>
-          <h2 className="font-display font-extrabold text-[6vw] leading-[0.92] tracking-[-0.03em] text-text" style={{ textWrap: "balance" }}>
-            The liquidity layer for every{" "}
+          <h2 className="font-display font-extrabold text-[5.2vw] leading-[0.95] tracking-[-0.03em] text-text" style={{ textWrap: "balance" }}>
+            Making the{" "}
             <span
               className="bg-clip-text text-transparent"
               style={{ backgroundImage: "linear-gradient(120deg, #0088FE 0%, #59B9FF 100%)" }}
             >
-              locked token
+              time value of money
             </span>{" "}
-            on-chain.
+            tradable, on-chain.
           </h2>
           <p className="mt-[3vh] text-[1.6vw] text-muted leading-snug max-w-[55vw]">
-            Minke makes Deterministic Future Income a first-class asset class &mdash; tradable,
-            composable, and ubiquitous across every chain that issues vesting tokens.
+            Minke turns Future Income &mdash; deterministic and variable alike &mdash; into a
+            first-class on-chain asset class, with a protocol that any DeFi venue can build on.
           </p>
         </div>
         <div className="col-span-5 flex justify-center">
@@ -44,9 +44,9 @@ export default function Vision() {
 
       <div className="absolute bottom-[5vh] left-[5vw] right-[5vw] grid grid-cols-3 gap-[2vw]">
         {[
-          { t: "Universal standard", d: "One ERC for every vesting position, every chain." },
-          { t: "Composable liquidity", d: "VT and YT plug into lending, AMMs, and structured products." },
-          { t: "Capital efficiency", d: "Trillions of dormant value, finally productive." },
+          { t: "A new asset class", d: "DFI and VFI: a shared standard for every future-income position on-chain." },
+          { t: "A composable protocol", d: "VT and YT plug into AMMs, lending, and structured products on every chain." },
+          { t: "Capital efficiency", d: "Trillions of future-dated value finally productive in the present." },
         ].map((c) => (
           <div key={c.t} className="border-t-2 border-primary pt-[1.8vh]">
             <div className="font-display font-extrabold text-[2vw] leading-tight text-text">{c.t}</div>

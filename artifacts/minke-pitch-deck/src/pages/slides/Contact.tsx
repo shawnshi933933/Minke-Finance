@@ -18,7 +18,7 @@ export default function Contact() {
 
       <div className="absolute left-[5vw] top-[20vh] max-w-[58vw]">
         <div className="font-mono text-[1.2vw] text-primary tracking-[0.3em] mb-[2.5vh]">
-          LET&rsquo;S BUILD THE LIQUIDITY LAYER.
+          LET&rsquo;S BUILD THE FUTURE INCOME PROTOCOL.
         </div>
         <h2
           className="font-display font-extrabold text-[6.5vw] leading-[0.92] tracking-[-0.03em] bg-clip-text text-transparent"
@@ -27,8 +27,8 @@ export default function Contact() {
           Talk to us.
         </h2>
         <p className="mt-[3vh] text-[1.55vw] text-muted leading-snug max-w-[48vw]">
-          Open to investors, ecosystem partners, integrations, and projects with deterministic
-          future income to unlock.
+          Open to investors, ecosystem partners, integrations, and any project with future income
+          to bring on-chain.
         </p>
       </div>
 
@@ -58,7 +58,7 @@ export default function Contact() {
 
       <div className="absolute bottom-[4vh] left-[5vw] right-[5vw] flex justify-between items-center font-mono text-[1.1vw] text-muted tracking-wider">
         <div>MINKE FINANCE / 2026</div>
-        <div>UNLOCKING THE VALUE OF LOCKED ASSETS.</div>
+        <div>UNRAVEL TIME VALUE OF MONEY ONCHAIN.</div>
       </div>
     </div>
   );

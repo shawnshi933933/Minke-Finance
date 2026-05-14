@@ -14,26 +14,26 @@ export default function Cover() {
         <div className="font-mono text-[1.1vw] text-muted tracking-wider">MINKE FINANCE / 2026</div>
       </div>
 
-      {/* Eyebrow */}
+      {/* Eyebrow + headline */}
       <div className="absolute left-[5vw] top-[24vh] max-w-[58vw]">
         <div className="font-mono text-[1.2vw] text-primary tracking-[0.32em] mb-[2.5vh]">
-          DEFI LIQUIDITY INFRASTRUCTURE
+          FUTURE INCOME &rarr; PRESENT VALUE
         </div>
         <h1 className="font-display font-extrabold text-[7vw] leading-[0.92] tracking-[-0.04em] text-text">
-          Unlocking
-        </h1>
-        <h1 className="font-display font-extrabold text-[7vw] leading-[0.92] tracking-[-0.04em] text-text">
-          the Value of
+          Unravel
         </h1>
         <h1
           className="font-display font-extrabold text-[7vw] leading-[0.92] tracking-[-0.04em] bg-clip-text text-transparent"
           style={{ backgroundImage: "linear-gradient(120deg, #0088FE 0%, #59B9FF 100%)" }}
         >
-          Locked Assets.
+          time value of money
+        </h1>
+        <h1 className="font-display font-extrabold text-[7vw] leading-[0.92] tracking-[-0.04em] text-text">
+          onchain.
         </h1>
         <p className="mt-[4vh] text-[1.55vw] text-muted max-w-[48vw] leading-snug">
-          A protocol turning vesting tokens, SAFTs, node licenses and other time-locked assets
-          into liquid, tradable on-chain instruments.
+          A protocol that turns deterministic future income &mdash; SAFTs, vesting, staking,
+          mining, fixed-term saving and bonds &mdash; into present value, tradable on-chain today.
         </p>
       </div>
 

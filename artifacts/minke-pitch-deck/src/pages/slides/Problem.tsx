@@ -21,14 +21,14 @@ export default function Problem() {
         <div className="col-span-7">
           <div className="font-mono text-[1.2vw] text-primary tracking-[0.3em] mb-[2.5vh]">THE PROBLEM</div>
           <h2 className="font-display font-extrabold text-[5vw] leading-[0.98] tracking-tight text-text" style={{ textWrap: "balance" }}>
-            Trillions are{" "}
+            Trillions of{" "}
             <span
               className="bg-clip-text text-transparent"
               style={{ backgroundImage: "linear-gradient(120deg, #0088FE 0%, #59B9FF 100%)" }}
             >
-              locked
+              future income
             </span>{" "}
-            on-chain &mdash; and stuck there.
+            on-chain &mdash; still without a Present Value rail.
           </h2>
         </div>
         <div className="col-span-5 flex justify-center">
@@ -40,16 +40,16 @@ export default function Problem() {
       <div className="absolute left-[5vw] right-[5vw] bottom-[6vh] grid grid-cols-3 gap-[1.8vw]">
         {[
           {
-            t: "SAFTs & Vesting",
-            d: "VCs, teams and advisors hold tokens that vest over years. Capital is dead until each cliff unlocks.",
+            t: "No Present Value",
+            d: "SAFTs, vesting, staking and node emissions all promise tomorrow's tokens — holders cannot price, sell or use that value today.",
           },
           {
-            t: "No Hedging",
-            d: "Holders cannot exit, hedge, or borrow against locked positions — price risk runs unmitigated for years.",
+            t: "No Hedging or Collateral",
+            d: "These positions sit off-balance-sheet. No way to hedge, no way to borrow against them, no way to recycle capital while waiting for payout.",
           },
           {
             t: "Broken Price Discovery",
-            d: "FDV vastly exceeds circulating cap. Markets price phantom supply; locked holders price nothing at all.",
+            d: "FDV runs orders of magnitude above circulating cap. Spot markets price phantom supply; future-income holders price nothing at all.",
           },
         ].map((c, i) => (
           <div key={i} className="bg-bg-elevated rounded-[1.6vh] p-[2.5vh] border border-border shadow-[0_8px_24px_rgba(0,136,254,0.06)]">

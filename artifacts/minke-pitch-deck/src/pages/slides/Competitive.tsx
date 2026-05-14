@@ -20,7 +20,7 @@ export default function Competitive() {
         <div className="col-span-7">
           <div className="font-mono text-[1.2vw] text-primary tracking-[0.3em] mb-[2vh]">WHY MINKE WINS</div>
           <h2 className="font-display font-extrabold text-[4.4vw] leading-[0.98] tracking-tight text-text" style={{ textWrap: "balance" }}>
-            The end of OTC for locked tokens.
+            The end of OTC for future-income positions.
           </h2>
         </div>
         <div className="col-span-5 flex justify-center">
@@ -36,7 +36,7 @@ export default function Competitive() {
           </div>
           <div className="mt-[2.5vh] flex flex-col gap-[1.4vh] text-[1.35vw] text-muted leading-snug">
             {[
-              "Weeks of bilateral negotiation per ticket.",
+              "Weeks of bilateral negotiation per future-income ticket.",
               "Steep counterparty and settlement risk.",
               "Discounts of 30-70% off spot, opaque to the seller.",
               "No price discovery, no secondary market, no composability.",
@@ -60,7 +60,7 @@ export default function Competitive() {
           </div>
           <div className="relative mt-[2.5vh] flex flex-col gap-[1.4vh] text-[1.35vw] text-white/95 leading-snug">
             {[
-              "One transaction from locked asset to liquid token.",
+              "One transaction from future income to present value.",
               "Smart-contract enforced — no counterparty risk.",
               "Open-market price discovery on every DEX.",
               "Composable: collateral, lending, structured products.",

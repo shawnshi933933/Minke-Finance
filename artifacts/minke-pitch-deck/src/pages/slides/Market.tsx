@@ -18,11 +18,12 @@ export default function Market() {
         <div className="col-span-7">
           <div className="font-mono text-[1.2vw] text-primary tracking-[0.3em] mb-[2.5vh]">MARKET OPPORTUNITY</div>
           <h2 className="font-display font-extrabold text-[4.6vw] leading-[0.98] tracking-tight text-text" style={{ textWrap: "balance" }}>
-            The FDV &mdash; Market Cap Gap.
+            The Future Income market across DeFi.
           </h2>
           <p className="mt-[2.5vh] text-[1.5vw] text-muted leading-snug max-w-[52vw]">
-            Across the crypto market, fully diluted valuation exceeds circulating market cap by orders
-            of magnitude. That gap is dormant capital waiting for a liquidity rail.
+            Vesting pipelines, staking and restaking floats, mining and node emissions, fixed-term
+            savings and on-chain bonds all share one shape: tomorrow&rsquo;s cash flow with no rail
+            for today&rsquo;s value. That is the Future Income TAM.
           </p>
         </div>
         <div className="col-span-5 flex justify-center">
@@ -32,10 +33,10 @@ export default function Market() {
 
       <div className="absolute left-[5vw] right-[5vw] bottom-[6vh] grid grid-cols-4 gap-[1.4vw]">
         {[
-          { l: "CIRCULATING MC", v: "~$2.5T", d: "Total crypto market cap, on-chain liquid supply.", primary: false },
-          { l: "FULLY DILUTED VAL.", v: "~$4T+", d: "Market cap if every locked token were live today.", primary: false },
-          { l: "THE GAP", v: "$1.5T+", d: "Locked, illiquid, and unaddressable by spot markets.", primary: true },
-          { l: "2024-25 UNLOCKS", v: "$150B", d: "Token unlock pipeline already scheduled across major projects.", primary: false },
+          { l: "VESTING & SAFTs", v: "~$150B", d: "Token unlock pipeline already scheduled across major projects through 2026.", primary: false },
+          { l: "STAKING & RESTAKING", v: "~$400B", d: "ETH, SOL and restaked float earning predictable, schedule-driven rewards.", primary: false },
+          { l: "MINING & NODE EMISSIONS", v: "~$50B / yr", d: "BTC, DePIN, AI and L1 node licenses generating rule-based emissions.", primary: false },
+          { l: "FUTURE INCOME TAM", v: "$600B+", d: "Total addressable future income — fixed-term savings, RWA bonds and beyond.", primary: true },
         ].map((c, i) => (
           <div
             key={i}
@@ -54,7 +55,7 @@ export default function Market() {
               {c.l}
             </div>
             <div
-              className={`mt-[1.4vh] font-display font-extrabold text-[3.4vw] leading-none ${c.primary ? "text-white" : "text-text"}`}
+              className={`mt-[1.4vh] font-display font-extrabold text-[3vw] leading-none ${c.primary ? "text-white" : "text-text"}`}
             >
               {c.v}
             </div>

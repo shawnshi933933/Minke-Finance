@@ -17,7 +17,7 @@ export default function Solution() {
       <div className="absolute left-[5vw] right-[5vw] top-[15vh]">
         <div className="font-mono text-[1.2vw] text-primary tracking-[0.3em] mb-[2vh]">THE MINKE PROTOCOL</div>
         <h2 className="font-display font-extrabold text-[4.6vw] leading-[0.98] tracking-tight text-text" style={{ textWrap: "balance" }}>
-          Two instruments. One liquidity layer.
+          Two instruments. One protocol.
         </h2>
       </div>
 
@@ -25,25 +25,25 @@ export default function Solution() {
         {[
           {
             tag: "VT",
-            name: "Vest Token",
-            sub: "FOR DRI ASSETS",
-            body: "Tokenize a vesting position once. Trade, transfer, collateralize or claim it like any ERC-20.",
+            name: "Vesting Token",
+            sub: "FOR DFI POSITIONS",
+            body: "Map a Deterministic Future Income position to an instant, tradable token. Each VT is 1:1 anchored to its underlying token.",
             bullets: [
-              "1:1 redemption against the underlying token at maturity.",
-              "Streaming claims as the schedule vests.",
-              "Composable liquidity on every major DEX.",
+              "1:1 redemption — every VT is a claim on one underlying token.",
+              "Streaming claims as each scheduled income event is realized.",
+              "Perpetual income supported — VT keeps redeeming for as long as income flows.",
             ],
             primary: true,
           },
           {
             tag: "YT",
             name: "Yield Token",
-            sub: "FOR NON-DRI YIELD",
-            body: "Strip the variable yield off staking, restaking, LP and lending positions and price it on its own market.",
+            sub: "FOR VFI YIELD",
+            body: "Strip variable yield off staking, restaking, LP and lending positions, and let the market price it on its own.",
             bullets: [
-              "Speculate on rates, or lock in fixed yield today.",
-              "Hedge protocol revenue against rate compression.",
-              "Modular: works with any yield-bearing asset.",
+              "YT holders receive the protocol-distributed variable income.",
+              "Open-market price discovery for yield expectations.",
+              "Speculate on rates, hedge revenue, or fix forward yield today.",
             ],
             primary: false,
           },

@@ -4,26 +4,26 @@ const steps = [
   {
     n: "01",
     img: "illus-step-1.png",
-    t: "Deposit a DRI asset",
-    d: "SAFT contract, vesting schedule, node license or RWA bond. The factory mints a position NFT.",
+    t: "Deposit a DFI position",
+    d: "SAFT contract, vesting schedule, staking position, node license or RWA bond. The factory mints a position NFT.",
   },
   {
     n: "02",
     img: "illus-step-2.png",
     t: "Receive VT instantly",
-    d: "Stake the NFT and mint VT — a fungible, tradable representation of the locked future tokens.",
+    d: "Stake the NFT and mint VT — a fungible, tradable representation of the future tokens that position will deliver.",
   },
   {
     n: "03",
     img: "illus-step-3.png",
     t: "Trade, hold or claim",
-    d: "Sell VT for instant exit, hold for upside, or claim the underlying tokens as the schedule vests.",
+    d: "Sell VT for instant present value, hold for upside, or claim the underlying tokens as the schedule plays out.",
   },
   {
     n: "04",
     img: "illus-step-4.png",
-    t: "Final 1:1 redemption",
-    d: "At maturity, every VT is redeemable 1:1 for the underlying token. No oracles, no haircuts, no counterparty.",
+    t: "1:1 redemption claim",
+    d: "Each VT has a corresponding underlying token. Whenever income is realized, VT holders redeem 1:1 — no oracles, no haircuts, no counterparty.",
     primary: true,
   },
 ];
@@ -45,7 +45,7 @@ export default function HowItWorks() {
       </div>
 
       <div className="absolute left-[5vw] top-[14vh]">
-        <div className="font-mono text-[1.2vw] text-primary tracking-[0.3em] mb-[2vh]">FROM LOCKED TO LIQUID</div>
+        <div className="font-mono text-[1.2vw] text-primary tracking-[0.3em] mb-[2vh]">FROM FUTURE TO PRESENT</div>
         <h2 className="font-display font-extrabold text-[4vw] leading-none tracking-tight text-text">
           Four steps.
         </h2>

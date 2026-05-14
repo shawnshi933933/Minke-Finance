@@ -4,7 +4,7 @@
     "position": 1,
     "filepath": "src/pages/slides/Cover.tsx",
     "title": "Cover",
-    "description": "Minke Finance — Unlocking the Value of Locked Assets",
+    "description": "Minke Finance — Unravel time value of money onchain.",
     "speakerNotes": ""
   },
   {
@@ -12,7 +12,7 @@
     "position": 2,
     "filepath": "src/pages/slides/Problem.tsx",
     "title": "Problem",
-    "description": "Trillions in tokens are locked, illiquid, and unhedgeable.",
+    "description": "Trillions of future income on-chain — still without a Present Value rail.",
     "speakerNotes": ""
   },
   {
@@ -20,15 +20,15 @@
     "position": 3,
     "filepath": "src/pages/slides/Market.tsx",
     "title": "Market",
-    "description": "The FDV vs Market Cap Gap — a $1.5T+ liquidity opportunity.",
+    "description": "The Future Income market across DeFi: vesting, staking, mining, fixed-term saving.",
     "speakerNotes": ""
   },
   {
     "id": "11111111-0004-4000-8000-000000000004",
     "position": 4,
     "filepath": "src/pages/slides/DRI.tsx",
-    "title": "DRI",
-    "description": "Deterministic Future Income — a new asset class.",
+    "title": "DFI",
+    "description": "DFI vs VFI — a new asset-class framework for future income.",
     "speakerNotes": ""
   },
   {
@@ -36,7 +36,7 @@
     "position": 5,
     "filepath": "src/pages/slides/Solution.tsx",
     "title": "Solution",
-    "description": "VT for DRI assets. YT for non-DRI yield.",
+    "description": "VT for DFI positions. YT for VFI yield. One protocol.",
     "speakerNotes": ""
   },
   {
@@ -44,7 +44,7 @@
     "position": 6,
     "filepath": "src/pages/slides/HowItWorks.tsx",
     "title": "How It Works",
-    "description": "Four steps from locked asset to liquid value.",
+    "description": "Four steps: from future income to present value.",
     "speakerNotes": ""
   },
   {
@@ -52,7 +52,7 @@
     "position": 7,
     "filepath": "src/pages/slides/UseCases.tsx",
     "title": "Use Cases",
-    "description": "SAFTs, team vesting, node licenses, and tokenized RWA.",
+    "description": "Anywhere future income is determined: vesting, staking & mining, node rewards, RWA.",
     "speakerNotes": ""
   },
   {
@@ -60,7 +60,7 @@
     "position": 8,
     "filepath": "src/pages/slides/Competitive.tsx",
     "title": "Competitive",
-    "description": "Minke vs traditional OTC.",
+    "description": "Minke vs traditional OTC for future-income positions.",
     "speakerNotes": ""
   },
   {
@@ -68,7 +68,7 @@
     "position": 9,
     "filepath": "src/pages/slides/Vision.tsx",
     "title": "Vision",
-    "description": "The liquidity layer for every locked token on-chain.",
+    "description": "Making the time value of money tradable, on-chain.",
     "speakerNotes": ""
   },
   {

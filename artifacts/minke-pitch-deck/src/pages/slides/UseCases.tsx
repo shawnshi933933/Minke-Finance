@@ -1,10 +1,26 @@
 const base = import.meta.env.BASE_URL;
 
 const cases = [
-  { n: "01", t: "VC & Angel SAFTs", d: "Funds locked in 2-4 year vests can be used as collateral, hedged, or partially exited — without breaking SAFT terms." },
-  { n: "02", t: "Team & Advisor Vesting", d: "Founders, contributors and advisors get controlled liquidity on long vests — without dumping spot or breaking lockups." },
-  { n: "03", t: "Node & License Rewards", d: "DePIN, AI and L1 node licenses generate scheduled emissions. Tokenize the stream and trade it like any other instrument." },
-  { n: "04", t: "Tokenized RWA & Bonds", d: "Treasury bills, private credit and on-chain bonds with deterministic coupons fit Minke natively — one rail for all DRI." },
+  {
+    n: "01",
+    t: "SAFTs & Team Vesting",
+    d: "VCs, founders, contributors and advisors hold tokens that vest over years. Tokenize the schedule, get controlled present value without breaking vesting terms.",
+  },
+  {
+    n: "02",
+    t: "Staking & Mining Rewards",
+    d: "Fixed-term staking, restaking, BTC mining and DePIN emissions all produce rule-based future income. Bring those streams forward as VT.",
+  },
+  {
+    n: "03",
+    t: "Node & License Rewards",
+    d: "AI, DePIN and L1 node licenses emit on a known schedule. Tokenize the future emissions and trade them like any other instrument.",
+  },
+  {
+    n: "04",
+    t: "Tokenized RWA & Bonds",
+    d: "Treasury bills, private credit and on-chain bonds with deterministic coupons fit Minke natively — one rail for every form of DFI.",
+  },
 ];
 
 export default function UseCases() {
@@ -26,7 +42,7 @@ export default function UseCases() {
       <div className="absolute left-[5vw] top-[14vh] max-w-[60vw]">
         <div className="font-mono text-[1.2vw] text-primary tracking-[0.3em] mb-[2vh]">WHO USES MINKE</div>
         <h2 className="font-display font-extrabold text-[4.2vw] leading-[0.98] tracking-tight text-text" style={{ textWrap: "balance" }}>
-          Anywhere a token has a vesting schedule.
+          Anywhere future income is determined.
         </h2>
       </div>
 
