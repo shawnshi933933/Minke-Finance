@@ -11,7 +11,7 @@ const steps = [
     n: "02",
     img: "icon-receive.png",
     t: "Receive VT instantly",
-    d: "Stake the NFT and mint VT — a fungible, tradable representation of the future tokens that position will deliver.",
+    d: "Gain VT — a fungible, tradable representation of the future tokens.",
   },
   {
     n: "03",
