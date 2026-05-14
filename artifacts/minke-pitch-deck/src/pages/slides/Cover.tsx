@@ -15,24 +15,30 @@ export default function Cover() {
       </div>
 
       {/* Eyebrow + headline */}
-      <div className="absolute left-[5vw] top-[24vh] max-w-[58vw]">
+      <div className="absolute left-[5vw] top-[20vh] max-w-[48vw]">
         <div className="font-mono text-[1.2vw] text-primary tracking-[0.32em] mb-[2.5vh]">
           FUTURE INCOME &rarr; PRESENT VALUE
         </div>
-        <h1
-          className="font-display font-extrabold text-[6vw] leading-[0.95] tracking-[-0.04em] text-text"
-          style={{ textWrap: "balance" }}
-        >
-          Unravel{" "}
+        <h1 className="font-display font-extrabold text-[6vw] leading-[0.98] tracking-[-0.04em] text-text">
+          Unravel
+          <br />
           <span
             className="bg-clip-text text-transparent"
             style={{ backgroundImage: "linear-gradient(120deg, #0088FE 0%, #59B9FF 100%)" }}
           >
-            time value of money
-          </span>{" "}
+            time value
+          </span>
+          <br />
+          <span
+            className="bg-clip-text text-transparent"
+            style={{ backgroundImage: "linear-gradient(120deg, #0088FE 0%, #59B9FF 100%)" }}
+          >
+            of money
+          </span>
+          <br />
           onchain.
         </h1>
-        <p className="mt-[4vh] text-[1.55vw] text-muted max-w-[48vw] leading-snug">
+        <p className="mt-[3.5vh] text-[1.45vw] text-muted max-w-[42vw] leading-snug">
           A protocol that turns deterministic future income &mdash; SAFTs, vesting, staking,
           mining, fixed-term saving and bonds &mdash; into present value, tradable on-chain today.
         </p>
