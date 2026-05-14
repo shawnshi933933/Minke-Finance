@@ -37,12 +37,12 @@ export default function Cover() {
         </p>
       </div>
 
-      {/* Hero whale logo on the right */}
+      {/* Hero illustration on the right */}
       <img
-        src={`${base}minke-logo.svg`}
+        src={`${base}illus-cover-hero.png`}
         crossOrigin="anonymous"
         alt=""
-        className="absolute right-[6vw] top-1/2 -translate-y-1/2 h-[62vh] w-auto drop-shadow-[0_30px_60px_rgba(0,136,254,0.25)]"
+        className="absolute right-[3vw] top-1/2 -translate-y-1/2 h-[88vh] w-auto drop-shadow-[0_30px_60px_rgba(0,136,254,0.22)]"
       />
 
       {/* Bottom bar */}
