@@ -24,7 +24,7 @@ export default function Competitive() {
           </h2>
         </div>
         <div className="col-span-5 flex justify-center">
-          <img src={`${base}illus-competitive.png`} crossOrigin="anonymous" alt="" className="h-[26vh] w-auto" />
+          <img src={`${base}illus-competitive.png`} crossOrigin="anonymous" alt="" className="h-[34vh] w-auto" />
         </div>
       </div>
 

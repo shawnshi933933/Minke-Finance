@@ -33,7 +33,7 @@ export default function DFI() {
       </div>
 
       <div className="absolute right-[5vw] top-[16vh] bottom-[8vh] w-[44vw] flex flex-col gap-[2vh]">
-        <img src={`${base}illus-dri.png`} crossOrigin="anonymous" alt="" className="absolute -top-[6vh] right-0 w-[44vw] opacity-90 pointer-events-none" />
+        <img src={`${base}illus-dri.png`} crossOrigin="anonymous" alt="" className="absolute -top-[4vh] right-0 w-[50vw] opacity-90 pointer-events-none" />
 
         <div className="relative flex-1 bg-bg-elevated border-l-[0.5vw] border-primary rounded-[1.4vh] p-[3vh] flex flex-col justify-center shadow-[0_8px_24px_rgba(0,136,254,0.08)]">
           <div className="font-mono text-[1vw] text-primary tracking-widest mb-[1vh]">DFI &mdash; DETERMINISTIC</div>

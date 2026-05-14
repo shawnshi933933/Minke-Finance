@@ -27,7 +27,7 @@ export default function Market() {
           </p>
         </div>
         <div className="col-span-5 flex justify-center">
-          <img src={`${base}illus-market.png`} crossOrigin="anonymous" alt="" className="h-[36vh] w-auto" />
+          <img src={`${base}illus-market.png`} crossOrigin="anonymous" alt="" className="h-[46vh] w-auto" />
         </div>
       </div>
 

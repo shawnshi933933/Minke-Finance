@@ -32,7 +32,7 @@ export default function Problem() {
           </h2>
         </div>
         <div className="col-span-5 flex justify-center">
-          <img src={`${base}illus-problem.png`} crossOrigin="anonymous" alt="" className="h-[44vh] w-auto" />
+          <img src={`${base}illus-problem.png`} crossOrigin="anonymous" alt="" className="h-[40vh] w-auto" />
         </div>
       </div>
 

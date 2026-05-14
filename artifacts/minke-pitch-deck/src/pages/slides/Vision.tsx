@@ -37,7 +37,7 @@ export default function Vision() {
             src={`${base}illus-vision.png`}
             crossOrigin="anonymous"
             alt=""
-            className="h-[44vh] w-auto drop-shadow-[0_30px_60px_rgba(0,136,254,0.2)]"
+            className="h-[56vh] w-auto drop-shadow-[0_30px_60px_rgba(0,136,254,0.2)]"
           />
         </div>
       </div>

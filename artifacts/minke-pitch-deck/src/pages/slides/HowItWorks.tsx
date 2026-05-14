@@ -3,25 +3,25 @@ const base = import.meta.env.BASE_URL;
 const steps = [
   {
     n: "01",
-    img: "illus-step-1.png",
+    img: "icon-deposit.png",
     t: "Deposit a DFI position",
     d: "SAFT contract, vesting schedule, staking position, node license or RWA bond. The factory mints a position NFT.",
   },
   {
     n: "02",
-    img: "illus-step-2.png",
+    img: "icon-receive.png",
     t: "Receive VT instantly",
     d: "Stake the NFT and mint VT — a fungible, tradable representation of the future tokens that position will deliver.",
   },
   {
     n: "03",
-    img: "illus-step-3.png",
+    img: "icon-trade.png",
     t: "Trade, hold or claim",
     d: "Sell VT for instant present value, hold for upside, or claim the underlying tokens as the schedule plays out.",
   },
   {
     n: "04",
-    img: "illus-step-4.png",
+    img: "icon-redemption.png",
     t: "1:1 redemption claim",
     d: "Each VT has a corresponding underlying token. Whenever income is realized, VT holders redeem 1:1 — no oracles, no haircuts, no counterparty.",
     primary: true,
@@ -64,7 +64,7 @@ export default function HowItWorks() {
           >
             <div className="flex items-center justify-between">
               <div className={`font-mono text-[1.3vw] tracking-widest ${s.primary ? "text-white/90" : "text-primary"}`}>{s.n}</div>
-              <img src={`${base}${s.img}`} crossOrigin="anonymous" alt="" className="h-[14vh] w-auto" />
+              <img src={`${base}${s.img}`} crossOrigin="anonymous" alt="" className="h-[20vh] w-auto" />
             </div>
             <div className={`mt-[2vh] font-display font-extrabold text-[1.85vw] leading-tight min-h-[8.5vh] ${s.primary ? "text-white" : "text-text"}`}>
               {s.t}
