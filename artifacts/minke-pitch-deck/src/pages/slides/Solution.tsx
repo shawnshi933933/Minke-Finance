@@ -27,10 +27,10 @@ export default function Solution() {
             tag: "VT",
             name: "Vesting Token",
             sub: "FOR DFI POSITIONS",
-            body: "Map a Deterministic Future Income position to an instant, tradable token. Each VT is 1:1 anchored to its underlying token.",
+            body: "Map a Deterministic Future Income position to an instant, tradable token. Each VT is 1:1 anchored to its underlying future token.",
             bullets: [
-              "1:1 redemption — every VT is a claim on one underlying token.",
-              "Streaming claims as each scheduled income event is realized.",
+              "1:1 redemption — every VT claims on one underlying future token.",
+              "Claim happens at each scheduled income event.",
               "Perpetual income supported — VT keeps redeeming for as long as income flows.",
             ],
             primary: true,
@@ -39,7 +39,7 @@ export default function Solution() {
             tag: "YT",
             name: "Yield Token",
             sub: "FOR VFI YIELD",
-            body: "Strip variable yield off staking, restaking, LP and lending positions, and let the market price it on its own.",
+            body: "Strip variable future yield off staking, restaking, LP and lending positions, and let the market price it on its own.",
             bullets: [
               "YT holders receive the protocol-distributed variable income.",
               "Open-market price discovery for yield expectations.",
