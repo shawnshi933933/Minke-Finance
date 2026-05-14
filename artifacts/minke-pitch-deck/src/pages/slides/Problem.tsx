@@ -45,7 +45,7 @@ export default function Problem() {
           },
           {
             t: "Non-tradable",
-            d: "These positions sit off-balance-sheet. Hedge, or to borrow against them, no way to recycle capital while waiting for payout.",
+            d: "These positions sit off-balance-sheet. No way to hedge, borrow against them, or to recycle capital while waiting for payout.",
           },
           {
             t: "Broken Price Discovery",
