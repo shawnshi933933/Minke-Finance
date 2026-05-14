@@ -96,8 +96,32 @@ uri = "file://artifacts/minke-pitch-deck/public/illus-cover-hero.png"
 type = "image"
 title = "generated_image"
 
+[[generated]]
+id = "T9dvcNRw01jzvzmYDCFY2"
+uri = "file://artifacts/minke-pitch-deck/public/illus-cover-concept1.png"
+type = "image"
+title = "concept1 whale time stream to coin"
+
+[[generated]]
+id = "pKhcvBx1t77G7WDlu0Oxu"
+uri = "file://artifacts/minke-pitch-deck/public/illus-cover-concept4.png"
+type = "image"
+title = "concept4 whale schedule ribbon"
+
 [[outputs]]
 id = "I02xF4R8ddo7pabCyDCR1"
 uri = "file://.local/outputs/Minke-Finance.pdf"
 type = "pdf"
 title = "Minke Finance.pdf"
+
+[[outputs]]
+id = "XbGMpBTLrYWHZMjeu0cyD"
+uri = "file://artifacts/minke-pitch-deck/public/illus-cover-concept1.png"
+type = "image"
+title = "方案 1 — 时间流入鲸鱼，现值流出"
+
+[[outputs]]
+id = "eUEdCon6y6zkaV7C24jhX"
+uri = "file://artifacts/minke-pitch-deck/public/illus-cover-concept4.png"
+type = "image"
+title = "方案 4 — 鲸鱼 + 日程飘带"
