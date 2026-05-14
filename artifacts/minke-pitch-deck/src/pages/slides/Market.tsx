@@ -22,8 +22,8 @@ export default function Market() {
           </h2>
           <p className="mt-[2.5vh] text-[1.5vw] text-muted leading-snug max-w-[52vw]">
             Vesting pipelines, staking and restaking floats, mining and node emissions, fixed-term
-            savings and on-chain bonds all need one solution: tomorrow&rsquo;s cash flow with no rail
-            for today&rsquo;s value. That is the Future Income TAM.
+            savings and on-chain bonds all need one solution: a discounting market for future cash
+            flow. That is the Future Income TAM.
           </p>
         </div>
         <div className="col-span-5 flex justify-center">
