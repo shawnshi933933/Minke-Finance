@@ -22,7 +22,7 @@ export default function Market() {
           </h2>
           <p className="mt-[2.5vh] text-[1.5vw] text-muted leading-snug max-w-[52vw]">
             Vesting pipelines, staking and restaking floats, mining and node emissions, fixed-term
-            savings and on-chain bonds all share one shape: tomorrow&rsquo;s cash flow with no rail
+            savings and on-chain bonds all need one solution: tomorrow&rsquo;s cash flow with no rail
             for today&rsquo;s value. That is the Future Income TAM.
           </p>
         </div>
@@ -33,10 +33,10 @@ export default function Market() {
 
       <div className="absolute left-[5vw] right-[5vw] bottom-[6vh] grid grid-cols-4 gap-[1.4vw]">
         {[
-          { l: "VESTING & SAFTs", v: "~$200B", d: "Token unlock pipeline already scheduled across major projects through 2026.", primary: false },
+          { l: "VESTING & SAFTs", v: "~$200B", d: "Token unlock pipeline already scheduled across major projects.", primary: false },
           { l: "STAKING & RESTAKING", v: "~$500B", d: "ETH, SOL and restaked float earning predictable, schedule-driven rewards.", primary: false },
           { l: "MINING & NODE EMISSIONS", v: "~$50B / yr", d: "BTC, DePIN, AI and L1 node licenses generating rule-based emissions.", primary: false },
-          { l: "FUTURE INCOME TAM", v: "$1T+", d: "Total addressable future income — including fixed-term savings, RWA bonds and tokenizable yield streams.", primary: true },
+          { l: "TRADFI AND BEYOND", v: "$1T+", d: "Total addressable future income — including fixed-term savings, RWA bonds and tokenizable yield streams.", primary: true },
         ].map((c, i) => (
           <div
             key={i}
