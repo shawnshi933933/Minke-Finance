@@ -52,7 +52,7 @@ export default function UseCases() {
             <div className="font-mono text-[1vw] text-primary tracking-widest">{c.n}</div>
             <div className="mt-[1.4vh] font-display font-extrabold text-[2.1vw] leading-tight text-text">{c.t}</div>
             <div
-              className="mt-[1.8vh] h-[1.2vh] w-[18%] rounded-full"
+              className="mt-[1.8vh] h-[1.2vh] w-[18%] rounded-full shrink-0 block"
               style={{ background: "linear-gradient(90deg, #0088FE 0%, #59B9FF 100%)" }}
             />
             <div className="mt-[1.8vh] text-[1.3vw] text-muted leading-snug">{c.d}</div>
