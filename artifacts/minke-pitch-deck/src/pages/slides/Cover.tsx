@@ -50,7 +50,7 @@ export default function Cover() {
         crossOrigin="anonymous"
         alt=""
         style={{ transform: "translateY(-50%) rotate(40deg)" }}
-        className="absolute right-[-6vw] top-1/2 h-[115vh] w-auto drop-shadow-[0_30px_60px_rgba(0,136,254,0.22)]"
+        className="absolute right-[-2vw] top-1/2 h-[100vh] w-auto drop-shadow-[0_30px_60px_rgba(0,136,254,0.22)]"
       />
 
       {/* Bottom bar */}
