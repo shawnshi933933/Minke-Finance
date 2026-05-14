@@ -32,25 +32,21 @@ export default function HowItWorks() {
   return (
     <div className="relative w-screen h-screen overflow-hidden bg-minke-soft">
       <div className="absolute inset-0 bg-minke-dot opacity-40" />
-
       <div className="absolute right-[2vw] top-[5vh] divider-text text-[12vw] pointer-events-none select-none leading-none">
         HOW IT
         <br />
         WORKS
       </div>
-
       <div className="absolute top-[5vh] left-[5vw] right-[5vw] flex justify-between items-center">
         <img src={`${base}minke-logo.svg`} crossOrigin="anonymous" alt="Minke" className="h-[3.8vh] w-auto" />
         <div className="font-mono text-[1.1vw] text-muted tracking-widest">05 / HOW IT WORKS</div>
       </div>
-
       <div className="absolute left-[5vw] top-[14vh]">
         <div className="font-mono text-[1.2vw] text-primary tracking-[0.3em] mb-[2vh]">FROM FUTURE TO PRESENT</div>
         <h2 className="font-display font-extrabold text-[4vw] leading-none tracking-tight text-text">
           Four steps.
         </h2>
       </div>
-
       <div className="absolute left-[5vw] right-[5vw] bottom-[6vh] grid grid-cols-4 gap-[1.4vw]">
         {steps.map((s) => (
           <div
@@ -70,7 +66,7 @@ export default function HowItWorks() {
               <div className={`font-mono text-[1.3vw] tracking-widest ${s.primary ? "text-white/90" : "text-primary"}`}>{s.n}</div>
               <img src={`${base}${s.img}`} crossOrigin="anonymous" alt="" className="h-[14vh] w-auto" />
             </div>
-            <div className={`mt-[2vh] font-display font-extrabold text-[1.85vw] leading-tight ${s.primary ? "text-white" : "text-text"}`}>
+            <div className="mt-[2vh] font-display font-extrabold text-text text-[18px]">
               {s.t}
             </div>
             <div className={`mt-[1.4vh] text-[1.25vw] leading-snug ${s.primary ? "text-white/90" : "text-muted"}`}>
