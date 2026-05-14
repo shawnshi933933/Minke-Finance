@@ -1,81 +1,83 @@
 const base = import.meta.env.BASE_URL;
 
+const steps = [
+  {
+    n: "01",
+    img: "illus-step-1.png",
+    t: "Deposit a DRI asset",
+    d: "SAFT contract, vesting schedule, node license or RWA bond. The factory mints a position NFT.",
+  },
+  {
+    n: "02",
+    img: "illus-step-2.png",
+    t: "Receive VT instantly",
+    d: "Stake the NFT and mint VT — a fungible, tradable representation of the locked future tokens.",
+  },
+  {
+    n: "03",
+    img: "illus-step-3.png",
+    t: "Trade, hold or claim",
+    d: "Sell VT for instant exit, hold for upside, or claim the underlying tokens as the schedule vests.",
+  },
+  {
+    n: "04",
+    img: "illus-step-4.png",
+    t: "Final 1:1 redemption",
+    d: "At maturity, every VT is redeemable 1:1 for the underlying token. No oracles, no haircuts, no counterparty.",
+    primary: true,
+  },
+];
+
 export default function HowItWorks() {
   return (
-    <div className="relative w-screen h-screen overflow-hidden bg-bg">
-      <div
-        className="absolute inset-0 opacity-[0.05]"
-        style={{
-          backgroundImage:
-            "linear-gradient(to right, #4A8AFF 1px, transparent 1px), linear-gradient(to bottom, #4A8AFF 1px, transparent 1px)",
-          backgroundSize: "8vh 8vh",
-        }}
-      />
+    <div className="relative w-screen h-screen overflow-hidden bg-minke-soft">
+      <div className="absolute inset-0 bg-minke-dot opacity-40" />
 
-      <div className="absolute top-[5vh] left-[5vw] right-[5vw] flex justify-between items-center">
-        <img src={`${base}minke-logo.svg`} crossOrigin="anonymous" alt="Minke" className="h-[3.5vh] w-auto opacity-80" />
-        <div className="font-mono text-[1.2vw] text-muted tracking-widest">05 / HOW IT WORKS</div>
+      <div className="absolute right-[2vw] top-[5vh] divider-text text-[12vw] pointer-events-none select-none leading-none">
+        HOW IT
+        <br />
+        WORKS
       </div>
 
-      <div className="absolute left-[5vw] top-[13vh]">
-        <div className="font-mono text-[1.3vw] text-primary tracking-[0.3em] mb-[2vh]">FROM LOCKED TO LIQUID</div>
-        <h2 className="font-display font-bold text-[4.2vw] leading-none tracking-tight text-text">
+      <div className="absolute top-[5vh] left-[5vw] right-[5vw] flex justify-between items-center">
+        <img src={`${base}minke-logo.svg`} crossOrigin="anonymous" alt="Minke" className="h-[3.8vh] w-auto" />
+        <div className="font-mono text-[1.1vw] text-muted tracking-widest">05 / HOW IT WORKS</div>
+      </div>
+
+      <div className="absolute left-[5vw] top-[14vh]">
+        <div className="font-mono text-[1.2vw] text-primary tracking-[0.3em] mb-[2vh]">FROM LOCKED TO LIQUID</div>
+        <h2 className="font-display font-extrabold text-[4vw] leading-none tracking-tight text-text">
           Four steps.
         </h2>
       </div>
 
-      <div className="absolute left-[5vw] right-[5vw] bottom-[6vh] grid grid-cols-4 gap-[1.5vw]">
-        <div className="bg-bg-elevated rounded-[1.2vh] p-[2.5vh] border border-border flex flex-col h-[50vh]">
-          <div className="flex items-center justify-between">
-            <div className="font-mono text-[1.4vw] text-primary tracking-widest">01</div>
-            <img src={`${base}icon-deposit.png`} crossOrigin="anonymous" alt="" className="h-[12vh] w-auto" />
+      <div className="absolute left-[5vw] right-[5vw] bottom-[6vh] grid grid-cols-4 gap-[1.4vw]">
+        {steps.map((s) => (
+          <div
+            key={s.n}
+            className={
+              s.primary
+                ? "relative rounded-[1.4vh] p-[2.5vh] border-2 border-primary flex flex-col h-[52vh] shadow-[0_16px_36px_rgba(0,136,254,0.2)] text-white overflow-hidden"
+                : "relative rounded-[1.4vh] p-[2.5vh] border border-border bg-bg-elevated flex flex-col h-[52vh] shadow-[0_8px_24px_rgba(0,136,254,0.06)]"
+            }
+            style={
+              s.primary
+                ? { background: "linear-gradient(160deg, #0088FE 0%, #59B9FF 100%)" }
+                : undefined
+            }
+          >
+            <div className="flex items-center justify-between">
+              <div className={`font-mono text-[1.3vw] tracking-widest ${s.primary ? "text-white/90" : "text-primary"}`}>{s.n}</div>
+              <img src={`${base}${s.img}`} crossOrigin="anonymous" alt="" className="h-[14vh] w-auto" />
+            </div>
+            <div className={`mt-[2vh] font-display font-extrabold text-[1.85vw] leading-tight ${s.primary ? "text-white" : "text-text"}`}>
+              {s.t}
+            </div>
+            <div className={`mt-[1.4vh] text-[1.25vw] leading-snug ${s.primary ? "text-white/90" : "text-muted"}`}>
+              {s.d}
+            </div>
           </div>
-          <div className="mt-[2vh] font-display font-bold text-[2vw] leading-tight text-text">
-            Deposit a DRI asset
-          </div>
-          <div className="mt-[1.5vh] text-[1.4vw] text-muted leading-snug">
-            SAFT contract, vesting schedule, node license or RWA bond. The factory mints a position NFT.
-          </div>
-        </div>
-
-        <div className="bg-bg-elevated rounded-[1.2vh] p-[2.5vh] border border-border flex flex-col h-[50vh]">
-          <div className="flex items-center justify-between">
-            <div className="font-mono text-[1.4vw] text-primary tracking-widest">02</div>
-            <img src={`${base}icon-receive.png`} crossOrigin="anonymous" alt="" className="h-[12vh] w-auto" />
-          </div>
-          <div className="mt-[2vh] font-display font-bold text-[2vw] leading-tight text-text">
-            Receive VT instantly
-          </div>
-          <div className="mt-[1.5vh] text-[1.4vw] text-muted leading-snug">
-            Stake the NFT and mint VT &mdash; a fungible, tradable representation of the locked future tokens.
-          </div>
-        </div>
-
-        <div className="bg-bg-elevated rounded-[1.2vh] p-[2.5vh] border border-border flex flex-col h-[50vh]">
-          <div className="flex items-center justify-between">
-            <div className="font-mono text-[1.4vw] text-primary tracking-widest">03</div>
-            <img src={`${base}icon-trade.png`} crossOrigin="anonymous" alt="" className="h-[12vh] w-auto" />
-          </div>
-          <div className="mt-[2vh] font-display font-bold text-[2vw] leading-tight text-text">
-            Trade, hold or claim
-          </div>
-          <div className="mt-[1.5vh] text-[1.4vw] text-muted leading-snug">
-            Sell VT for instant exit, hold for upside, or claim the underlying tokens as the schedule vests.
-          </div>
-        </div>
-
-        <div className="bg-primary/15 rounded-[1.2vh] p-[2.5vh] border border-primary flex flex-col h-[50vh]">
-          <div className="flex items-center justify-between">
-            <div className="font-mono text-[1.4vw] text-primary tracking-widest">04</div>
-            <img src={`${base}icon-redemption.png`} crossOrigin="anonymous" alt="" className="h-[12vh] w-auto" />
-          </div>
-          <div className="mt-[2vh] font-display font-bold text-[2vw] leading-tight text-text">
-            Final 1:1 redemption
-          </div>
-          <div className="mt-[1.5vh] text-[1.4vw] text-text/85 leading-snug">
-            At maturity, every VT is redeemable 1:1 for the underlying token. No oracles, no haircuts, no counterparty.
-          </div>
-        </div>
+        ))}
       </div>
     </div>
   );

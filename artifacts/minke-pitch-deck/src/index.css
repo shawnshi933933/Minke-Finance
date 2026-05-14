@@ -5,6 +5,7 @@
   --color-accent: var(--slide-accent);
   --color-bg: var(--slide-bg);
   --color-bg-elevated: var(--slide-bg-elevated);
+  --color-bg-tint: var(--slide-bg-tint);
   --color-text: var(--slide-text);
   --color-muted: var(--slide-muted);
   --color-border: var(--slide-border);
@@ -14,17 +15,18 @@
 }
 
 :root {
-  --slide-primary: #185FEA;
-  --slide-accent: #4A8AFF;
-  --slide-bg: #0A1226;
-  --slide-bg-elevated: #111E3D;
-  --slide-text: #F5F8FF;
-  --slide-muted: #8B9BB8;
-  --slide-border: #1F2E50;
-  --font-display-family: "Space Grotesk", system-ui, sans-serif;
-  --font-body-family: "Space Grotesk", system-ui, sans-serif;
+  --slide-primary: #0088FE;
+  --slide-accent: #59B9FF;
+  --slide-bg: #FFFFFF;
+  --slide-bg-elevated: #F4F8FF;
+  --slide-bg-tint: #EAF2FF;
+  --slide-text: #0A1530;
+  --slide-muted: #6B7A99;
+  --slide-border: #E2EAF7;
+  --font-display-family: "Inter", system-ui, sans-serif;
+  --font-body-family: "Lexend", system-ui, sans-serif;
   --font-mono-family: "JetBrains Mono", ui-monospace, monospace;
-  color-scheme: dark;
+  color-scheme: light;
 }
 
 html,
@@ -40,6 +42,7 @@ body {
   color: var(--slide-text);
   font-family: var(--font-body-family);
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 .slide {
@@ -52,4 +55,33 @@ body {
   touch-action: none;
   user-select: none;
   -webkit-user-select: none;
+}
+
+/* Reusable utility: light hero gradient background */
+.bg-minke-hero {
+  background:
+    radial-gradient(ellipse 70% 60% at 100% 100%, rgba(89, 185, 255, 0.35) 0%, rgba(89, 185, 255, 0) 60%),
+    radial-gradient(ellipse 50% 50% at 0% 0%, rgba(0, 136, 254, 0.12) 0%, rgba(255, 255, 255, 0) 55%),
+    linear-gradient(180deg, #FAFCFF 0%, #FFFFFF 100%);
+}
+
+.bg-minke-soft {
+  background:
+    radial-gradient(ellipse 60% 50% at 100% 0%, rgba(89, 185, 255, 0.22) 0%, rgba(255, 255, 255, 0) 60%),
+    #FFFFFF;
+}
+
+.bg-minke-dot {
+  background-image: radial-gradient(circle at 1px 1px, rgba(0, 136, 254, 0.12) 1px, transparent 0);
+  background-size: 28px 28px;
+}
+
+/* Section divider giant outlined text */
+.divider-text {
+  font-family: var(--font-display-family);
+  font-weight: 900;
+  -webkit-text-stroke: 1.5px rgba(10, 21, 48, 0.08);
+  color: transparent;
+  letter-spacing: -0.04em;
+  line-height: 0.85;
 }
