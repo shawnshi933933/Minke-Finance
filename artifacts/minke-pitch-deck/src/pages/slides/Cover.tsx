@@ -19,16 +19,17 @@ export default function Cover() {
         <div className="font-mono text-[1.2vw] text-primary tracking-[0.32em] mb-[2.5vh]">
           FUTURE INCOME &rarr; PRESENT VALUE
         </div>
-        <h1 className="font-display font-extrabold text-[7vw] leading-[0.92] tracking-[-0.04em] text-text">
-          Unravel
-        </h1>
         <h1
-          className="font-display font-extrabold text-[7vw] leading-[0.92] tracking-[-0.04em] bg-clip-text text-transparent"
-          style={{ backgroundImage: "linear-gradient(120deg, #0088FE 0%, #59B9FF 100%)" }}
+          className="font-display font-extrabold text-[6vw] leading-[0.95] tracking-[-0.04em] text-text"
+          style={{ textWrap: "balance" }}
         >
-          time value of money
-        </h1>
-        <h1 className="font-display font-extrabold text-[7vw] leading-[0.92] tracking-[-0.04em] text-text">
+          Unravel{" "}
+          <span
+            className="bg-clip-text text-transparent"
+            style={{ backgroundImage: "linear-gradient(120deg, #0088FE 0%, #59B9FF 100%)" }}
+          >
+            time value of money
+          </span>{" "}
           onchain.
         </h1>
         <p className="mt-[4vh] text-[1.55vw] text-muted max-w-[48vw] leading-snug">

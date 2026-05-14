@@ -1,6 +1,6 @@
 const base = import.meta.env.BASE_URL;
 
-export default function DRI() {
+export default function DFI() {
   return (
     <div className="relative w-screen h-screen overflow-hidden bg-minke-soft">
       <div className="absolute inset-0 bg-minke-dot opacity-40" />
