@@ -17,10 +17,7 @@ export default function DFI() {
         <div className="mt-[1vh] font-display font-semibold text-[2.3vw] leading-tight text-text/85">
           Deterministic Future Income.
         </div>
-        <p className="mt-[3vh] text-[1.5vw] text-muted leading-snug">
-          We are defining a new asset class in DFI, a stream of expected future payments with clear
-          schedule and amounts.
-        </p>
+        <p className="mt-[3vh] text-[1.5vw] text-muted leading-snug">We are defining a new asset class in DFI, a stream of expected future payments with clear schedule and amount.</p>
         <div
           className="mt-[3vh] inline-block rounded-[0.8vh] px-[1.4vw] py-[1.2vh] font-mono text-[1.2vw] text-white shadow-[0_8px_20px_rgba(0,136,254,0.25)]"
           style={{ background: "linear-gradient(120deg, #0088FE 0%, #59B9FF 100%)" }}
