@@ -49,7 +49,8 @@ export default function Cover() {
         src={`${base}illus-cover-calendar-whale-v1.png`}
         crossOrigin="anonymous"
         alt=""
-        className="absolute right-[3vw] top-1/2 -translate-y-1/2 h-[88vh] w-auto drop-shadow-[0_30px_60px_rgba(0,136,254,0.22)]"
+        style={{ transform: "translateY(-50%) rotate(-25deg)" }}
+        className="absolute right-[-6vw] top-1/2 h-[115vh] w-auto drop-shadow-[0_30px_60px_rgba(0,136,254,0.22)]"
       />
 
       {/* Bottom bar */}
