@@ -21,7 +21,7 @@ export default function Problem() {
         <div className="col-span-7">
           <div className="font-mono text-[1.2vw] text-primary tracking-[0.3em] mb-[2.5vh]">THE PROBLEM</div>
           <h2 className="font-display font-extrabold text-[5vw] leading-[0.98] tracking-tight text-text" style={{ textWrap: "balance" }}>
-            Trillions of{" "}
+            Over $1T of{" "}
             <span
               className="bg-clip-text text-transparent"
               style={{ backgroundImage: "linear-gradient(120deg, #0088FE 0%, #59B9FF 100%)" }}
