@@ -108,6 +108,18 @@ uri = "file://artifacts/minke-pitch-deck/public/illus-cover-concept4.png"
 type = "image"
 title = "concept4 whale schedule ribbon"
 
+[[generated]]
+id = "dxkP_a3tD_hP9sNVffkUe"
+uri = "file://artifacts/minke-pitch-deck/public/illus-cover-concept4-v2.png"
+type = "image"
+title = "concept4 v2 elegant whale ribbon"
+
+[[generated]]
+id = "YNvQi6TqwSZXPapTr9J1m"
+uri = "file://artifacts/minke-pitch-deck/public/illus-cover-concept4-v3.png"
+type = "image"
+title = "concept4 v3 elegant whale ribbon"
+
 [[outputs]]
 id = "I02xF4R8ddo7pabCyDCR1"
 uri = "file://.local/outputs/Minke-Finance.pdf"
@@ -125,3 +137,15 @@ id = "eUEdCon6y6zkaV7C24jhX"
 uri = "file://artifacts/minke-pitch-deck/public/illus-cover-concept4.png"
 type = "image"
 title = "方案 4 — 鲸鱼 + 日程飘带"
+
+[[outputs]]
+id = "XYDaSlUYs9OgnUdN39sep"
+uri = "file://artifacts/minke-pitch-deck/public/illus-cover-concept4-v2.png"
+type = "image"
+title = "方案 4 - V2"
+
+[[outputs]]
+id = "OD0HKkhvbNRZgGW4LRf4E"
+uri = "file://artifacts/minke-pitch-deck/public/illus-cover-concept4-v3.png"
+type = "image"
+title = "方案 4 - V3"
