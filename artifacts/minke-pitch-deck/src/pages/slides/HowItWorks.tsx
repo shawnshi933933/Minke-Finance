@@ -66,7 +66,7 @@ export default function HowItWorks() {
               <div className={`font-mono text-[1.3vw] tracking-widest ${s.primary ? "text-white/90" : "text-primary"}`}>{s.n}</div>
               <img src={`${base}${s.img}`} crossOrigin="anonymous" alt="" className="h-[14vh] w-auto" />
             </div>
-            <div className="mt-[2vh] font-display font-extrabold text-text text-[18px]">
+            <div className="mt-[2vh] font-display font-extrabold text-text text-[15px]">
               {s.t}
             </div>
             <div className={`mt-[1.4vh] text-[1.25vw] leading-snug ${s.primary ? "text-white/90" : "text-muted"}`}>
