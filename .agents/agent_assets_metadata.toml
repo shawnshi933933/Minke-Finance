@@ -1,5 +1,4 @@
 uploads = []
-outputs = []
 
 [[generated]]
 id = "PcaidvMrbfalmZi1Gw_P1"
@@ -96,3 +95,9 @@ id = "EtIHniGFWFgOo1hwV-ZRT"
 uri = "file://artifacts/minke-pitch-deck/public/illus-cover-hero.png"
 type = "image"
 title = "generated_image"
+
+[[outputs]]
+id = "I02xF4R8ddo7pabCyDCR1"
+uri = "file://.local/outputs/Minke-Finance.pdf"
+type = "pdf"
+title = "Minke Finance.pdf"
