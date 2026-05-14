@@ -5,7 +5,7 @@ const steps = [
     n: "01",
     img: "icon-deposit.png",
     t: "Deposit a DFI position",
-    d: "SAFT contract, vesting schedule, staking position, node license or RWA bond. The factory mints a position NFT.",
+    d: "SAFT contract, vesting schedule, staking position, node license or RWA bond.",
   },
   {
     n: "02",
