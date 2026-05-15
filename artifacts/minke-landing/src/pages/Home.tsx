@@ -180,7 +180,7 @@ export default function Home() {
       </section>
 
       {/* PROBLEM SECTION */}
-      <section id="shift" className="relative overflow-hidden bg-white py-16 md:py-24 border-b border-border">
+      <section id="shift" className="relative overflow-hidden bg-white py-12 md:py-16 border-b border-border">
         {/* Dot grid */}
         <div className="absolute inset-0 bg-minke-dot opacity-40 pointer-events-none" />
         {/* Radial glow */}
@@ -245,7 +245,7 @@ export default function Home() {
                   }}
                 />
                 <p className="text-lg font-sans leading-relaxed text-muted">
-                  SAFTs, vesting schedules, staking rewards, bond coupons — over a trillion in earned value sits illiquid, non-tradable, and invisible on any balance sheet. No way to hedge it, price it, or put it to work while the clock runs down.
+                  SAFTs, vesting schedules, staking rewards, bond coupons — over a trillion in value sits illiquid, non-tradable, and invisible on any balance sheet. No way to hedge it, price it, or put it to work while the clock runs down.
                 </p>
               </motion.div>
             </div>
