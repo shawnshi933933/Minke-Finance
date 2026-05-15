@@ -89,63 +89,71 @@ export default function Home() {
             </div>
             
             <h1 className="text-5xl md:text-7xl font-extrabold leading-[1.05] tracking-tight text-text mb-8">
-              Unravel the time value of money <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent">onchain.</span>
+              Unravel the <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent">time value of money</span> onchain.
             </h1>
             
             <p className="text-xl text-muted leading-relaxed mb-8 max-w-xl font-sans">
               A protocol that turns deterministic future income — SAFTs, vesting, staking, mining, fixed-term saving and bonds — into present value, tradable on-chain today.
             </p>
 
-            {/* Hero animated stat ticker */}
+            {/* DFI concept cards */}
             <motion.div
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, delay: 0.5, ease: "easeOut" }}
-              className="flex flex-wrap gap-8 mb-10 pt-2 border-t border-border"
+              className="flex flex-wrap gap-4 mb-10 pt-4 border-t border-border"
             >
-              <div className="flex flex-col">
-                <span className="font-display font-black text-2xl text-primary leading-none tabular-nums">
-                  $<AnimatedNumber value={1} suffix="T+" duration={1800} />
-                </span>
-                <span className="font-mono text-xs text-muted tracking-wider mt-1">Future income TAM</span>
-              </div>
-              <div className="flex flex-col">
-                <motion.span
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ duration: 0.4, delay: 1.2 }}
-                  className="font-display font-black text-2xl text-accent leading-none"
+              {[
+                {
+                  letter: "D",
+                  title: "Deterministic",
+                  sub: "Known amounts, regular schedules",
+                  delay: 0.6,
+                },
+                {
+                  letter: "F",
+                  title: "Future",
+                  sub: "Tomorrow's cash flows, priced today",
+                  delay: 0.75,
+                },
+                {
+                  letter: "I",
+                  title: "Income",
+                  sub: "SAFTs · Vesting · Staking · Bonds",
+                  delay: 0.9,
+                },
+              ].map(({ letter, title, sub, delay }) => (
+                <motion.div
+                  key={letter}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay, ease: "easeOut" }}
+                  className="flex items-start gap-3 pr-6"
                 >
-                  0 &rarr; 1
-                </motion.span>
-                <span className="font-mono text-xs text-muted tracking-wider mt-1">Present-value rail</span>
-              </div>
-              <div className="flex flex-col">
-                <motion.span
-                  initial={{ scale: 0.4, opacity: 0 }}
-                  animate={{ scale: 1, opacity: 1 }}
-                  transition={{ duration: 0.5, delay: 1.5, ease: "backOut" }}
-                  className="font-display font-black text-2xl text-primary leading-none"
-                >
-                  ∞
-                </motion.span>
-                <span className="font-mono text-xs text-muted tracking-wider mt-1">Income event types</span>
-              </div>
+                  <span className="font-display font-black text-2xl text-transparent bg-clip-text bg-gradient-to-b from-primary to-accent leading-none mt-0.5">
+                    {letter}
+                  </span>
+                  <div className="flex flex-col">
+                    <span className="font-sans font-semibold text-sm text-text leading-none">{title}</span>
+                    <span className="font-mono text-xs text-muted tracking-wide mt-1">{sub}</span>
+                  </div>
+                </motion.div>
+              ))}
             </motion.div>
             
             <div className="flex flex-col sm:flex-row items-start sm:items-center gap-6">
               <button className="bg-gradient-to-r from-primary to-accent text-white px-8 py-4 rounded-full font-sans font-medium shadow-lg hover:shadow-xl transition-all pointer-events-none">
                 Coming Soon
               </button>
-              <a href="/minke-pitch-deck/" className="text-text font-medium hover:text-primary transition-colors flex items-center gap-2 group">
-                Read the deck 
+              <a href="#" className="text-text font-medium hover:text-primary transition-colors flex items-center gap-2 group">
+                Read the doc
                 <span className="group-hover:translate-x-1 transition-transform">&rarr;</span>
               </a>
             </div>
           </motion.div>
           
-          {/* Whale illustration with mouse-parallax */}
-          <motion.div 
+          {/* Whale illustration with mouse-parallax + float */}
+          <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 1, delay: 0.2, ease: "easeOut" }}
@@ -155,14 +163,17 @@ export default function Home() {
             }}
             className="relative lg:h-[600px] flex items-center justify-center pointer-events-none"
           >
-            {/* Using an absolute wrapper to position and rotate the illustration */}
-            <div className="absolute w-[120%] h-[120%] rotate-[-40deg] translate-x-8 translate-y-8">
-              <img 
-                src={`${import.meta.env.BASE_URL}illus-cover-calendar-whale-v1.png`} 
-                alt="Minke Whale Illustration" 
+            <motion.div
+              animate={{ y: [0, -22, 0] }}
+              transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+              className="absolute w-[150%] h-[150%] rotate-[40deg]"
+            >
+              <img
+                src={`${import.meta.env.BASE_URL}illus-cover-calendar-whale-v1.png`}
+                alt="Minke Whale Illustration"
                 className="w-full h-full object-contain"
               />
-            </div>
+            </motion.div>
           </motion.div>
         </div>
       </section>
