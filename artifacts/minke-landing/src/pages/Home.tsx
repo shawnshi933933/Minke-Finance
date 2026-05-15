@@ -180,7 +180,7 @@ export default function Home() {
       </section>
 
       {/* PROBLEM SECTION */}
-      <section id="shift" className="relative overflow-hidden bg-white py-12 md:py-16 border-b border-border">
+      <section id="shift" className="relative overflow-hidden bg-white py-12 md:py-16">
         {/* Dot grid */}
         <div className="absolute inset-0 bg-minke-dot opacity-40 pointer-events-none" />
         {/* Radial glow */}
@@ -276,7 +276,7 @@ export default function Home() {
       </section>
 
       {/* CONCEPT SECTION */}
-      <section id="concept" className="relative overflow-hidden bg-elevated py-20 md:py-28 border-b border-border">
+      <section id="concept" className="relative overflow-hidden bg-elevated py-14 md:py-20">
         {/* Soft gradient fade from white above */}
         <div className="pointer-events-none absolute top-0 left-0 right-0 h-28 z-10"
           style={{ background: "linear-gradient(to bottom, #ffffff, transparent)" }} />
@@ -291,7 +291,7 @@ export default function Home() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-80px" }}
               transition={{ duration: 0.6 }}
-              className="lg:sticky lg:top-28"
+              className="lg:sticky lg:top-16 lg:pl-8"
             >
               <div className="font-mono text-xs tracking-[0.3em] uppercase text-primary mb-1">
                 The Solution
