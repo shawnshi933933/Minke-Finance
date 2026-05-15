@@ -460,50 +460,175 @@ export default function Home() {
       </section>
 
       {/* HOW IT WORKS */}
-      <section id="how-it-works" className="py-24 md:py-32 bg-elevated border-y border-border">
+      <section id="how-it-works" className="py-24 md:py-32 bg-white">
         <div className="container mx-auto px-6 md:px-12">
-          <motion.div 
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-100px" }}
-            variants={fadeUp}
-            className="mb-20 text-center max-w-3xl mx-auto"
+
+          {/* Section header */}
+          <motion.div
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-80px" }}
+            transition={{ duration: 0.6 }}
+            className="mb-16 lg:mb-20"
           >
-            <h2 className="text-4xl md:text-5xl font-extrabold mb-6">How it works</h2>
-            <p className="text-xl text-muted font-sans">
-              Positions are illiquid, non-tradable, sit off-balance-sheet; no way to hedge, borrow against them, or recycle capital while waiting for payout. Until now.
-            </p>
+            <div className="font-mono text-xs tracking-[0.3em] uppercase text-primary mb-3">How it works</div>
+            <h2 className="text-4xl md:text-5xl font-extrabold max-w-lg leading-tight">
+              Four steps.
+            </h2>
           </motion.div>
 
-          <motion.div 
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-100px" }}
-            variants={staggerContainer}
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"
-          >
+          {/* Steps */}
+          <div className="max-w-4xl">
+
+            {/* Steps 01 & 02 */}
             {[
-              { num: "01", title: "Deposit a DFI position", icon: "icon-deposit.png" },
-              { num: "02", title: "Receive VT instantly", icon: "icon-receive.png" },
-              { num: "03", title: "Trade, hold or claim", icon: "icon-trade.png" },
-              { num: "04", title: "1:1 redemption claim", icon: "icon-redemption.png" }
+              {
+                num: "01",
+                title: "Deposit a position",
+                desc: "Submit a SAFT, vesting schedule, staking position, node license, or RWA bond. Minke wraps it into a standardized on-chain DFI.",
+                icon: "icon-deposit.png",
+                last: false,
+              },
+              {
+                num: "02",
+                title: "Receive VT instantly",
+                desc: "Get Vault Tokens immediately — a fungible, tradable representation of your future income stream, minted 1:1 against your deposited position.",
+                icon: "icon-receive.png",
+                last: false,
+              },
             ].map((step, i) => (
-              <motion.div 
-                key={i} 
-                variants={fadeUp}
-                whileHover={{ y: -8 }}
-                className="bg-white p-8 rounded-3xl border border-border shadow-sm hover:shadow-md transition-all relative overflow-hidden"
+              <motion.div
+                key={step.num}
+                initial={{ opacity: 0, y: 32 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-60px" }}
+                transition={{ duration: 0.55, delay: i * 0.1 }}
+                className="flex items-start gap-8 md:gap-16 relative"
               >
-                <div className="text-6xl font-display font-black text-tint mb-8 select-none">
-                  {step.num}
+                {/* Left connector column */}
+                <div className="flex flex-col items-center flex-shrink-0 w-12">
+                  <div className="font-mono text-xs tracking-widest text-primary font-bold pt-1">{step.num}</div>
+                  <div className="flex-1 w-px bg-border mt-3" style={{ minHeight: "140px" }} />
                 </div>
-                <div className="w-16 h-16 mb-6">
-                  <img src={`${import.meta.env.BASE_URL}${step.icon}`} alt={`Step ${step.num}`} className="w-full h-full object-contain" />
+
+                {/* Content */}
+                <div className="flex-1 pb-12 md:pb-16 grid md:grid-cols-[1fr_auto] gap-8 items-center">
+                  <div>
+                    <h3 className="text-2xl md:text-3xl font-extrabold mb-3">{step.title}</h3>
+                    <p className="text-muted font-sans text-base leading-relaxed max-w-md">{step.desc}</p>
+                  </div>
+                  <div className="w-20 h-20 md:w-24 md:h-24 rounded-2xl bg-tint border border-border flex items-center justify-center flex-shrink-0">
+                    <img
+                      src={`${import.meta.env.BASE_URL}${step.icon}`}
+                      alt={step.title}
+                      className="w-12 h-12 md:w-14 md:h-14 object-contain"
+                    />
+                  </div>
                 </div>
-                <h4 className="text-xl font-bold leading-tight">{step.title}</h4>
               </motion.div>
             ))}
-          </motion.div>
+
+            {/* VT callout — inserted between 02 and 03 */}
+            <motion.div
+              initial={{ opacity: 0, y: 24 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-60px" }}
+              transition={{ duration: 0.55 }}
+              className="flex items-start gap-8 md:gap-16 relative"
+            >
+              {/* Connector column (continues the line) */}
+              <div className="flex flex-col items-center flex-shrink-0 w-12">
+                <div className="flex-1 w-px bg-border" style={{ minHeight: "100%" }} />
+              </div>
+
+              {/* VT card */}
+              <div className="flex-1 mb-10">
+                <div className="rounded-2xl bg-tint border border-primary/20 p-6 md:p-8 flex flex-col sm:flex-row gap-6 items-start sm:items-center">
+                  {/* Coin */}
+                  <div className="flex-shrink-0">
+                    <div
+                      className="w-16 h-16 rounded-full flex items-center justify-center text-white font-display font-black text-xl shadow-lg"
+                      style={{ background: "linear-gradient(135deg, #0088FE 0%, #59B9FF 100%)" }}
+                    >
+                      VT
+                    </div>
+                  </div>
+                  {/* Text */}
+                  <div>
+                    <div className="font-mono text-[10px] tracking-[0.25em] uppercase text-primary mb-1">Vault Token</div>
+                    <h4 className="text-lg font-bold mb-1">What is a VT?</h4>
+                    <p className="text-sm text-muted font-sans leading-relaxed max-w-lg">
+                      A VT is an on-chain token representing one unit of future income. It is fully fungible and composable — tradable on any DEX, usable as collateral, or simply held until the underlying income is realized and redeemable 1:1.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+
+            {/* Step 03 */}
+            <motion.div
+              initial={{ opacity: 0, y: 32 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-60px" }}
+              transition={{ duration: 0.55 }}
+              className="flex items-start gap-8 md:gap-16 relative"
+            >
+              <div className="flex flex-col items-center flex-shrink-0 w-12">
+                <div className="font-mono text-xs tracking-widest text-primary font-bold pt-1">03</div>
+                <div className="flex-1 w-px bg-border mt-3" style={{ minHeight: "140px" }} />
+              </div>
+              <div className="flex-1 pb-12 md:pb-16 grid md:grid-cols-[1fr_auto] gap-8 items-center">
+                <div>
+                  <h3 className="text-2xl md:text-3xl font-extrabold mb-3">Trade, hold or claim</h3>
+                  <p className="text-muted font-sans text-base leading-relaxed max-w-md">
+                    Sell VT for immediate present value, hold for potential upside, or simply wait and claim the underlying tokens as the schedule plays out — your choice, any time.
+                  </p>
+                </div>
+                <div className="w-20 h-20 md:w-24 md:h-24 rounded-2xl bg-tint border border-border flex items-center justify-center flex-shrink-0">
+                  <img
+                    src={`${import.meta.env.BASE_URL}icon-trade.png`}
+                    alt="Trade, hold or claim"
+                    className="w-12 h-12 md:w-14 md:h-14 object-contain"
+                  />
+                </div>
+              </div>
+            </motion.div>
+
+            {/* Step 04 — blue highlight */}
+            <motion.div
+              initial={{ opacity: 0, y: 32 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-60px" }}
+              transition={{ duration: 0.55 }}
+              className="flex items-start gap-8 md:gap-16 relative"
+            >
+              <div className="flex flex-col items-center flex-shrink-0 w-12">
+                <div className="font-mono text-xs tracking-widest text-primary font-bold pt-1">04</div>
+              </div>
+              <div className="flex-1 grid md:grid-cols-[1fr_auto] gap-8 items-center">
+                <div>
+                  <h3 className="text-2xl md:text-3xl font-extrabold mb-3">1:1 redemption</h3>
+                  <p className="text-muted font-sans text-base leading-relaxed max-w-md">
+                    When income is realized, VT holders redeem at exactly 1:1 against the underlying asset — no oracles, no haircuts, no counterparty risk.
+                  </p>
+                  <div className="mt-4 font-mono text-[10px] tracking-widest uppercase text-primary/60">
+                    No oracles · No haircuts · No counterparty risk
+                  </div>
+                </div>
+                <div
+                  className="w-20 h-20 md:w-24 md:h-24 rounded-2xl flex items-center justify-center flex-shrink-0 shadow-lg"
+                  style={{ background: "linear-gradient(135deg, #0088FE 0%, #59B9FF 100%)" }}
+                >
+                  <img
+                    src={`${import.meta.env.BASE_URL}icon-redemption.png`}
+                    alt="1:1 redemption"
+                    className="w-12 h-12 md:w-14 md:h-14 object-contain brightness-0 invert"
+                  />
+                </div>
+              </div>
+            </motion.div>
+
+          </div>
         </div>
       </section>
 
