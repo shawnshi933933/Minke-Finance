@@ -529,9 +529,9 @@ export default function Home() {
                     )}
                   </div>
 
-                  {/* Content row: big number + text left, icon right */}
-                  <div className="grid md:grid-cols-[1fr_auto] gap-6 md:gap-16 items-center pb-10 md:pb-16">
-                    <div>
+                  {/* Content row: alternate image left/right per step */}
+                  <div className={`flex flex-col md:flex-row items-center gap-8 md:gap-16 pb-10 md:pb-16 ${i % 2 === 1 ? "md:flex-row-reverse" : ""}`}>
+                    <div className="flex-1 min-w-0">
                       <div
                         className="font-display font-black leading-none mb-3 select-none"
                         style={{
@@ -546,22 +546,22 @@ export default function Home() {
                       <p className="text-base md:text-lg text-muted font-sans leading-relaxed max-w-sm">{step.desc}</p>
                     </div>
 
-                    {/* Large floating icon — same treatment as Problem illustration */}
+                    {/* Large floating icon */}
                     <motion.div
-                      initial={{ opacity: 0, x: 30 }}
+                      initial={{ opacity: 0, x: i % 2 === 1 ? -30 : 30 }}
                       whileInView={{ opacity: 1, x: 0 }}
                       viewport={{ once: true, margin: "-40px" }}
                       transition={{ duration: 0.7, delay: 0.15 }}
                       className="relative flex items-center justify-center flex-shrink-0"
                     >
                       <div
-                        className="absolute w-64 h-64 rounded-full blur-3xl pointer-events-none"
+                        className="absolute w-72 h-72 rounded-full blur-3xl pointer-events-none"
                         style={{ background: "radial-gradient(circle, rgba(0,136,254,0.10) 0%, transparent 70%)" }}
                       />
                       <motion.img
                         src={`${import.meta.env.BASE_URL}${step.icon}`}
                         alt={step.title}
-                        className="relative w-48 h-48 md:w-64 md:h-64 object-contain"
+                        className="relative w-56 h-56 md:w-72 md:h-72 object-contain"
                         animate={{ y: [0, -14, 0] }}
                         transition={{ duration: step.floatDuration, repeat: Infinity, ease: "easeInOut" }}
                         style={{ filter: "drop-shadow(0 24px 40px rgba(0,136,254,0.20))" }}
@@ -584,11 +584,11 @@ export default function Home() {
                     </div>
                     <div className="pb-10 md:pb-16">
                       <div className="rounded-2xl bg-white border border-primary/20 overflow-hidden flex flex-col sm:flex-row shadow-sm">
-                        <div className="sm:w-44 flex-shrink-0 bg-tint flex items-center justify-center p-6">
+                        <div className="sm:w-56 flex-shrink-0 bg-tint flex items-center justify-center p-8">
                           <img
                             src={`${import.meta.env.BASE_URL}illus-instant-minting.png`}
                             alt="Vesting Token"
-                            className="w-28 h-28 object-contain"
+                            className="w-40 h-40 object-contain"
                           />
                         </div>
                         <div className="flex-1 p-6 md:p-8 border-t sm:border-t-0 sm:border-l border-border">
