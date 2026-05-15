@@ -1,0 +1,313 @@
+import { motion, useInView, type Variants } from "framer-motion";
+import { useEffect, useRef, useState } from "react";
+import { HeroCanvas } from "../components/HeroCanvas";
+import { Navbar } from "../components/Navbar";
+import { Footer } from "../components/Footer";
+
+function AnimatedNumber({ value, suffix = "" }: { value: number, suffix?: string }) {
+  const ref = useRef<HTMLSpanElement>(null);
+  const inView = useInView(ref, { once: true, margin: "-50px" });
+  const [displayValue, setDisplayValue] = useState(0);
+
+  useEffect(() => {
+    if (inView) {
+      let start = 0;
+      const duration = 2000;
+      const startTime = performance.now();
+      
+      const updateNumber = (currentTime: number) => {
+        const elapsed = currentTime - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        
+        // Easing function outExpo
+        const easeOutExpo = progress === 1 ? 1 : 1 - Math.pow(2, -10 * progress);
+        
+        setDisplayValue(Math.floor(easeOutExpo * value));
+        
+        if (progress < 1) {
+          requestAnimationFrame(updateNumber);
+        }
+      };
+      
+      requestAnimationFrame(updateNumber);
+    }
+  }, [inView, value]);
+
+  return <span ref={ref}>{displayValue}{suffix}</span>;
+}
+
+const fadeUp: Variants = {
+  hidden: { opacity: 0, y: 30 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } }
+};
+
+const staggerContainer: Variants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: { staggerChildren: 0.15 }
+  }
+};
+
+export default function Home() {
+  return (
+    <div className="min-h-screen bg-background text-text overflow-x-hidden">
+      <Navbar />
+
+      {/* HERO SECTION */}
+      <section className="relative min-h-[100dvh] flex items-center justify-center pt-20 pb-12 overflow-hidden bg-minke-hero bg-minke-dot">
+        <HeroCanvas />
+        
+        <div className="container relative z-10 mx-auto px-6 md:px-12 grid lg:grid-cols-2 gap-12 items-center">
+          <motion.div 
+            initial={{ opacity: 0, x: -30 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+            className="max-w-2xl"
+          >
+            <div className="font-mono text-primary text-sm font-semibold tracking-wider mb-6 flex items-center gap-3">
+              <span className="w-8 h-[2px] bg-primary rounded-full"></span>
+              FUTURE INCOME &rarr; PRESENT VALUE
+            </div>
+            
+            <h1 className="text-5xl md:text-7xl font-extrabold leading-[1.05] tracking-tight text-text mb-8">
+              Unravel the time value of money <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent">onchain.</span>
+            </h1>
+            
+            <p className="text-xl text-muted leading-relaxed mb-10 max-w-xl font-sans">
+              A protocol that turns deterministic future income — SAFTs, vesting, staking, mining, fixed-term saving and bonds — into present value, tradable on-chain today.
+            </p>
+            
+            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-6">
+              <button className="bg-gradient-to-r from-primary to-accent text-white px-8 py-4 rounded-full font-sans font-medium shadow-lg hover:shadow-xl transition-all pointer-events-none">
+                Coming Soon
+              </button>
+              <a href="/minke-pitch-deck/" className="text-text font-medium hover:text-primary transition-colors flex items-center gap-2 group">
+                Read the deck 
+                <span className="group-hover:translate-x-1 transition-transform">&rarr;</span>
+              </a>
+            </div>
+          </motion.div>
+          
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 1, delay: 0.2, ease: "easeOut" }}
+            className="relative lg:h-[600px] flex items-center justify-center pointer-events-none"
+          >
+            {/* Using an absolute wrapper to position and rotate the illustration */}
+            <div className="absolute w-[120%] h-[120%] rotate-[-40deg] translate-x-8 translate-y-8">
+              <img 
+                src={`${import.meta.env.BASE_URL}illus-cover-calendar-whale-v1.png`} 
+                alt="Minke Whale Illustration" 
+                className="w-full h-full object-contain"
+              />
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* CONCEPT SECTION */}
+      <section id="concept" className="py-24 md:py-32 bg-white">
+        <div className="container mx-auto px-6 md:px-12">
+          <motion.div 
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-100px" }}
+            variants={fadeUp}
+            className="mb-20 text-center"
+          >
+            <div className="inline-flex items-center justify-center px-4 py-1.5 rounded-full bg-tint text-primary font-mono text-xs font-semibold mb-6">
+              Minke's original framework.
+            </div>
+            <h2 className="text-4xl md:text-5xl font-extrabold mb-6">Defining the Asset Class</h2>
+          </motion.div>
+
+          <div className="grid md:grid-cols-2 gap-8 lg:gap-16 items-stretch">
+            <motion.div 
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: "-100px" }}
+              variants={fadeUp}
+              className="bg-elevated rounded-3xl p-10 md:p-12 border border-border flex flex-col justify-between"
+            >
+              <div>
+                <h3 className="text-2xl font-bold mb-4">Deterministic Future Income</h3>
+                <p className="text-muted leading-relaxed font-sans mb-8">
+                  Predictable amounts on a known schedule. SAFTs, team vesting, treasury unlocks, fixed-term staking rewards, node licenses, on-chain bonds.
+                </p>
+              </div>
+              <div className="relative h-64 rounded-xl overflow-hidden bg-white/50 border border-border/50 flex items-center justify-center">
+                <img src={`${import.meta.env.BASE_URL}illus-dri.png`} alt="DFI Concept" className="object-contain h-full p-4" />
+              </div>
+            </motion.div>
+
+            <motion.div 
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: "-100px" }}
+              variants={fadeUp}
+              className="bg-white rounded-3xl p-10 md:p-12 border border-border flex flex-col justify-between"
+            >
+              <div>
+                <h3 className="text-2xl font-bold mb-4">Variable Future Income</h3>
+                <p className="text-muted leading-relaxed font-sans mb-8">
+                  Yield-farming returns, variable lending APY, governance rewards, NFT royalties.
+                </p>
+              </div>
+              <div className="relative h-64 rounded-xl overflow-hidden bg-tint/30 border border-border/50 flex items-center justify-center">
+                <div className="text-center">
+                  <div className="w-16 h-16 rounded-full bg-border mx-auto mb-4 flex items-center justify-center opacity-50">
+                    <span className="text-2xl">?</span>
+                  </div>
+                  <p className="text-sm font-mono text-muted">VFI support planned for v2</p>
+                </div>
+              </div>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
+      {/* HOW IT WORKS */}
+      <section id="how-it-works" className="py-24 md:py-32 bg-elevated border-y border-border">
+        <div className="container mx-auto px-6 md:px-12">
+          <motion.div 
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-100px" }}
+            variants={fadeUp}
+            className="mb-20 text-center max-w-3xl mx-auto"
+          >
+            <h2 className="text-4xl md:text-5xl font-extrabold mb-6">How it works</h2>
+            <p className="text-xl text-muted font-sans">
+              Positions are illiquid, non-tradable, sit off-balance-sheet; no way to hedge, borrow against them, or recycle capital while waiting for payout. Until now.
+            </p>
+          </motion.div>
+
+          <motion.div 
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-100px" }}
+            variants={staggerContainer}
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"
+          >
+            {[
+              { num: "01", title: "Deposit a DFI position", icon: "icon-deposit.png" },
+              { num: "02", title: "Receive VT instantly", icon: "icon-receive.png" },
+              { num: "03", title: "Trade, hold or claim", icon: "icon-trade.png" },
+              { num: "04", title: "1:1 redemption claim", icon: "icon-redemption.png" }
+            ].map((step, i) => (
+              <motion.div 
+                key={i} 
+                variants={fadeUp}
+                whileHover={{ y: -8 }}
+                className="bg-white p-8 rounded-3xl border border-border shadow-sm hover:shadow-md transition-all relative overflow-hidden"
+              >
+                <div className="text-6xl font-display font-black text-tint mb-8 select-none">
+                  {step.num}
+                </div>
+                <div className="w-16 h-16 mb-6">
+                  <img src={`${import.meta.env.BASE_URL}${step.icon}`} alt={`Step ${step.num}`} className="w-full h-full object-contain" />
+                </div>
+                <h4 className="text-xl font-bold leading-tight">{step.title}</h4>
+              </motion.div>
+            ))}
+          </motion.div>
+        </div>
+      </section>
+
+      {/* MARKET STATS */}
+      <section id="market" className="py-24 md:py-32 bg-white bg-minke-dot relative overflow-hidden">
+        <div className="container mx-auto px-6 md:px-12 relative z-10">
+          <div className="grid lg:grid-cols-2 gap-16 items-center">
+            <motion.div 
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: "-100px" }}
+              variants={fadeUp}
+            >
+              <h2 className="text-4xl md:text-5xl font-extrabold mb-8">The Market is Massive.</h2>
+              <p className="text-xl text-muted font-sans leading-relaxed mb-10">
+                Vesting pipelines, staking and restaking floats, mining and node emissions, fixed-term savings and on-chain bonds all need one solution: a discounting market for future cash flow.
+              </p>
+              
+              <div className="space-y-8">
+                <div>
+                  <div className="text-4xl font-display font-black text-primary mb-2">
+                    ~$<AnimatedNumber value={200} suffix="B" />
+                  </div>
+                  <div className="font-mono text-sm text-text">Vesting & SAFTs</div>
+                </div>
+                
+                <div className="w-full h-[1px] bg-border"></div>
+                
+                <div>
+                  <div className="text-4xl font-display font-black text-primary mb-2">
+                    ~$<AnimatedNumber value={500} suffix="B" />
+                  </div>
+                  <div className="font-mono text-sm text-text">Staking & Restaking</div>
+                </div>
+                
+                <div className="w-full h-[1px] bg-border"></div>
+                
+                <div>
+                  <div className="text-4xl font-display font-black text-primary mb-2">
+                    ~$<AnimatedNumber value={50} suffix="B/yr" />
+                  </div>
+                  <div className="font-mono text-sm text-text">Mining & Node Emissions</div>
+                </div>
+              </div>
+            </motion.div>
+            
+            <motion.div 
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: "-100px" }}
+              variants={fadeUp}
+              className="bg-gradient-to-br from-primary to-[#0066CC] rounded-[3rem] p-12 text-white shadow-2xl relative overflow-hidden"
+            >
+              {/* Decorative elements */}
+              <div className="absolute top-0 right-0 w-64 h-64 bg-white opacity-10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2"></div>
+              <div className="absolute bottom-0 left-0 w-64 h-64 bg-black opacity-20 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2"></div>
+              
+              <h3 className="text-2xl font-bold mb-12 opacity-90">TradFi and Beyond</h3>
+              <div className="text-7xl md:text-8xl font-display font-black mb-8 tracking-tighter">
+                $<AnimatedNumber value={1} suffix="T+" />
+              </div>
+              <p className="text-lg opacity-80 font-sans leading-relaxed">
+                The ultimate frontier. Real-world assets, traditional fixed-income markets, and institutional cash flows making their way onchain.
+              </p>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
+      {/* CTA SECTION */}
+      <section className="py-24 bg-text text-white relative overflow-hidden">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(0,136,254,0.3)_0%,transparent_70%)]"></div>
+        
+        <div className="container mx-auto px-6 md:px-12 relative z-10 text-center max-w-3xl">
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            variants={fadeUp}
+          >
+            <h2 className="text-4xl md:text-6xl font-extrabold mb-8 tracking-tight">The future is tradable.</h2>
+            <p className="text-xl text-white/70 font-sans mb-12">
+              Join the protocol that unlocks the time value of money.
+            </p>
+            
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
+              <button className="bg-gradient-to-r from-primary to-accent text-white px-10 py-4 rounded-full font-sans font-medium shadow-lg hover:shadow-xl transition-all pointer-events-none w-full sm:w-auto">
+                Coming Soon
+              </button>
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
+      <Footer />
+    </div>
+  );
+}
