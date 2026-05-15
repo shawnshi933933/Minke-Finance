@@ -219,7 +219,7 @@ export default function Home() {
                     WebkitTextFillColor: "transparent",
                   }}
                 >
-                  $<AnimatedNumber value={1} suffix="T+" duration={2500} />
+                  $<AnimatedNumber value={1000} suffix="B+" duration={2500} />
                 </div>
                 <div className="font-mono text-xs tracking-[0.2em] uppercase text-muted mt-3">
                   in on-chain future income — without a Present Value rail
