@@ -334,7 +334,7 @@ export default function Home() {
             </motion.div>
 
             {/* Right: cards only */}
-            <div className="flex flex-col gap-5 pt-4">
+            <div className="flex flex-col gap-5 pt-4 lg:pr-20 xl:pr-28">
 
               {/* DFI Card — hover reveals tags */}
               <motion.div
