@@ -276,62 +276,154 @@ export default function Home() {
       </section>
 
       {/* CONCEPT SECTION */}
-      <section id="concept" className="py-24 md:py-32 bg-white">
-        <div className="container mx-auto px-6 md:px-12">
-          <motion.div 
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-100px" }}
-            variants={fadeUp}
-            className="mb-20 text-center"
-          >
-            <div className="inline-flex items-center justify-center px-4 py-1.5 rounded-full bg-tint text-primary font-mono text-xs font-semibold mb-6">
-              Minke's original framework.
-            </div>
-            <h2 className="text-4xl md:text-5xl font-extrabold mb-6">Defining the Asset Class</h2>
-          </motion.div>
+      <section id="concept" className="relative overflow-hidden bg-elevated py-20 md:py-28 border-b border-border">
+        <div className="pointer-events-none absolute inset-0 bg-minke-dot opacity-30" />
+        <div className="container mx-auto px-6 md:px-12 relative z-10">
+          <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-start">
 
-          <div className="grid md:grid-cols-2 gap-8 lg:gap-16 items-stretch">
-            <motion.div 
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, margin: "-100px" }}
-              variants={fadeUp}
-              className="bg-elevated rounded-3xl p-10 md:p-12 border border-border flex flex-col justify-between"
+            {/* Left: typographic statement */}
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-80px" }}
+              transition={{ duration: 0.6 }}
+              className="lg:sticky lg:top-28"
             >
-              <div>
-                <h3 className="text-2xl font-bold mb-4">Deterministic Future Income</h3>
-                <p className="text-muted leading-relaxed font-sans mb-8">
-                  Predictable amounts on a known schedule. SAFTs, team vesting, treasury unlocks, fixed-term staking rewards, node licenses, on-chain bonds.
-                </p>
+              <div className="font-mono text-xs tracking-[0.3em] uppercase text-primary mb-8">
+                A NEW ASSET CLASS
               </div>
-              <div className="relative h-64 rounded-xl overflow-hidden bg-white/50 border border-border/50 flex items-center justify-center">
-                <img src={`${import.meta.env.BASE_URL}illus-dri.png`} alt="DFI Concept" className="object-contain h-full p-4" />
+
+              {/* DFI. — character-by-character reveal */}
+              <h2 className="font-display font-black leading-none tracking-tight text-text mb-5"
+                style={{ fontSize: "clamp(5rem, 10vw, 9rem)" }}>
+                {"DFI.".split("").map((char, i) => (
+                  <motion.span
+                    key={i}
+                    initial={{ opacity: 0, y: 32 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.45, delay: i * 0.1 }}
+                    className="inline-block"
+                  >
+                    {char}
+                  </motion.span>
+                ))}
+              </h2>
+
+              <div className="text-xl font-display font-semibold text-text/70 mb-6 leading-snug">
+                Deterministic Future Income.
+              </div>
+
+              <p className="text-muted font-sans leading-relaxed mb-10 max-w-sm">
+                We are defining a new asset class — a stream of expected future payments with a clear schedule and amount, finally tradable on-chain.
+              </p>
+
+              <div
+                className="inline-flex items-center px-4 py-2 rounded-lg font-mono text-sm text-white shadow-lg"
+                style={{ background: "linear-gradient(120deg, #0088FE 0%, #59B9FF 100%)" }}
+              >
+                Minke's original framework.
               </div>
             </motion.div>
 
-            <motion.div 
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, margin: "-100px" }}
-              variants={fadeUp}
-              className="bg-white rounded-3xl p-10 md:p-12 border border-border flex flex-col justify-between"
-            >
-              <div>
-                <h3 className="text-2xl font-bold mb-4">Variable Future Income</h3>
-                <p className="text-muted leading-relaxed font-sans mb-8">
-                  Yield-farming returns, variable lending APY, governance rewards, NFT royalties.
-                </p>
-              </div>
-              <div className="relative h-64 rounded-xl overflow-hidden bg-tint/30 border border-border/50 flex items-center justify-center">
-                <div className="text-center">
-                  <div className="w-16 h-16 rounded-full bg-border mx-auto mb-4 flex items-center justify-center opacity-50">
-                    <span className="text-2xl">?</span>
-                  </div>
-                  <p className="text-sm font-mono text-muted">VFI support planned for v2</p>
+            {/* Right: illustration + cards */}
+            <div className="flex flex-col gap-5">
+              {/* Floating illustration */}
+              <motion.div
+                className="relative flex items-center justify-center h-56"
+                initial={{ opacity: 0, x: 30 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true, margin: "-80px" }}
+                transition={{ duration: 0.8 }}
+              >
+                <motion.img
+                  src={`${import.meta.env.BASE_URL}illus-dri.png`}
+                  alt="DFI Concept"
+                  className="w-full max-w-lg object-contain"
+                  animate={{ y: [0, -14, 0] }}
+                  transition={{ duration: 4.5, repeat: Infinity, ease: "easeInOut" }}
+                  style={{ filter: "drop-shadow(0 24px 48px rgba(0,136,254,0.18))" }}
+                />
+              </motion.div>
+
+              {/* DFI Card */}
+              <motion.div
+                className="relative bg-white rounded-2xl p-8 border border-border overflow-hidden shadow-sm"
+                initial={{ opacity: 0, y: 24 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-60px" }}
+                transition={{ duration: 0.5, delay: 0.1 }}
+              >
+                <motion.div
+                  className="absolute left-0 top-0 bottom-0 w-[3px] rounded-l-2xl"
+                  style={{ background: "linear-gradient(to bottom, #0088FE, #59B9FF)", transformOrigin: "top" }}
+                  initial={{ scaleY: 0 }}
+                  whileInView={{ scaleY: 1 }}
+                  viewport={{ once: true, margin: "-60px" }}
+                  transition={{ duration: 0.65, ease: "easeOut", delay: 0.2 }}
+                />
+                <div className="font-mono text-[10px] text-primary tracking-[0.2em] uppercase mb-3">
+                  DFI — Deterministic Future Income
                 </div>
-              </div>
-            </motion.div>
+                <h3 className="font-display font-extrabold text-xl text-text mb-3">
+                  Predictable amount. Regular schedule.
+                </h3>
+                <p className="text-muted font-sans text-sm leading-relaxed mb-5">
+                  SAFTs, team and advisor vesting, scheduled treasury unlocks, fixed-term staking rewards, node licenses, on-chain bonds and tokenized fixed-income RWA.
+                </p>
+                <div className="flex flex-wrap gap-2">
+                  {["SAFTs", "Vesting", "Treasury unlocks", "Staking rewards", "Node licenses", "On-chain bonds"].map((tag, i) => (
+                    <motion.span
+                      key={tag}
+                      initial={{ opacity: 0, scale: 0.85 }}
+                      whileInView={{ opacity: 1, scale: 1 }}
+                      viewport={{ once: true }}
+                      transition={{ duration: 0.3, delay: 0.3 + i * 0.06 }}
+                      className="px-3 py-1 rounded-full text-xs font-mono bg-tint text-primary border border-primary/20"
+                    >
+                      {tag}
+                    </motion.span>
+                  ))}
+                </div>
+              </motion.div>
+
+              {/* VFI Card */}
+              <motion.div
+                className="relative bg-white rounded-2xl p-8 border border-border overflow-hidden shadow-sm"
+                initial={{ opacity: 0, y: 24 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-60px" }}
+                transition={{ duration: 0.5, delay: 0.2 }}
+              >
+                <motion.div
+                  className="absolute left-0 top-0 bottom-0 w-[3px] rounded-l-2xl bg-border"
+                  style={{ transformOrigin: "top" }}
+                  initial={{ scaleY: 0 }}
+                  whileInView={{ scaleY: 1 }}
+                  viewport={{ once: true, margin: "-60px" }}
+                  transition={{ duration: 0.65, ease: "easeOut", delay: 0.35 }}
+                />
+                <div className="font-mono text-[10px] text-muted tracking-[0.2em] uppercase mb-3">
+                  VFI — Variable Future Income
+                </div>
+                <h3 className="font-display font-extrabold text-xl text-text mb-3">
+                  Yield that varies.
+                </h3>
+                <p className="text-muted font-sans text-sm leading-relaxed mb-5">
+                  Yield-farming returns, variable lending APY, governance-token rewards, NFT royalties — size and timing both shaped by the market.
+                </p>
+                <div className="flex flex-wrap gap-2">
+                  {["Yield farming", "Variable APY", "Governance rewards", "NFT royalties"].map((tag) => (
+                    <span key={tag} className="px-3 py-1 rounded-full text-xs font-mono bg-elevated text-muted border border-border">
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+                <div className="mt-4 font-mono text-[10px] text-muted/50 tracking-widest uppercase">
+                  VFI support planned for v2
+                </div>
+              </motion.div>
+            </div>
           </div>
         </div>
       </section>
