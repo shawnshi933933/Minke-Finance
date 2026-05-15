@@ -460,8 +460,12 @@ export default function Home() {
       </section>
 
       {/* HOW IT WORKS */}
-      <section id="how-it-works" className="py-24 md:py-32 bg-elevated relative overflow-hidden">
+      <section id="how-it-works" className="py-24 md:py-32 bg-white relative overflow-hidden">
         <div className="pointer-events-none absolute inset-0 bg-minke-dot opacity-20" />
+        <div
+          className="pointer-events-none absolute top-0 left-1/2 -translate-x-1/2 w-[1000px] h-[600px] blur-3xl opacity-25"
+          style={{ background: "radial-gradient(ellipse at 50% 0%, #0088FE 0%, #59B9FF 40%, transparent 70%)" }}
+        />
 
         <div className="container mx-auto px-6 md:px-12 relative z-10">
 
@@ -614,11 +618,6 @@ export default function Home() {
 
       {/* CTA SECTION */}
       <section className="py-32 md:py-40 bg-white relative overflow-hidden">
-        {/* Large gradient fade from elevated (grey-blue) above to white */}
-        <div
-          className="pointer-events-none absolute top-0 left-0 right-0 h-64"
-          style={{ background: "linear-gradient(to bottom, #F4F8FF 0%, #ffffff 100%)" }}
-        />
         {/* Blue radial glow */}
         <div className="pointer-events-none absolute inset-0 bg-minke-dot opacity-30" />
         <div
