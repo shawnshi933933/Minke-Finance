@@ -34,7 +34,7 @@ function AnimatedNumber({
 
   return (
     <span ref={ref}>
-      {prefix}{displayValue}{suffix}
+      {prefix}{displayValue.toLocaleString()}{suffix}
     </span>
   );
 }
@@ -180,7 +180,7 @@ export default function Home() {
       </section>
 
       {/* PROBLEM SECTION */}
-      <section id="shift" className="relative overflow-hidden bg-white py-28 md:py-40 border-b border-border">
+      <section id="shift" className="relative overflow-hidden bg-white py-16 md:py-24 border-b border-border">
         {/* Dot grid */}
         <div className="absolute inset-0 bg-minke-dot opacity-40 pointer-events-none" />
         {/* Radial glow */}
