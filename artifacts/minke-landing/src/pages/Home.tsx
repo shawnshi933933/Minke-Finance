@@ -480,174 +480,130 @@ export default function Home() {
           </motion.div>
 
           {/* Steps container — centered */}
-          <div className="max-w-4xl mx-auto">
+          <div className="max-w-5xl mx-auto">
 
-            {/* Steps 01 & 02 with shared connector */}
+            {/* All 4 steps */}
             {[
               {
                 num: "01",
                 title: "Deposit a DFI position",
                 desc: "SAFT contract, vesting schedule, staking position, node license or RWA bond.",
-                illus: "illus-step-1.png",
-                hasLine: true,
+                icon: "icon-deposit.png",
+                floatDuration: 5,
               },
               {
                 num: "02",
                 title: "Receive VT instantly",
                 desc: "Gain VT — a fungible, tradable representation of the future tokens.",
-                illus: "illus-step-2.png",
-                hasLine: true,
+                icon: "icon-receive.png",
+                floatDuration: 4.5,
+              },
+              {
+                num: "03",
+                title: "Trade, hold or claim",
+                desc: "Sell VT for instant present value, hold for upside, or claim the underlying tokens as the schedule plays out.",
+                icon: "icon-trade.png",
+                floatDuration: 5.5,
+              },
+              {
+                num: "04",
+                title: "1:1 redemption claim",
+                desc: "Each VT has a corresponding underlying token. Whenever income is realized, VT holders redeem 1:1 — no oracles, no haircuts, no counterparty.",
+                icon: "icon-redemption.png",
+                floatDuration: 4.8,
               },
             ].map((step, i) => (
-              <motion.div
-                key={step.num}
-                initial={{ opacity: 0, y: 36 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-60px" }}
-                transition={{ duration: 0.6, delay: i * 0.12 }}
-                className="grid grid-cols-[48px_1fr] gap-6 md:gap-10 relative"
-              >
-                {/* Step number + vertical line */}
-                <div className="flex flex-col items-center">
-                  <div className="font-mono text-sm tracking-widest text-primary font-bold leading-none pt-1">{step.num}</div>
-                  {step.hasLine && (
-                    <div className="flex-1 w-px bg-gradient-to-b from-border to-transparent mt-3" style={{ minHeight: "200px" }} />
-                  )}
-                </div>
-
-                {/* Content: text left, illustration right */}
-                <div className="grid md:grid-cols-[1fr_auto] gap-8 items-center pb-14 md:pb-20">
-                  <div>
-                    <h3 className="text-3xl md:text-4xl font-extrabold mb-4 leading-tight">{step.title}</h3>
-                    <p className="text-lg text-muted font-sans leading-relaxed max-w-sm">{step.desc}</p>
-                  </div>
-                  <motion.div
-                    initial={{ opacity: 0, scale: 0.88 }}
-                    whileInView={{ opacity: 1, scale: 1 }}
-                    viewport={{ once: true, margin: "-40px" }}
-                    transition={{ duration: 0.55, delay: i * 0.12 + 0.2 }}
-                    className="flex-shrink-0 flex justify-center md:justify-end"
-                  >
-                    <img
-                      src={`${import.meta.env.BASE_URL}${step.illus}`}
-                      alt={step.title}
-                      className="w-44 h-44 md:w-56 md:h-56 object-contain drop-shadow-lg"
-                    />
-                  </motion.div>
-                </div>
-              </motion.div>
-            ))}
-
-            {/* VT Callout — between 02 and 03 */}
-            <motion.div
-              initial={{ opacity: 0, y: 24 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-60px" }}
-              transition={{ duration: 0.55 }}
-              className="grid grid-cols-[48px_1fr] gap-6 md:gap-10"
-            >
-              {/* Connector continues */}
-              <div className="flex flex-col items-center">
-                <div className="flex-1 w-px bg-border" />
-              </div>
-
-              {/* VT card */}
-              <div className="pb-14 md:pb-20">
-                <div className="rounded-2xl bg-white border border-primary/20 overflow-hidden flex flex-col sm:flex-row shadow-sm">
-                  {/* Coin illustration from hero */}
-                  <div className="sm:w-48 flex-shrink-0 bg-tint flex items-center justify-center p-6">
-                    <img
-                      src={`${import.meta.env.BASE_URL}illus-cover-calendar-whale-v1.png`}
-                      alt="Vesting Token"
-                      className="w-32 h-32 object-contain"
-                    />
-                  </div>
-                  {/* Text */}
-                  <div className="flex-1 p-6 md:p-8 border-l border-border">
-                    <div className="font-mono text-[10px] tracking-[0.28em] uppercase text-primary mb-2">Vesting Token</div>
-                    <h4 className="text-xl font-extrabold mb-2">What is a VT?</h4>
-                    <p className="text-sm text-muted font-sans leading-relaxed">
-                      A VT is a fully fungible, on-chain token representing a future income stream. Tradable on any DEX, usable as collateral, and redeemable 1:1 against the underlying asset whenever income is realized.
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </motion.div>
-
-            {/* Step 03 */}
-            <motion.div
-              initial={{ opacity: 0, y: 36 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-60px" }}
-              transition={{ duration: 0.6 }}
-              className="grid grid-cols-[48px_1fr] gap-6 md:gap-10 relative"
-            >
-              <div className="flex flex-col items-center">
-                <div className="font-mono text-sm tracking-widest text-primary font-bold leading-none pt-1">03</div>
-                <div className="flex-1 w-px bg-gradient-to-b from-border to-transparent mt-3" style={{ minHeight: "200px" }} />
-              </div>
-              <div className="grid md:grid-cols-[1fr_auto] gap-8 items-center pb-14 md:pb-20">
-                <div>
-                  <h3 className="text-3xl md:text-4xl font-extrabold mb-4 leading-tight">Trade, hold or claim</h3>
-                  <p className="text-lg text-muted font-sans leading-relaxed max-w-sm">
-                    Sell VT for instant present value, hold for upside, or claim the underlying tokens as the schedule plays out.
-                  </p>
-                </div>
+              <div key={step.num}>
                 <motion.div
-                  initial={{ opacity: 0, scale: 0.88 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
-                  viewport={{ once: true, margin: "-40px" }}
-                  transition={{ duration: 0.55, delay: 0.2 }}
-                  className="flex-shrink-0 flex justify-center md:justify-end"
+                  initial={{ opacity: 0, y: 36 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: "-60px" }}
+                  transition={{ duration: 0.6, delay: 0.05 }}
+                  className="grid grid-cols-[36px_1fr] gap-4 md:gap-8"
                 >
-                  <img
-                    src={`${import.meta.env.BASE_URL}illus-step-3.png`}
-                    alt="Trade, hold or claim"
-                    className="w-44 h-44 md:w-56 md:h-56 object-contain drop-shadow-lg"
-                  />
-                </motion.div>
-              </div>
-            </motion.div>
-
-            {/* Step 04 — full blue gradient card */}
-            <motion.div
-              initial={{ opacity: 0, y: 36 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-60px" }}
-              transition={{ duration: 0.6 }}
-              className="grid grid-cols-[48px_1fr] gap-6 md:gap-10"
-            >
-              <div className="flex flex-col items-start pt-1">
-                <div className="font-mono text-sm tracking-widest text-white font-bold leading-none opacity-0 select-none">04</div>
-              </div>
-              <div>
-                <div
-                  className="rounded-3xl p-8 md:p-12 grid md:grid-cols-[1fr_auto] gap-8 md:gap-12 items-center shadow-[0_16px_48px_rgba(0,136,254,0.25)]"
-                  style={{ background: "linear-gradient(160deg, #0088FE 0%, #59B9FF 100%)" }}
-                >
-                  <div>
-                    <div className="font-mono text-xs tracking-widest text-white/70 mb-4 uppercase">04</div>
-                    <h3 className="text-3xl md:text-4xl font-extrabold mb-4 leading-tight text-white">1:1 redemption claim</h3>
-                    <p className="text-lg text-white/90 font-sans leading-relaxed max-w-sm">
-                      Each VT has a corresponding underlying token. Whenever income is realized, VT holders redeem 1:1 — no oracles, no haircuts, no counterparty.
-                    </p>
+                  {/* Left connector column */}
+                  <div className="flex flex-col items-center pt-2">
+                    <div className="w-2 h-2 rounded-full bg-primary flex-shrink-0" />
+                    {i < 3 && (
+                      <div className="flex-1 w-px bg-gradient-to-b from-primary/30 to-transparent mt-2" style={{ minHeight: "280px" }} />
+                    )}
                   </div>
+
+                  {/* Content row: big number + text left, icon right */}
+                  <div className="grid md:grid-cols-[1fr_auto] gap-6 md:gap-16 items-center pb-10 md:pb-16">
+                    <div>
+                      <div
+                        className="font-display font-black leading-none mb-3 select-none"
+                        style={{
+                          fontSize: "clamp(4rem, 8vw, 7rem)",
+                          color: "transparent",
+                          WebkitTextStroke: "2px rgba(0,136,254,0.15)",
+                        }}
+                      >
+                        {step.num}
+                      </div>
+                      <h3 className="text-2xl md:text-3xl font-extrabold mb-3 leading-tight">{step.title}</h3>
+                      <p className="text-base md:text-lg text-muted font-sans leading-relaxed max-w-sm">{step.desc}</p>
+                    </div>
+
+                    {/* Large floating icon — same treatment as Problem illustration */}
+                    <motion.div
+                      initial={{ opacity: 0, x: 30 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      viewport={{ once: true, margin: "-40px" }}
+                      transition={{ duration: 0.7, delay: 0.15 }}
+                      className="relative flex items-center justify-center flex-shrink-0"
+                    >
+                      <div
+                        className="absolute w-64 h-64 rounded-full blur-3xl pointer-events-none"
+                        style={{ background: "radial-gradient(circle, rgba(0,136,254,0.10) 0%, transparent 70%)" }}
+                      />
+                      <motion.img
+                        src={`${import.meta.env.BASE_URL}${step.icon}`}
+                        alt={step.title}
+                        className="relative w-48 h-48 md:w-64 md:h-64 object-contain"
+                        animate={{ y: [0, -14, 0] }}
+                        transition={{ duration: step.floatDuration, repeat: Infinity, ease: "easeInOut" }}
+                        style={{ filter: "drop-shadow(0 24px 40px rgba(0,136,254,0.20))" }}
+                      />
+                    </motion.div>
+                  </div>
+                </motion.div>
+
+                {/* VT callout — inserted between 02 and 03 */}
+                {i === 1 && (
                   <motion.div
-                    initial={{ opacity: 0, scale: 0.88 }}
-                    whileInView={{ opacity: 1, scale: 1 }}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true, margin: "-40px" }}
-                    transition={{ duration: 0.55, delay: 0.2 }}
-                    className="flex-shrink-0 flex justify-center md:justify-end"
+                    transition={{ duration: 0.55 }}
+                    className="grid grid-cols-[36px_1fr] gap-4 md:gap-8"
                   >
-                    <img
-                      src={`${import.meta.env.BASE_URL}illus-step-4.png`}
-                      alt="1:1 redemption claim"
-                      className="w-44 h-44 md:w-56 md:h-56 object-contain drop-shadow-xl brightness-0 invert"
-                    />
+                    <div className="flex flex-col items-center">
+                      <div className="flex-1 w-px bg-gradient-to-b from-primary/30 to-transparent" style={{ minHeight: "100%" }} />
+                    </div>
+                    <div className="pb-10 md:pb-16">
+                      <div className="rounded-2xl bg-white border border-primary/20 overflow-hidden flex flex-col sm:flex-row shadow-sm">
+                        <div className="sm:w-44 flex-shrink-0 bg-tint flex items-center justify-center p-6">
+                          <img
+                            src={`${import.meta.env.BASE_URL}illus-instant-minting.png`}
+                            alt="Vesting Token"
+                            className="w-28 h-28 object-contain"
+                          />
+                        </div>
+                        <div className="flex-1 p-6 md:p-8 border-t sm:border-t-0 sm:border-l border-border">
+                          <div className="font-mono text-[10px] tracking-[0.28em] uppercase text-primary mb-2">Vesting Token</div>
+                          <h4 className="text-xl font-extrabold mb-2">What is a VT?</h4>
+                          <p className="text-sm text-muted font-sans leading-relaxed max-w-lg">
+                            A VT is a fully fungible, on-chain token representing a future income stream. Tradable on any DEX, usable as collateral, and redeemable 1:1 against the underlying asset whenever income is realized.
+                          </p>
+                        </div>
+                      </div>
+                    </div>
                   </motion.div>
-                </div>
+                )}
               </div>
-            </motion.div>
+            ))}
 
           </div>
         </div>
