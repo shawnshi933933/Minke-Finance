@@ -173,7 +173,49 @@ export default function Home() {
                 alt="Minke Whale Illustration"
                 className="w-full h-full object-contain"
               />
-
+              {/* White patch covers original calendar text; overlay shows updated label */}
+              <div
+                className="absolute"
+                style={{ top: "9.5%", left: "53%", width: "24%", transform: "rotate(-3deg)" }}
+              >
+                <div
+                  style={{
+                    background: "rgba(255,255,255,0.97)",
+                    borderRadius: "3px",
+                    padding: "2px 5px 3px",
+                    lineHeight: 1.25,
+                  }}
+                >
+                  <span
+                    style={{
+                      display: "block",
+                      fontFamily: "JetBrains Mono, monospace",
+                      fontSize: "9.5px",
+                      fontWeight: 700,
+                      color: "#7BA7D3",
+                      letterSpacing: "0.05em",
+                      textTransform: "uppercase",
+                      whiteSpace: "nowrap",
+                    }}
+                  >
+                    Deterministic
+                  </span>
+                  <span
+                    style={{
+                      display: "block",
+                      fontFamily: "JetBrains Mono, monospace",
+                      fontSize: "9.5px",
+                      fontWeight: 700,
+                      color: "#7BA7D3",
+                      letterSpacing: "0.05em",
+                      textTransform: "uppercase",
+                      whiteSpace: "nowrap",
+                    }}
+                  >
+                    Future Income
+                  </span>
+                </div>
+              </div>
             </motion.div>
           </motion.div>
         </div>
