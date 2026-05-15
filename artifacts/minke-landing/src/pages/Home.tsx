@@ -614,10 +614,15 @@ export default function Home() {
 
       {/* CTA SECTION */}
       <section className="py-32 md:py-40 bg-white relative overflow-hidden">
-        {/* Blue radial glow from top */}
+        {/* Large gradient fade from elevated (grey-blue) above to white */}
+        <div
+          className="pointer-events-none absolute top-0 left-0 right-0 h-64"
+          style={{ background: "linear-gradient(to bottom, #F4F8FF 0%, #ffffff 100%)" }}
+        />
+        {/* Blue radial glow */}
         <div className="pointer-events-none absolute inset-0 bg-minke-dot opacity-30" />
         <div
-          className="pointer-events-none absolute top-0 left-1/2 -translate-x-1/2 w-[900px] h-[500px] blur-3xl opacity-40"
+          className="pointer-events-none absolute top-0 left-1/2 -translate-x-1/2 w-[900px] h-[500px] blur-3xl opacity-30"
           style={{ background: "radial-gradient(ellipse at 50% 0%, #0088FE 0%, #59B9FF 40%, transparent 70%)" }}
         />
 
@@ -643,16 +648,10 @@ export default function Home() {
               Join the protocol that brings the time value of money onchain.
             </p>
 
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-              <button className="bg-gradient-to-r from-primary to-accent text-white px-10 py-4 rounded-full font-sans font-medium shadow-lg hover:shadow-xl transition-all pointer-events-none w-full sm:w-auto">
+            <div className="flex items-center justify-center">
+              <button className="bg-gradient-to-r from-primary to-accent text-white px-10 py-4 rounded-full font-sans font-medium shadow-lg hover:shadow-xl transition-all pointer-events-none">
                 Coming Soon
               </button>
-              <a
-                href="#"
-                className="text-primary font-sans font-medium px-6 py-4 hover:underline transition-all"
-              >
-                Read the doc →
-              </a>
             </div>
           </motion.div>
         </div>
