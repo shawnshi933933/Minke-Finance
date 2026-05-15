@@ -1,5 +1,3 @@
-import { Link } from "wouter";
-
 export function Footer() {
   return (
     <footer className="border-t border-border bg-white py-12 md:py-16">
@@ -8,13 +6,13 @@ export function Footer() {
           <img src={`${import.meta.env.BASE_URL}minke-logo.svg`} alt="Minke Logo" className="h-8 w-auto grayscale opacity-50" />
           <span className="font-sans text-muted text-sm">&copy; 2026 Minke Finance</span>
         </div>
-        
+
         <div className="font-mono text-xs text-muted/60 tracking-wider">
           FUTURE INCOME &rarr; PRESENT VALUE
         </div>
-        
+
         <div className="flex items-center gap-6 text-sm font-sans text-muted">
-          <a href="#" className="hover:text-text transition-colors">minke.finance</a>
+          <span className="opacity-60">minke.finance — coming soon</span>
         </div>
       </div>
     </footer>
