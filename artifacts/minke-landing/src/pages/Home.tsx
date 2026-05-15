@@ -4,36 +4,39 @@ import { HeroCanvas } from "../components/HeroCanvas";
 import { Navbar } from "../components/Navbar";
 import { Footer } from "../components/Footer";
 
-function AnimatedNumber({ value, suffix = "" }: { value: number, suffix?: string }) {
+function AnimatedNumber({
+  value,
+  prefix = "",
+  suffix = "",
+  duration = 2000,
+}: {
+  value: number;
+  prefix?: string;
+  suffix?: string;
+  duration?: number;
+}) {
   const ref = useRef<HTMLSpanElement>(null);
   const inView = useInView(ref, { once: true, margin: "-50px" });
   const [displayValue, setDisplayValue] = useState(0);
 
   useEffect(() => {
-    if (inView) {
-      let start = 0;
-      const duration = 2000;
-      const startTime = performance.now();
-      
-      const updateNumber = (currentTime: number) => {
-        const elapsed = currentTime - startTime;
-        const progress = Math.min(elapsed / duration, 1);
-        
-        // Easing function outExpo
-        const easeOutExpo = progress === 1 ? 1 : 1 - Math.pow(2, -10 * progress);
-        
-        setDisplayValue(Math.floor(easeOutExpo * value));
-        
-        if (progress < 1) {
-          requestAnimationFrame(updateNumber);
-        }
-      };
-      
-      requestAnimationFrame(updateNumber);
-    }
-  }, [inView, value]);
+    if (!inView) return;
+    const startTime = performance.now();
+    const updateNumber = (currentTime: number) => {
+      const elapsed = currentTime - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+      const easeOutExpo = progress === 1 ? 1 : 1 - Math.pow(2, -10 * progress);
+      setDisplayValue(Math.floor(easeOutExpo * value));
+      if (progress < 1) requestAnimationFrame(updateNumber);
+    };
+    requestAnimationFrame(updateNumber);
+  }, [inView, value, duration]);
 
-  return <span ref={ref}>{displayValue}{suffix}</span>;
+  return (
+    <span ref={ref}>
+      {prefix}{displayValue}{suffix}
+    </span>
+  );
 }
 
 const fadeUp: Variants = {
@@ -50,12 +53,27 @@ const staggerContainer: Variants = {
 };
 
 export default function Home() {
+  const [mouse, setMouse] = useState({ x: 0, y: 0 });
+  const heroRef = useRef<HTMLElement>(null);
+
+  function handleHeroMouseMove(e: React.MouseEvent<HTMLElement>) {
+    const rect = heroRef.current?.getBoundingClientRect();
+    if (!rect) return;
+    const cx = e.clientX - rect.left - rect.width / 2;
+    const cy = e.clientY - rect.top - rect.height / 2;
+    setMouse({ x: cx / rect.width, y: cy / rect.height });
+  }
+
   return (
     <div className="min-h-screen bg-background text-text overflow-x-hidden">
       <Navbar />
 
       {/* HERO SECTION */}
-      <section className="relative min-h-[100dvh] flex items-center justify-center pt-20 pb-12 overflow-hidden bg-minke-hero bg-minke-dot">
+      <section
+        ref={heroRef}
+        onMouseMove={handleHeroMouseMove}
+        className="relative min-h-[100dvh] flex items-center justify-center pt-20 pb-12 overflow-hidden bg-minke-hero bg-minke-dot"
+      >
         <HeroCanvas />
         
         <div className="container relative z-10 mx-auto px-6 md:px-12 grid lg:grid-cols-2 gap-12 items-center">
@@ -78,19 +96,42 @@ export default function Home() {
               A protocol that turns deterministic future income — SAFTs, vesting, staking, mining, fixed-term saving and bonds — into present value, tradable on-chain today.
             </p>
 
-            {/* Hero stat ticker */}
-            <div className="flex flex-wrap gap-6 mb-10">
-              {[
-                { label: "Future income TAM", value: "$1T+", color: "text-primary" },
-                { label: "Present-value rail", value: "0 → 1", color: "text-accent" },
-                { label: "Income events / DFI class", value: "∞", color: "text-primary" },
-              ].map((stat) => (
-                <div key={stat.label} className="flex flex-col">
-                  <span className={`font-display font-black text-2xl ${stat.color} leading-none`}>{stat.value}</span>
-                  <span className="font-mono text-xs text-muted tracking-wider mt-1">{stat.label}</span>
-                </div>
-              ))}
-            </div>
+            {/* Hero animated stat ticker */}
+            <motion.div
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, delay: 0.5, ease: "easeOut" }}
+              className="flex flex-wrap gap-8 mb-10 pt-2 border-t border-border"
+            >
+              <div className="flex flex-col">
+                <span className="font-display font-black text-2xl text-primary leading-none tabular-nums">
+                  $<AnimatedNumber value={1} suffix="T+" duration={1800} />
+                </span>
+                <span className="font-mono text-xs text-muted tracking-wider mt-1">Future income TAM</span>
+              </div>
+              <div className="flex flex-col">
+                <motion.span
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: 0.4, delay: 1.2 }}
+                  className="font-display font-black text-2xl text-accent leading-none"
+                >
+                  0 &rarr; 1
+                </motion.span>
+                <span className="font-mono text-xs text-muted tracking-wider mt-1">Present-value rail</span>
+              </div>
+              <div className="flex flex-col">
+                <motion.span
+                  initial={{ scale: 0.4, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  transition={{ duration: 0.5, delay: 1.5, ease: "backOut" }}
+                  className="font-display font-black text-2xl text-primary leading-none"
+                >
+                  ∞
+                </motion.span>
+                <span className="font-mono text-xs text-muted tracking-wider mt-1">Income event types</span>
+              </div>
+            </motion.div>
             
             <div className="flex flex-col sm:flex-row items-start sm:items-center gap-6">
               <button className="bg-gradient-to-r from-primary to-accent text-white px-8 py-4 rounded-full font-sans font-medium shadow-lg hover:shadow-xl transition-all pointer-events-none">
@@ -103,10 +144,15 @@ export default function Home() {
             </div>
           </motion.div>
           
+          {/* Whale illustration with mouse-parallax */}
           <motion.div 
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 1, delay: 0.2, ease: "easeOut" }}
+            style={{
+              transform: `translate(${mouse.x * 18}px, ${mouse.y * 12}px)`,
+              transition: "transform 0.4s cubic-bezier(0.25,0.46,0.45,0.94)",
+            }}
             className="relative lg:h-[600px] flex items-center justify-center pointer-events-none"
           >
             {/* Using an absolute wrapper to position and rotate the illustration */}
