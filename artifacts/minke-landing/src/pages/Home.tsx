@@ -179,62 +179,139 @@ export default function Home() {
         </div>
       </section>
 
-      {/* THE SHIFT SECTION — problem beat */}
-      <section id="shift" className="py-20 md:py-28 bg-white border-b border-border">
-        <div className="container mx-auto px-6 md:px-12">
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-80px" }}
-            variants={fadeUp}
-            className="max-w-3xl mx-auto text-center mb-16"
-          >
-            <div className="inline-flex items-center justify-center px-4 py-1.5 rounded-full bg-tint text-primary font-mono text-xs font-semibold mb-6">
-              The problem
-            </div>
-            <h2 className="text-4xl md:text-5xl font-extrabold mb-6 text-text">
-              Trillions locked in time.
-            </h2>
-            <p className="text-xl text-muted leading-relaxed font-sans">
-              Every day, billions in earned value sits frozen — vesting schedules, SAFTs, staking yields, bond coupons — waiting on a clock. These positions are illiquid, non-tradable, and invisible on any balance sheet.
-            </p>
-          </motion.div>
+      {/* PROBLEM SECTION */}
+      <section id="shift" className="relative overflow-hidden bg-[#060E1E] py-28 md:py-40">
+        {/* Dot grid overlay */}
+        <div className="absolute inset-0 bg-minke-dot opacity-20 pointer-events-none" />
 
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-80px" }}
-            variants={staggerContainer}
-            className="grid md:grid-cols-3 gap-6"
-          >
-            {[
-              {
-                icon: "⏳",
-                heading: "Illiquid by design",
-                body: "Cliff schedules and lock-ups strip holders of any optionality. Value exists on paper; cash does not."
-              },
-              {
-                icon: "📉",
-                heading: "Off-balance-sheet risk",
-                body: "Treasuries, teams, and LPs can't hedge or collateralise what they can't sell. Capital efficiency collapses."
-              },
-              {
-                icon: "🔒",
-                heading: "No market price",
-                body: "Without a secondary market, future income has no discovered value — leaving holders exposed to drift and discount."
-              }
-            ].map((card) => (
+        {/* Slow-rotating watermark */}
+        <motion.div
+          animate={{ rotate: 360 }}
+          transition={{ duration: 90, repeat: Infinity, ease: "linear" }}
+          className="pointer-events-none select-none absolute inset-0 flex items-center justify-center"
+        >
+          <span className="text-[32vw] font-display font-black leading-none tracking-tighter whitespace-nowrap"
+            style={{ color: "rgba(255,255,255,0.025)" }}>
+            FROZEN
+          </span>
+        </motion.div>
+
+        {/* Radial glow */}
+        <div className="pointer-events-none absolute inset-0"
+          style={{ background: "radial-gradient(ellipse 60% 50% at 80% 50%, rgba(0,136,254,0.08) 0%, transparent 70%)" }} />
+
+        <div className="container mx-auto px-6 md:px-12 relative z-10">
+          <div className="grid lg:grid-cols-2 gap-16 lg:gap-24 items-center">
+
+            {/* Left: content */}
+            <div>
               <motion.div
-                key={card.heading}
-                variants={fadeUp}
-                className="rounded-2xl border border-border bg-elevated p-8 flex flex-col gap-4"
+                initial={{ opacity: 0, y: 24 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-80px" }}
+                transition={{ duration: 0.6 }}
               >
-                <span className="text-3xl">{card.icon}</span>
-                <h3 className="font-display font-bold text-lg text-text">{card.heading}</h3>
-                <p className="text-muted font-sans leading-relaxed text-sm">{card.body}</p>
+                <div className="font-mono text-xs tracking-[0.3em] uppercase mb-8" style={{ color: "#59B9FF" }}>
+                  The Problem
+                </div>
+                <h2 className="text-4xl md:text-5xl font-extrabold leading-[1.05] text-white mb-6">
+                  Trillions locked<br />in time.
+                </h2>
+                <p className="font-sans leading-relaxed text-lg mb-14" style={{ color: "rgba(255,255,255,0.45)" }}>
+                  Every day, earned value sits frozen — vesting schedules, SAFTs, staking yields, bond coupons — waiting on a clock. Illiquid, non-tradable, invisible on any balance sheet.
+                </p>
               </motion.div>
-            ))}
-          </motion.div>
+
+              {/* Big animated number */}
+              <motion.div
+                initial={{ opacity: 0, y: 24 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-80px" }}
+                transition={{ duration: 0.6, delay: 0.15 }}
+                className="mb-14"
+              >
+                <div className="text-[4.5rem] md:text-[5.5rem] font-display font-black tracking-tighter leading-none"
+                  style={{ background: "linear-gradient(120deg, #fff 0%, #59B9FF 100%)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
+                  $<AnimatedNumber value={1} suffix="T+" duration={2500} />
+                </div>
+                <div className="font-mono text-xs tracking-[0.2em] uppercase mt-3" style={{ color: "rgba(89,185,255,0.7)" }}>
+                  Future income on-chain — without a Present Value rail
+                </div>
+              </motion.div>
+
+              {/* Three problem rows */}
+              <div className="divide-y" style={{ borderColor: "rgba(255,255,255,0.08)" }}>
+                {[
+                  {
+                    num: "01",
+                    title: "Illiquid by design",
+                    body: "Cliff schedules and lock-ups strip holders of any optionality. Value exists on paper; liquidity does not.",
+                  },
+                  {
+                    num: "02",
+                    title: "Off-balance-sheet risk",
+                    body: "No way to hedge, borrow against, or recycle capital while waiting for payout. Capital efficiency collapses.",
+                  },
+                  {
+                    num: "03",
+                    title: "Broken price discovery",
+                    body: "Without a secondary market, future income has no discovered value — holders exposed to drift and deep discount.",
+                  },
+                ].map((item, i) => (
+                  <motion.div
+                    key={item.num}
+                    initial={{ opacity: 0, x: -32 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true, margin: "-60px" }}
+                    transition={{ duration: 0.5, delay: i * 0.13 }}
+                    className="py-6"
+                  >
+                    <motion.div
+                      initial={{ scaleX: 0 }}
+                      whileInView={{ scaleX: 1 }}
+                      viewport={{ once: true, margin: "-60px" }}
+                      transition={{ duration: 0.7, delay: i * 0.13 + 0.15, ease: "easeOut" }}
+                      className="h-px mb-5"
+                      style={{
+                        background: "linear-gradient(to right, #0088FE, transparent)",
+                        transformOrigin: "left",
+                      }}
+                    />
+                    <div className="flex items-start gap-6">
+                      <span className="font-mono text-xs tracking-widest mt-0.5 shrink-0" style={{ color: "#59B9FF" }}>
+                        {item.num}
+                      </span>
+                      <div>
+                        <h3 className="font-display font-bold text-white text-lg mb-1.5">{item.title}</h3>
+                        <p className="font-sans text-sm leading-relaxed" style={{ color: "rgba(255,255,255,0.45)" }}>{item.body}</p>
+                      </div>
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+            </div>
+
+            {/* Right: illustration */}
+            <motion.div
+              className="relative flex items-center justify-center"
+              initial={{ opacity: 0, x: 40 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true, margin: "-80px" }}
+              transition={{ duration: 0.8 }}
+            >
+              {/* Glow behind image */}
+              <div className="absolute w-80 h-80 rounded-full blur-3xl pointer-events-none"
+                style={{ background: "radial-gradient(circle, rgba(0,136,254,0.2) 0%, transparent 70%)" }} />
+              <motion.img
+                src={`${import.meta.env.BASE_URL}illus-problem.png`}
+                alt="The Problem"
+                className="relative w-full max-w-md"
+                animate={{ y: [0, -18, 0] }}
+                transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+                style={{ filter: "drop-shadow(0 40px 60px rgba(0,136,254,0.25))" }}
+              />
+            </motion.div>
+          </div>
         </div>
       </section>
 
