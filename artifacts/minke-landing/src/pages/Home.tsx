@@ -101,7 +101,7 @@ export default function Home() {
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, delay: 0.5, ease: "easeOut" }}
-              className="flex flex-wrap gap-4 mb-10 pt-4 border-t border-border"
+              className="grid grid-cols-3 gap-x-4 mb-10 pt-4 border-t border-border"
             >
               {[
                 {
@@ -128,7 +128,7 @@ export default function Home() {
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5, delay, ease: "easeOut" }}
-                  className="flex items-start gap-3 pr-6"
+                  className="flex items-start gap-3"
                 >
                   <span className="font-display font-black text-2xl text-transparent bg-clip-text bg-gradient-to-b from-primary to-accent leading-none mt-0.5">
                     {letter}
@@ -173,6 +173,18 @@ export default function Home() {
                 alt="Minke Whale Illustration"
                 className="w-full h-full object-contain"
               />
+              {/* Calendar text overlay — positioned over the calendar graphic */}
+              <div
+                className="absolute"
+                style={{ top: "8%", left: "44%", transform: "rotate(-2deg)" }}
+              >
+                <span
+                  className="font-mono font-bold text-[10px] tracking-widest uppercase"
+                  style={{ color: "#5B8FCA", letterSpacing: "0.08em" }}
+                >
+                  Deterministic Future Income
+                </span>
+              </div>
             </motion.div>
           </motion.div>
         </div>
