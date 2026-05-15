@@ -74,9 +74,23 @@ export default function Home() {
               Unravel the time value of money <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent">onchain.</span>
             </h1>
             
-            <p className="text-xl text-muted leading-relaxed mb-10 max-w-xl font-sans">
+            <p className="text-xl text-muted leading-relaxed mb-8 max-w-xl font-sans">
               A protocol that turns deterministic future income — SAFTs, vesting, staking, mining, fixed-term saving and bonds — into present value, tradable on-chain today.
             </p>
+
+            {/* Hero stat ticker */}
+            <div className="flex flex-wrap gap-6 mb-10">
+              {[
+                { label: "Future income TAM", value: "$1T+", color: "text-primary" },
+                { label: "Present-value rail", value: "0 → 1", color: "text-accent" },
+                { label: "Income events / DFI class", value: "∞", color: "text-primary" },
+              ].map((stat) => (
+                <div key={stat.label} className="flex flex-col">
+                  <span className={`font-display font-black text-2xl ${stat.color} leading-none`}>{stat.value}</span>
+                  <span className="font-mono text-xs text-muted tracking-wider mt-1">{stat.label}</span>
+                </div>
+              ))}
+            </div>
             
             <div className="flex flex-col sm:flex-row items-start sm:items-center gap-6">
               <button className="bg-gradient-to-r from-primary to-accent text-white px-8 py-4 rounded-full font-sans font-medium shadow-lg hover:shadow-xl transition-all pointer-events-none">
@@ -103,6 +117,65 @@ export default function Home() {
                 className="w-full h-full object-contain"
               />
             </div>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* THE SHIFT SECTION — problem beat */}
+      <section id="shift" className="py-20 md:py-28 bg-white border-b border-border">
+        <div className="container mx-auto px-6 md:px-12">
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-80px" }}
+            variants={fadeUp}
+            className="max-w-3xl mx-auto text-center mb-16"
+          >
+            <div className="inline-flex items-center justify-center px-4 py-1.5 rounded-full bg-tint text-primary font-mono text-xs font-semibold mb-6">
+              The problem
+            </div>
+            <h2 className="text-4xl md:text-5xl font-extrabold mb-6 text-text">
+              Trillions locked in time.
+            </h2>
+            <p className="text-xl text-muted leading-relaxed font-sans">
+              Every day, billions in earned value sits frozen — vesting schedules, SAFTs, staking yields, bond coupons — waiting on a clock. These positions are illiquid, non-tradable, and invisible on any balance sheet.
+            </p>
+          </motion.div>
+
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-80px" }}
+            variants={staggerContainer}
+            className="grid md:grid-cols-3 gap-6"
+          >
+            {[
+              {
+                icon: "⏳",
+                heading: "Illiquid by design",
+                body: "Cliff schedules and lock-ups strip holders of any optionality. Value exists on paper; cash does not."
+              },
+              {
+                icon: "📉",
+                heading: "Off-balance-sheet risk",
+                body: "Treasuries, teams, and LPs can't hedge or collateralise what they can't sell. Capital efficiency collapses."
+              },
+              {
+                icon: "🔒",
+                heading: "No market price",
+                body: "Without a secondary market, future income has no discovered value — leaving holders exposed to drift and discount."
+              }
+            ].map((card) => (
+              <motion.div
+                key={card.heading}
+                variants={fadeUp}
+                className="rounded-2xl border border-border bg-elevated p-8 flex flex-col gap-4"
+              >
+                <span className="text-3xl">{card.icon}</span>
+                <h3 className="font-display font-bold text-lg text-text">{card.heading}</h3>
+                <p className="text-muted font-sans leading-relaxed text-sm">{card.body}</p>
+              </motion.div>
+            ))}
           </motion.div>
         </div>
       </section>
