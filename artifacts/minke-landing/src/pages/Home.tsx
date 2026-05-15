@@ -278,7 +278,7 @@ export default function Home() {
       {/* CONCEPT SECTION */}
       <section id="concept" className="relative overflow-hidden bg-elevated py-14 md:py-20">
         {/* Soft gradient fade from white above */}
-        <div className="pointer-events-none absolute top-0 left-0 right-0 h-28 z-10"
+        <div className="pointer-events-none absolute top-0 left-0 right-0 h-16 z-10"
           style={{ background: "linear-gradient(to bottom, #ffffff, transparent)" }} />
         <div className="pointer-events-none absolute inset-0 bg-minke-dot opacity-30" />
 
@@ -291,7 +291,7 @@ export default function Home() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-80px" }}
               transition={{ duration: 0.6 }}
-              className="lg:sticky lg:top-16 lg:pl-8"
+              className="lg:sticky lg:top-16 lg:pl-20 xl:pl-28"
             >
               <div className="font-mono text-xs tracking-[0.3em] uppercase text-primary mb-1">
                 The Solution
