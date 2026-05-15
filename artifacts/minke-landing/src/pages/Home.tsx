@@ -612,76 +612,15 @@ export default function Home() {
         </div>
       </section>
 
-      {/* MARKET STATS */}
-      <section id="market" className="py-24 md:py-32 bg-white bg-minke-dot relative overflow-hidden">
-        <div className="container mx-auto px-6 md:px-12 relative z-10">
-          <div className="grid lg:grid-cols-2 gap-16 items-center">
-            <motion.div 
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, margin: "-100px" }}
-              variants={fadeUp}
-            >
-              <h2 className="text-4xl md:text-5xl font-extrabold mb-8">The Market is Massive.</h2>
-              <p className="text-xl text-muted font-sans leading-relaxed mb-10">
-                Vesting pipelines, staking and restaking floats, mining and node emissions, fixed-term savings and on-chain bonds all need one solution: a discounting market for future cash flow.
-              </p>
-              
-              <div className="space-y-8">
-                <div>
-                  <div className="text-4xl font-display font-black text-primary mb-2">
-                    ~$<AnimatedNumber value={200} suffix="B" />
-                  </div>
-                  <div className="font-mono text-sm text-text">Vesting & SAFTs</div>
-                </div>
-                
-                <div className="w-full h-[1px] bg-border"></div>
-                
-                <div>
-                  <div className="text-4xl font-display font-black text-primary mb-2">
-                    ~$<AnimatedNumber value={500} suffix="B" />
-                  </div>
-                  <div className="font-mono text-sm text-text">Staking & Restaking</div>
-                </div>
-                
-                <div className="w-full h-[1px] bg-border"></div>
-                
-                <div>
-                  <div className="text-4xl font-display font-black text-primary mb-2">
-                    ~$<AnimatedNumber value={50} suffix="B/yr" />
-                  </div>
-                  <div className="font-mono text-sm text-text">Mining & Node Emissions</div>
-                </div>
-              </div>
-            </motion.div>
-            
-            <motion.div 
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, margin: "-100px" }}
-              variants={fadeUp}
-              className="bg-gradient-to-br from-primary to-[#0066CC] rounded-[3rem] p-12 text-white shadow-2xl relative overflow-hidden"
-            >
-              {/* Decorative elements */}
-              <div className="absolute top-0 right-0 w-64 h-64 bg-white opacity-10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2"></div>
-              <div className="absolute bottom-0 left-0 w-64 h-64 bg-black opacity-20 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2"></div>
-              
-              <h3 className="text-2xl font-bold mb-12 opacity-90">TradFi and Beyond</h3>
-              <div className="text-7xl md:text-8xl font-display font-black mb-8 tracking-tighter">
-                $<AnimatedNumber value={1} suffix="T+" />
-              </div>
-              <p className="text-lg opacity-80 font-sans leading-relaxed">
-                The ultimate frontier. Real-world assets, traditional fixed-income markets, and institutional cash flows making their way onchain.
-              </p>
-            </motion.div>
-          </div>
-        </div>
-      </section>
-
       {/* CTA SECTION */}
-      <section className="py-24 bg-text text-white relative overflow-hidden">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(0,136,254,0.3)_0%,transparent_70%)]"></div>
-        
+      <section className="py-32 md:py-40 bg-white relative overflow-hidden">
+        {/* Blue radial glow from top */}
+        <div className="pointer-events-none absolute inset-0 bg-minke-dot opacity-30" />
+        <div
+          className="pointer-events-none absolute top-0 left-1/2 -translate-x-1/2 w-[900px] h-[500px] blur-3xl opacity-40"
+          style={{ background: "radial-gradient(ellipse at 50% 0%, #0088FE 0%, #59B9FF 40%, transparent 70%)" }}
+        />
+
         <div className="container mx-auto px-6 md:px-12 relative z-10 text-center max-w-3xl">
           <motion.div
             initial="hidden"
@@ -689,15 +628,31 @@ export default function Home() {
             viewport={{ once: true }}
             variants={fadeUp}
           >
-            <h2 className="text-4xl md:text-6xl font-extrabold mb-8 tracking-tight">The future is tradable.</h2>
-            <p className="text-xl text-white/70 font-sans mb-12">
-              Join the protocol that unlocks the time value of money.
+            <div className="font-mono text-xs tracking-[0.3em] uppercase text-primary mb-6">Minke Finance</div>
+            <h2
+              className="text-5xl md:text-7xl font-extrabold mb-8 tracking-tight leading-tight"
+              style={{
+                background: "linear-gradient(135deg, #0A1530 30%, #0088FE 100%)",
+                WebkitBackgroundClip: "text",
+                WebkitTextFillColor: "transparent",
+              }}
+            >
+              The future is tradable.
+            </h2>
+            <p className="text-xl text-muted font-sans mb-12 leading-relaxed">
+              Join the protocol that brings the time value of money onchain.
             </p>
-            
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
+
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
               <button className="bg-gradient-to-r from-primary to-accent text-white px-10 py-4 rounded-full font-sans font-medium shadow-lg hover:shadow-xl transition-all pointer-events-none w-full sm:w-auto">
                 Coming Soon
               </button>
+              <a
+                href="#"
+                className="text-primary font-sans font-medium px-6 py-4 hover:underline transition-all"
+              >
+                Read the doc →
+              </a>
             </div>
           </motion.div>
         </div>

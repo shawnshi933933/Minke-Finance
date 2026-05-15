@@ -54,7 +54,6 @@ export function Navbar() {
         <div className="hidden md:flex items-center gap-8 font-mono text-sm tracking-tight text-text">
           <a href="#how-it-works" className="hover:text-primary transition-colors">How it works</a>
           <a href="#concept" className="hover:text-primary transition-colors">Concept</a>
-          <a href="#market" className="hover:text-primary transition-colors">Market</a>
 
           <div className="flex items-center gap-3">
             <a href="#" aria-label="Documentation" className={iconBase}>
