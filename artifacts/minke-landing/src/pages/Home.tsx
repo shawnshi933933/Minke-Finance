@@ -180,25 +180,12 @@ export default function Home() {
       </section>
 
       {/* PROBLEM SECTION */}
-      <section id="shift" className="relative overflow-hidden bg-[#060E1E] py-28 md:py-40">
-        {/* Dot grid overlay */}
-        <div className="absolute inset-0 bg-minke-dot opacity-20 pointer-events-none" />
-
-        {/* Slow-rotating watermark */}
-        <motion.div
-          animate={{ rotate: 360 }}
-          transition={{ duration: 90, repeat: Infinity, ease: "linear" }}
-          className="pointer-events-none select-none absolute inset-0 flex items-center justify-center"
-        >
-          <span className="text-[32vw] font-display font-black leading-none tracking-tighter whitespace-nowrap"
-            style={{ color: "rgba(255,255,255,0.025)" }}>
-            FROZEN
-          </span>
-        </motion.div>
-
+      <section id="shift" className="relative overflow-hidden bg-white py-28 md:py-40 border-b border-border">
+        {/* Dot grid */}
+        <div className="absolute inset-0 bg-minke-dot opacity-40 pointer-events-none" />
         {/* Radial glow */}
         <div className="pointer-events-none absolute inset-0"
-          style={{ background: "radial-gradient(ellipse 60% 50% at 80% 50%, rgba(0,136,254,0.08) 0%, transparent 70%)" }} />
+          style={{ background: "radial-gradient(ellipse 60% 55% at 75% 50%, rgba(0,136,254,0.06) 0%, transparent 70%)" }} />
 
         <div className="container mx-auto px-6 md:px-12 relative z-10">
           <div className="grid lg:grid-cols-2 gap-16 lg:gap-24 items-center">
@@ -211,87 +198,59 @@ export default function Home() {
                 viewport={{ once: true, margin: "-80px" }}
                 transition={{ duration: 0.6 }}
               >
-                <div className="font-mono text-xs tracking-[0.3em] uppercase mb-8" style={{ color: "#59B9FF" }}>
+                <div className="font-mono text-xs tracking-[0.3em] uppercase text-primary mb-10">
                   The Problem
                 </div>
-                <h2 className="text-4xl md:text-5xl font-extrabold leading-[1.05] text-white mb-6">
-                  Trillions locked<br />in time.
-                </h2>
-                <p className="font-sans leading-relaxed text-lg mb-14" style={{ color: "rgba(255,255,255,0.45)" }}>
-                  Every day, earned value sits frozen — vesting schedules, SAFTs, staking yields, bond coupons — waiting on a clock. Illiquid, non-tradable, invisible on any balance sheet.
-                </p>
               </motion.div>
 
-              {/* Big animated number */}
+              {/* $1T+ as visual center */}
               <motion.div
                 initial={{ opacity: 0, y: 24 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-80px" }}
-                transition={{ duration: 0.6, delay: 0.15 }}
-                className="mb-14"
+                transition={{ duration: 0.65, delay: 0.1 }}
+                className="mb-8"
               >
-                <div className="text-[4.5rem] md:text-[5.5rem] font-display font-black tracking-tighter leading-none"
-                  style={{ background: "linear-gradient(120deg, #fff 0%, #59B9FF 100%)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
+                <div
+                  className="text-[5.5rem] md:text-[7.5rem] font-display font-black tracking-tighter leading-none"
+                  style={{
+                    background: "linear-gradient(120deg, #0088FE 0%, #59B9FF 100%)",
+                    WebkitBackgroundClip: "text",
+                    WebkitTextFillColor: "transparent",
+                  }}
+                >
                   $<AnimatedNumber value={1} suffix="T+" duration={2500} />
                 </div>
-                <div className="font-mono text-xs tracking-[0.2em] uppercase mt-3" style={{ color: "rgba(89,185,255,0.7)" }}>
-                  Future income on-chain — without a Present Value rail
+                <div className="font-mono text-xs tracking-[0.2em] uppercase text-muted mt-3">
+                  in on-chain future income — without a Present Value rail
                 </div>
               </motion.div>
 
-              {/* Three problem rows */}
-              <div className="divide-y" style={{ borderColor: "rgba(255,255,255,0.08)" }}>
-                {[
-                  {
-                    num: "01",
-                    title: "Illiquid by design",
-                    body: "Cliff schedules and lock-ups strip holders of any optionality. Value exists on paper; liquidity does not.",
-                  },
-                  {
-                    num: "02",
-                    title: "Off-balance-sheet risk",
-                    body: "No way to hedge, borrow against, or recycle capital while waiting for payout. Capital efficiency collapses.",
-                  },
-                  {
-                    num: "03",
-                    title: "Broken price discovery",
-                    body: "Without a secondary market, future income has no discovered value — holders exposed to drift and deep discount.",
-                  },
-                ].map((item, i) => (
-                  <motion.div
-                    key={item.num}
-                    initial={{ opacity: 0, x: -32 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true, margin: "-60px" }}
-                    transition={{ duration: 0.5, delay: i * 0.13 }}
-                    className="py-6"
-                  >
-                    <motion.div
-                      initial={{ scaleX: 0 }}
-                      whileInView={{ scaleX: 1 }}
-                      viewport={{ once: true, margin: "-60px" }}
-                      transition={{ duration: 0.7, delay: i * 0.13 + 0.15, ease: "easeOut" }}
-                      className="h-px mb-5"
-                      style={{
-                        background: "linear-gradient(to right, #0088FE, transparent)",
-                        transformOrigin: "left",
-                      }}
-                    />
-                    <div className="flex items-start gap-6">
-                      <span className="font-mono text-xs tracking-widest mt-0.5 shrink-0" style={{ color: "#59B9FF" }}>
-                        {item.num}
-                      </span>
-                      <div>
-                        <h3 className="font-display font-bold text-white text-lg mb-1.5">{item.title}</h3>
-                        <p className="font-sans text-sm leading-relaxed" style={{ color: "rgba(255,255,255,0.45)" }}>{item.body}</p>
-                      </div>
-                    </div>
-                  </motion.div>
-                ))}
-              </div>
+              {/* Summary */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-60px" }}
+                transition={{ duration: 0.6, delay: 0.22 }}
+              >
+                <motion.div
+                  initial={{ scaleX: 0 }}
+                  whileInView={{ scaleX: 1 }}
+                  viewport={{ once: true, margin: "-60px" }}
+                  transition={{ duration: 0.7, delay: 0.28, ease: "easeOut" }}
+                  className="h-px mb-7"
+                  style={{
+                    background: "linear-gradient(to right, #0088FE, transparent)",
+                    transformOrigin: "left",
+                  }}
+                />
+                <p className="text-lg font-sans leading-relaxed text-muted">
+                  SAFTs, vesting schedules, staking rewards, bond coupons — over a trillion in earned value sits illiquid, non-tradable, and invisible on any balance sheet. No way to hedge it, price it, or put it to work while the clock runs down.
+                </p>
+              </motion.div>
             </div>
 
-            {/* Right: illustration */}
+            {/* Right: illustration — larger */}
             <motion.div
               className="relative flex items-center justify-center"
               initial={{ opacity: 0, x: 40 }}
@@ -299,16 +258,17 @@ export default function Home() {
               viewport={{ once: true, margin: "-80px" }}
               transition={{ duration: 0.8 }}
             >
-              {/* Glow behind image */}
-              <div className="absolute w-80 h-80 rounded-full blur-3xl pointer-events-none"
-                style={{ background: "radial-gradient(circle, rgba(0,136,254,0.2) 0%, transparent 70%)" }} />
+              <div
+                className="absolute w-[28rem] h-[28rem] rounded-full blur-3xl pointer-events-none"
+                style={{ background: "radial-gradient(circle, rgba(0,136,254,0.12) 0%, transparent 70%)" }}
+              />
               <motion.img
                 src={`${import.meta.env.BASE_URL}illus-problem.png`}
                 alt="The Problem"
-                className="relative w-full max-w-md"
+                className="relative w-full max-w-2xl"
                 animate={{ y: [0, -18, 0] }}
                 transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
-                style={{ filter: "drop-shadow(0 40px 60px rgba(0,136,254,0.25))" }}
+                style={{ filter: "drop-shadow(0 40px 60px rgba(0,136,254,0.18))" }}
               />
             </motion.div>
           </div>
