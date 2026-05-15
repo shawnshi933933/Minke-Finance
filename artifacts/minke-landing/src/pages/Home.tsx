@@ -277,7 +277,11 @@ export default function Home() {
 
       {/* CONCEPT SECTION */}
       <section id="concept" className="relative overflow-hidden bg-elevated py-20 md:py-28 border-b border-border">
+        {/* Soft gradient fade from white above */}
+        <div className="pointer-events-none absolute top-0 left-0 right-0 h-28 z-10"
+          style={{ background: "linear-gradient(to bottom, #ffffff, transparent)" }} />
         <div className="pointer-events-none absolute inset-0 bg-minke-dot opacity-30" />
+
         <div className="container mx-auto px-6 md:px-12 relative z-10">
           <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-start">
 
@@ -289,8 +293,11 @@ export default function Home() {
               transition={{ duration: 0.6 }}
               className="lg:sticky lg:top-28"
             >
-              <div className="font-mono text-xs tracking-[0.3em] uppercase text-primary mb-8">
-                A NEW ASSET CLASS
+              <div className="font-mono text-xs tracking-[0.3em] uppercase text-primary mb-1">
+                The Solution
+              </div>
+              <div className="font-mono text-xs tracking-[0.2em] uppercase text-muted mb-8">
+                A new asset class
               </div>
 
               {/* DFI. — character-by-character reveal */}
@@ -315,7 +322,7 @@ export default function Home() {
               </div>
 
               <p className="text-muted font-sans leading-relaxed mb-10 max-w-sm">
-                We are defining a new asset class — a stream of expected future payments with a clear schedule and amount, finally tradable on-chain.
+                The answer to the $1,000B+ problem. Minke introduces DFI — making future income tradable, priceable, and composable on-chain for the first time.
               </p>
 
               <div
@@ -326,34 +333,20 @@ export default function Home() {
               </div>
             </motion.div>
 
-            {/* Right: illustration + cards */}
-            <div className="flex flex-col gap-5">
-              {/* Floating illustration */}
-              <motion.div
-                className="relative flex items-center justify-center h-56"
-                initial={{ opacity: 0, x: 30 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true, margin: "-80px" }}
-                transition={{ duration: 0.8 }}
-              >
-                <motion.img
-                  src={`${import.meta.env.BASE_URL}illus-dri.png`}
-                  alt="DFI Concept"
-                  className="w-full max-w-lg object-contain"
-                  animate={{ y: [0, -14, 0] }}
-                  transition={{ duration: 4.5, repeat: Infinity, ease: "easeInOut" }}
-                  style={{ filter: "drop-shadow(0 24px 48px rgba(0,136,254,0.18))" }}
-                />
-              </motion.div>
+            {/* Right: cards only */}
+            <div className="flex flex-col gap-5 pt-4">
 
-              {/* DFI Card */}
+              {/* DFI Card — hover reveals tags */}
               <motion.div
-                className="relative bg-white rounded-2xl p-8 border border-border overflow-hidden shadow-sm"
+                className="relative bg-white rounded-2xl p-8 border border-border overflow-hidden shadow-sm cursor-default"
                 initial={{ opacity: 0, y: 24 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-60px" }}
                 transition={{ duration: 0.5, delay: 0.1 }}
+                whileHover="hover"
+                animate="rest"
               >
+                {/* Animated left border — draws down on scroll */}
                 <motion.div
                   className="absolute left-0 top-0 bottom-0 w-[3px] rounded-l-2xl"
                   style={{ background: "linear-gradient(to bottom, #0088FE, #59B9FF)", transformOrigin: "top" }}
@@ -361,6 +354,13 @@ export default function Home() {
                   whileInView={{ scaleY: 1 }}
                   viewport={{ once: true, margin: "-60px" }}
                   transition={{ duration: 0.65, ease: "easeOut", delay: 0.2 }}
+                />
+                {/* Hover glow */}
+                <motion.div
+                  className="absolute inset-0 rounded-2xl pointer-events-none"
+                  variants={{ rest: { opacity: 0 }, hover: { opacity: 1 } }}
+                  transition={{ duration: 0.25 }}
+                  style={{ background: "linear-gradient(135deg, rgba(0,136,254,0.04) 0%, transparent 60%)" }}
                 />
                 <div className="font-mono text-[10px] text-primary tracking-[0.2em] uppercase mb-3">
                   DFI — Deterministic Future Income
@@ -371,37 +371,54 @@ export default function Home() {
                 <p className="text-muted font-sans text-sm leading-relaxed mb-5">
                   SAFTs, team and advisor vesting, scheduled treasury unlocks, fixed-term staking rewards, node licenses, on-chain bonds and tokenized fixed-income RWA.
                 </p>
-                <div className="flex flex-wrap gap-2">
-                  {["SAFTs", "Vesting", "Treasury unlocks", "Staking rewards", "Node licenses", "On-chain bonds"].map((tag, i) => (
+                {/* Tags — hidden by default, stagger-pop on hover */}
+                <motion.div
+                  className="flex flex-wrap gap-2 overflow-hidden"
+                  variants={{
+                    rest: { transition: { staggerChildren: 0.05 } },
+                    hover: { transition: { staggerChildren: 0.06 } },
+                  }}
+                >
+                  {["SAFTs", "Vesting", "Treasury unlocks", "Staking rewards", "Node licenses", "On-chain bonds"].map((tag) => (
                     <motion.span
                       key={tag}
-                      initial={{ opacity: 0, scale: 0.85 }}
-                      whileInView={{ opacity: 1, scale: 1 }}
-                      viewport={{ once: true }}
-                      transition={{ duration: 0.3, delay: 0.3 + i * 0.06 }}
+                      variants={{
+                        rest: { opacity: 0, scale: 0.75, y: 6 },
+                        hover: { opacity: 1, scale: 1, y: 0, transition: { duration: 0.22, ease: "easeOut" } },
+                      }}
                       className="px-3 py-1 rounded-full text-xs font-mono bg-tint text-primary border border-primary/20"
                     >
                       {tag}
                     </motion.span>
                   ))}
-                </div>
+                </motion.div>
               </motion.div>
 
-              {/* VFI Card */}
+              {/* VFI Card — hover reveals tags */}
               <motion.div
-                className="relative bg-white rounded-2xl p-8 border border-border overflow-hidden shadow-sm"
+                className="relative bg-white rounded-2xl p-8 border border-border overflow-hidden shadow-sm cursor-default"
                 initial={{ opacity: 0, y: 24 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-60px" }}
                 transition={{ duration: 0.5, delay: 0.2 }}
+                whileHover="hover"
+                animate="rest"
               >
+                {/* Animated left border */}
                 <motion.div
-                  className="absolute left-0 top-0 bottom-0 w-[3px] rounded-l-2xl bg-border"
+                  className="absolute left-0 top-0 bottom-0 w-[3px] rounded-l-2xl bg-muted/30"
                   style={{ transformOrigin: "top" }}
                   initial={{ scaleY: 0 }}
                   whileInView={{ scaleY: 1 }}
                   viewport={{ once: true, margin: "-60px" }}
                   transition={{ duration: 0.65, ease: "easeOut", delay: 0.35 }}
+                />
+                {/* Hover glow */}
+                <motion.div
+                  className="absolute inset-0 rounded-2xl pointer-events-none"
+                  variants={{ rest: { opacity: 0 }, hover: { opacity: 1 } }}
+                  transition={{ duration: 0.25 }}
+                  style={{ background: "linear-gradient(135deg, rgba(107,122,153,0.04) 0%, transparent 60%)" }}
                 />
                 <div className="font-mono text-[10px] text-muted tracking-[0.2em] uppercase mb-3">
                   VFI — Variable Future Income
@@ -412,14 +429,28 @@ export default function Home() {
                 <p className="text-muted font-sans text-sm leading-relaxed mb-5">
                   Yield-farming returns, variable lending APY, governance-token rewards, NFT royalties — size and timing both shaped by the market.
                 </p>
-                <div className="flex flex-wrap gap-2">
+                {/* Tags — hidden by default, stagger-pop on hover */}
+                <motion.div
+                  className="flex flex-wrap gap-2 overflow-hidden"
+                  variants={{
+                    rest: { transition: { staggerChildren: 0.05 } },
+                    hover: { transition: { staggerChildren: 0.06 } },
+                  }}
+                >
                   {["Yield farming", "Variable APY", "Governance rewards", "NFT royalties"].map((tag) => (
-                    <span key={tag} className="px-3 py-1 rounded-full text-xs font-mono bg-elevated text-muted border border-border">
+                    <motion.span
+                      key={tag}
+                      variants={{
+                        rest: { opacity: 0, scale: 0.75, y: 6 },
+                        hover: { opacity: 1, scale: 1, y: 0, transition: { duration: 0.22, ease: "easeOut" } },
+                      }}
+                      className="px-3 py-1 rounded-full text-xs font-mono bg-elevated text-muted border border-border"
+                    >
                       {tag}
-                    </span>
+                    </motion.span>
                   ))}
-                </div>
-                <div className="mt-4 font-mono text-[10px] text-muted/50 tracking-widest uppercase">
+                </motion.div>
+                <div className="mt-5 font-mono text-[10px] text-muted/40 tracking-widest uppercase">
                   VFI support planned for v2
                 </div>
               </motion.div>
