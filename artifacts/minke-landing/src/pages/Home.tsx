@@ -278,8 +278,8 @@ export default function Home() {
       {/* CONCEPT SECTION */}
       <section id="concept" className="relative overflow-hidden bg-elevated py-14 md:py-20">
         {/* Soft gradient fade from white above */}
-        <div className="pointer-events-none absolute top-0 left-0 right-0 h-16 z-10"
-          style={{ background: "linear-gradient(to bottom, #ffffff, transparent)" }} />
+        <div className="pointer-events-none absolute top-0 left-0 right-0 h-48 z-10"
+          style={{ background: "linear-gradient(to bottom, #ffffff 0%, transparent 100%)" }} />
         <div className="pointer-events-none absolute inset-0 bg-minke-dot opacity-30" />
 
         <div className="container mx-auto px-6 md:px-12 relative z-10">
