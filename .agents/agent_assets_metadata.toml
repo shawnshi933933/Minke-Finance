@@ -150,6 +150,12 @@ uri = "file://artifacts/minke-pitch-deck/public/illus-cover-calendar-whale-v2.pn
 type = "image"
 title = "calendar coin with whale v2"
 
+[[generated]]
+id = "Gg1JMphMReTY_0aAIwXCq"
+uri = "file://artifacts/minke-landing/public/illus-cover-calendar-whale-v1.png"
+type = "image"
+title = "cute whale calendar DFI illustration"
+
 [[outputs]]
 id = "I02xF4R8ddo7pabCyDCR1"
 uri = "file://.local/outputs/Minke-Finance.pdf"

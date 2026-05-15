@@ -173,18 +173,7 @@ export default function Home() {
                 alt="Minke Whale Illustration"
                 className="w-full h-full object-contain"
               />
-              {/* Calendar text overlay — positioned over the calendar graphic */}
-              <div
-                className="absolute"
-                style={{ top: "8%", left: "44%", transform: "rotate(-2deg)" }}
-              >
-                <span
-                  className="font-mono font-bold text-[10px] tracking-widest uppercase"
-                  style={{ color: "#5B8FCA", letterSpacing: "0.08em" }}
-                >
-                  Deterministic Future Income
-                </span>
-              </div>
+
             </motion.div>
           </motion.div>
         </div>
