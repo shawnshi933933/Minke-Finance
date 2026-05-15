@@ -460,105 +460,114 @@ export default function Home() {
       </section>
 
       {/* HOW IT WORKS */}
-      <section id="how-it-works" className="py-24 md:py-32 bg-white">
-        <div className="container mx-auto px-6 md:px-12">
+      <section id="how-it-works" className="py-24 md:py-32 bg-elevated relative overflow-hidden">
+        <div className="pointer-events-none absolute inset-0 bg-minke-dot opacity-20" />
 
-          {/* Section header */}
+        <div className="container mx-auto px-6 md:px-12 relative z-10">
+
+          {/* Centered headline */}
           <motion.div
-            initial={{ opacity: 0, y: 24 }}
+            initial={{ opacity: 0, y: 28 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-80px" }}
-            transition={{ duration: 0.6 }}
-            className="mb-16 lg:mb-20"
+            transition={{ duration: 0.65 }}
+            className="text-center mb-20 lg:mb-28"
           >
-            <div className="font-mono text-xs tracking-[0.3em] uppercase text-primary mb-3">How it works</div>
-            <h2 className="text-4xl md:text-5xl font-extrabold max-w-lg leading-tight">
-              Four steps.
+            <div className="font-mono text-xs tracking-[0.3em] uppercase text-primary mb-5">From Future to Present</div>
+            <h2 className="text-5xl md:text-6xl lg:text-7xl font-extrabold leading-tight tracking-tight">
+              How it works.
             </h2>
           </motion.div>
 
-          {/* Steps */}
-          <div className="max-w-4xl">
+          {/* Steps container — centered */}
+          <div className="max-w-4xl mx-auto">
 
-            {/* Steps 01 & 02 */}
+            {/* Steps 01 & 02 with shared connector */}
             {[
               {
                 num: "01",
-                title: "Deposit a position",
-                desc: "Submit a SAFT, vesting schedule, staking position, node license, or RWA bond. Minke wraps it into a standardized on-chain DFI.",
-                icon: "icon-deposit.png",
-                last: false,
+                title: "Deposit a DFI position",
+                desc: "SAFT contract, vesting schedule, staking position, node license or RWA bond.",
+                illus: "illus-step-1.png",
+                hasLine: true,
               },
               {
                 num: "02",
                 title: "Receive VT instantly",
-                desc: "Get Vault Tokens immediately — a fungible, tradable representation of your future income stream, minted 1:1 against your deposited position.",
-                icon: "icon-receive.png",
-                last: false,
+                desc: "Gain VT — a fungible, tradable representation of the future tokens.",
+                illus: "illus-step-2.png",
+                hasLine: true,
               },
             ].map((step, i) => (
               <motion.div
                 key={step.num}
-                initial={{ opacity: 0, y: 32 }}
+                initial={{ opacity: 0, y: 36 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-60px" }}
-                transition={{ duration: 0.55, delay: i * 0.1 }}
-                className="flex items-start gap-8 md:gap-16 relative"
+                transition={{ duration: 0.6, delay: i * 0.12 }}
+                className="grid grid-cols-[48px_1fr] gap-6 md:gap-10 relative"
               >
-                {/* Left connector column */}
-                <div className="flex flex-col items-center flex-shrink-0 w-12">
-                  <div className="font-mono text-xs tracking-widest text-primary font-bold pt-1">{step.num}</div>
-                  <div className="flex-1 w-px bg-border mt-3" style={{ minHeight: "140px" }} />
+                {/* Step number + vertical line */}
+                <div className="flex flex-col items-center">
+                  <div className="font-mono text-sm tracking-widest text-primary font-bold leading-none pt-1">{step.num}</div>
+                  {step.hasLine && (
+                    <div className="flex-1 w-px bg-gradient-to-b from-border to-transparent mt-3" style={{ minHeight: "200px" }} />
+                  )}
                 </div>
 
-                {/* Content */}
-                <div className="flex-1 pb-12 md:pb-16 grid md:grid-cols-[1fr_auto] gap-8 items-center">
+                {/* Content: text left, illustration right */}
+                <div className="grid md:grid-cols-[1fr_auto] gap-8 items-center pb-14 md:pb-20">
                   <div>
-                    <h3 className="text-2xl md:text-3xl font-extrabold mb-3">{step.title}</h3>
-                    <p className="text-muted font-sans text-base leading-relaxed max-w-md">{step.desc}</p>
+                    <h3 className="text-3xl md:text-4xl font-extrabold mb-4 leading-tight">{step.title}</h3>
+                    <p className="text-lg text-muted font-sans leading-relaxed max-w-sm">{step.desc}</p>
                   </div>
-                  <div className="w-20 h-20 md:w-24 md:h-24 rounded-2xl bg-tint border border-border flex items-center justify-center flex-shrink-0">
+                  <motion.div
+                    initial={{ opacity: 0, scale: 0.88 }}
+                    whileInView={{ opacity: 1, scale: 1 }}
+                    viewport={{ once: true, margin: "-40px" }}
+                    transition={{ duration: 0.55, delay: i * 0.12 + 0.2 }}
+                    className="flex-shrink-0 flex justify-center md:justify-end"
+                  >
                     <img
-                      src={`${import.meta.env.BASE_URL}${step.icon}`}
+                      src={`${import.meta.env.BASE_URL}${step.illus}`}
                       alt={step.title}
-                      className="w-12 h-12 md:w-14 md:h-14 object-contain"
+                      className="w-44 h-44 md:w-56 md:h-56 object-contain drop-shadow-lg"
                     />
-                  </div>
+                  </motion.div>
                 </div>
               </motion.div>
             ))}
 
-            {/* VT callout — inserted between 02 and 03 */}
+            {/* VT Callout — between 02 and 03 */}
             <motion.div
               initial={{ opacity: 0, y: 24 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-60px" }}
               transition={{ duration: 0.55 }}
-              className="flex items-start gap-8 md:gap-16 relative"
+              className="grid grid-cols-[48px_1fr] gap-6 md:gap-10"
             >
-              {/* Connector column (continues the line) */}
-              <div className="flex flex-col items-center flex-shrink-0 w-12">
-                <div className="flex-1 w-px bg-border" style={{ minHeight: "100%" }} />
+              {/* Connector continues */}
+              <div className="flex flex-col items-center">
+                <div className="flex-1 w-px bg-border" />
               </div>
 
               {/* VT card */}
-              <div className="flex-1 mb-10">
-                <div className="rounded-2xl bg-tint border border-primary/20 p-6 md:p-8 flex flex-col sm:flex-row gap-6 items-start sm:items-center">
-                  {/* Coin */}
-                  <div className="flex-shrink-0">
-                    <div
-                      className="w-16 h-16 rounded-full flex items-center justify-center text-white font-display font-black text-xl shadow-lg"
-                      style={{ background: "linear-gradient(135deg, #0088FE 0%, #59B9FF 100%)" }}
-                    >
-                      VT
-                    </div>
+              <div className="pb-14 md:pb-20">
+                <div className="rounded-2xl bg-white border border-primary/20 overflow-hidden flex flex-col sm:flex-row shadow-sm">
+                  {/* Coin illustration from hero */}
+                  <div className="sm:w-48 flex-shrink-0 bg-tint flex items-center justify-center p-6">
+                    <img
+                      src={`${import.meta.env.BASE_URL}illus-cover-calendar-whale-v1.png`}
+                      alt="Vesting Token"
+                      className="w-32 h-32 object-contain"
+                    />
                   </div>
                   {/* Text */}
-                  <div>
-                    <div className="font-mono text-[10px] tracking-[0.25em] uppercase text-primary mb-1">Vault Token</div>
-                    <h4 className="text-lg font-bold mb-1">What is a VT?</h4>
-                    <p className="text-sm text-muted font-sans leading-relaxed max-w-lg">
-                      A VT is an on-chain token representing one unit of future income. It is fully fungible and composable — tradable on any DEX, usable as collateral, or simply held until the underlying income is realized and redeemable 1:1.
+                  <div className="flex-1 p-6 md:p-8 border-l border-border">
+                    <div className="font-mono text-[10px] tracking-[0.28em] uppercase text-primary mb-2">Vesting Token</div>
+                    <h4 className="text-xl font-extrabold mb-2">What is a VT?</h4>
+                    <p className="text-sm text-muted font-sans leading-relaxed">
+                      A VT is a fully fungible, on-chain token representing a future income stream. Tradable on any DEX, usable as collateral, and redeemable 1:1 against the underlying asset whenever income is realized.
                     </p>
                   </div>
                 </div>
@@ -567,63 +576,75 @@ export default function Home() {
 
             {/* Step 03 */}
             <motion.div
-              initial={{ opacity: 0, y: 32 }}
+              initial={{ opacity: 0, y: 36 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-60px" }}
-              transition={{ duration: 0.55 }}
-              className="flex items-start gap-8 md:gap-16 relative"
+              transition={{ duration: 0.6 }}
+              className="grid grid-cols-[48px_1fr] gap-6 md:gap-10 relative"
             >
-              <div className="flex flex-col items-center flex-shrink-0 w-12">
-                <div className="font-mono text-xs tracking-widest text-primary font-bold pt-1">03</div>
-                <div className="flex-1 w-px bg-border mt-3" style={{ minHeight: "140px" }} />
+              <div className="flex flex-col items-center">
+                <div className="font-mono text-sm tracking-widest text-primary font-bold leading-none pt-1">03</div>
+                <div className="flex-1 w-px bg-gradient-to-b from-border to-transparent mt-3" style={{ minHeight: "200px" }} />
               </div>
-              <div className="flex-1 pb-12 md:pb-16 grid md:grid-cols-[1fr_auto] gap-8 items-center">
+              <div className="grid md:grid-cols-[1fr_auto] gap-8 items-center pb-14 md:pb-20">
                 <div>
-                  <h3 className="text-2xl md:text-3xl font-extrabold mb-3">Trade, hold or claim</h3>
-                  <p className="text-muted font-sans text-base leading-relaxed max-w-md">
-                    Sell VT for immediate present value, hold for potential upside, or simply wait and claim the underlying tokens as the schedule plays out — your choice, any time.
+                  <h3 className="text-3xl md:text-4xl font-extrabold mb-4 leading-tight">Trade, hold or claim</h3>
+                  <p className="text-lg text-muted font-sans leading-relaxed max-w-sm">
+                    Sell VT for instant present value, hold for upside, or claim the underlying tokens as the schedule plays out.
                   </p>
                 </div>
-                <div className="w-20 h-20 md:w-24 md:h-24 rounded-2xl bg-tint border border-border flex items-center justify-center flex-shrink-0">
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.88 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  viewport={{ once: true, margin: "-40px" }}
+                  transition={{ duration: 0.55, delay: 0.2 }}
+                  className="flex-shrink-0 flex justify-center md:justify-end"
+                >
                   <img
-                    src={`${import.meta.env.BASE_URL}icon-trade.png`}
+                    src={`${import.meta.env.BASE_URL}illus-step-3.png`}
                     alt="Trade, hold or claim"
-                    className="w-12 h-12 md:w-14 md:h-14 object-contain"
+                    className="w-44 h-44 md:w-56 md:h-56 object-contain drop-shadow-lg"
                   />
-                </div>
+                </motion.div>
               </div>
             </motion.div>
 
-            {/* Step 04 — blue highlight */}
+            {/* Step 04 — full blue gradient card */}
             <motion.div
-              initial={{ opacity: 0, y: 32 }}
+              initial={{ opacity: 0, y: 36 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-60px" }}
-              transition={{ duration: 0.55 }}
-              className="flex items-start gap-8 md:gap-16 relative"
+              transition={{ duration: 0.6 }}
+              className="grid grid-cols-[48px_1fr] gap-6 md:gap-10"
             >
-              <div className="flex flex-col items-center flex-shrink-0 w-12">
-                <div className="font-mono text-xs tracking-widest text-primary font-bold pt-1">04</div>
+              <div className="flex flex-col items-start pt-1">
+                <div className="font-mono text-sm tracking-widest text-white font-bold leading-none opacity-0 select-none">04</div>
               </div>
-              <div className="flex-1 grid md:grid-cols-[1fr_auto] gap-8 items-center">
-                <div>
-                  <h3 className="text-2xl md:text-3xl font-extrabold mb-3">1:1 redemption</h3>
-                  <p className="text-muted font-sans text-base leading-relaxed max-w-md">
-                    When income is realized, VT holders redeem at exactly 1:1 against the underlying asset — no oracles, no haircuts, no counterparty risk.
-                  </p>
-                  <div className="mt-4 font-mono text-[10px] tracking-widest uppercase text-primary/60">
-                    No oracles · No haircuts · No counterparty risk
-                  </div>
-                </div>
+              <div>
                 <div
-                  className="w-20 h-20 md:w-24 md:h-24 rounded-2xl flex items-center justify-center flex-shrink-0 shadow-lg"
-                  style={{ background: "linear-gradient(135deg, #0088FE 0%, #59B9FF 100%)" }}
+                  className="rounded-3xl p-8 md:p-12 grid md:grid-cols-[1fr_auto] gap-8 md:gap-12 items-center shadow-[0_16px_48px_rgba(0,136,254,0.25)]"
+                  style={{ background: "linear-gradient(160deg, #0088FE 0%, #59B9FF 100%)" }}
                 >
-                  <img
-                    src={`${import.meta.env.BASE_URL}icon-redemption.png`}
-                    alt="1:1 redemption"
-                    className="w-12 h-12 md:w-14 md:h-14 object-contain brightness-0 invert"
-                  />
+                  <div>
+                    <div className="font-mono text-xs tracking-widest text-white/70 mb-4 uppercase">04</div>
+                    <h3 className="text-3xl md:text-4xl font-extrabold mb-4 leading-tight text-white">1:1 redemption claim</h3>
+                    <p className="text-lg text-white/90 font-sans leading-relaxed max-w-sm">
+                      Each VT has a corresponding underlying token. Whenever income is realized, VT holders redeem 1:1 — no oracles, no haircuts, no counterparty.
+                    </p>
+                  </div>
+                  <motion.div
+                    initial={{ opacity: 0, scale: 0.88 }}
+                    whileInView={{ opacity: 1, scale: 1 }}
+                    viewport={{ once: true, margin: "-40px" }}
+                    transition={{ duration: 0.55, delay: 0.2 }}
+                    className="flex-shrink-0 flex justify-center md:justify-end"
+                  >
+                    <img
+                      src={`${import.meta.env.BASE_URL}illus-step-4.png`}
+                      alt="1:1 redemption claim"
+                      className="w-44 h-44 md:w-56 md:h-56 object-contain drop-shadow-xl brightness-0 invert"
+                    />
+                  </motion.div>
                 </div>
               </div>
             </motion.div>
