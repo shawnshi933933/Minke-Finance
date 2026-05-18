@@ -101,25 +101,23 @@ export default function Sidebar({ onNavigate }: SidebarProps) {
                   const isActive = currentSlug === item.slug;
                   return (
                     <li key={item.slug}>
-                      {item.comingSoon ? (
-                        <span className="flex items-center gap-2 px-2 py-1.5 rounded-md text-sm text-muted-foreground/40 cursor-default select-none pl-3">
-                          <span className="flex-1 truncate">{item.title}</span>
-                          <Clock className="w-3 h-3 shrink-0" />
-                        </span>
-                      ) : (
-                        <Link
-                          href={`/${item.slug}`}
-                          onClick={onNavigate}
-                          className={cn(
-                            "flex items-center px-2 py-1.5 pl-3 rounded-md text-sm transition-colors",
-                            isActive
+                      <Link
+                        href={`/${item.slug}`}
+                        onClick={onNavigate}
+                        className={cn(
+                          "flex items-center gap-2 px-2 py-1.5 pl-3 rounded-md text-sm transition-colors",
+                          item.comingSoon
+                            ? isActive
+                              ? "bg-sidebar-accent text-muted-foreground font-medium"
+                              : "text-muted-foreground/50 hover:bg-sidebar-accent/40 hover:text-muted-foreground/70"
+                            : isActive
                               ? "bg-sidebar-accent text-sidebar-accent-foreground font-medium"
                               : "text-sidebar-foreground/80 hover:bg-sidebar-accent/50 hover:text-sidebar-foreground"
-                          )}
-                        >
-                          {item.title}
-                        </Link>
-                      )}
+                        )}
+                      >
+                        <span className="flex-1 truncate">{item.title}</span>
+                        {item.comingSoon && <Clock className="w-3 h-3 shrink-0 opacity-50" />}
+                      </Link>
                     </li>
                   );
                 })}

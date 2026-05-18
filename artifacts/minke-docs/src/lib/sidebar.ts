@@ -1,3 +1,8 @@
+// sidebar.json is the single source of truth for page metadata.
+// It is intentionally kept as JSON (not inlined into TS) so that
+// the API server can read it at runtime via readFileSync without
+// needing to compile TypeScript. To add a page: add a .mdx file in
+// src/docs/<section>/<slug>.mdx AND a corresponding entry here.
 import rawSidebar from "../docs/sidebar.json";
 
 export interface NavItem {
