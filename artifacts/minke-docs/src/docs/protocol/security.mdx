@@ -1,0 +1,99 @@
+# Security
+
+Minke's security model is built on minimalism, immutability, and the elimination of trust dependencies. This page covers the protocol's threat model, mitigations, and audit status.
+
+## Threat Model
+
+### In Scope
+
+| Threat | Mitigation |
+|---|---|
+| Reentrancy attacks | Checks-Effects-Interactions pattern; no external calls before state updates |
+| Integer overflow/underflow | Solidity 0.8+ built-in overflow protection |
+| Oracle manipulation | No oracles used — DFI schedules are deterministic |
+| Admin key compromise | No admin keys on deployed contracts |
+| Flash loan attacks | VT pricing is not oracle-dependent; no liquidation mechanism |
+| Front-running | `checkpointVesting` is idempotent; front-running has no profit motive |
+
+### Out of Scope (by Design)
+
+| Threat | Why Not in Scope |
+|---|---|
+| Underlying token risk | Minke is neutral — VT value tracks the underlying token |
+| AMM price manipulation | VT/underlying AMM price is not used as an oracle inside Minke |
+| Smart contract upgrade risk | No upgrade proxies; contracts are immutable |
+
+## Smart Contract Architecture Security Properties
+
+### No Admin Functions
+
+After deployment, there are no privileged functions that any address — including the Minke team — can call to:
+- Change fee parameters
+- Withdraw user funds
+- Pause or unpause the contract
+- Modify vesting schedules
+
+<Callout type="tip" title="Verify for yourself">
+You can confirm the absence of admin functions by reading the contract source on Etherscan. Every public function in `VestingToken` is either callable by anyone (permissionless) or enforces the mathematical invariants of the staking model.
+</Callout>
+
+### Immutable Vesting Schedules
+
+`vestStart`, `vestEnd`, and total deposited amount are stored as immutable variables. They cannot be changed after tranche creation. This guarantees that VT holders can always predict exactly when and how much they will receive.
+
+### Accumulator Precision
+
+`accVTPerShare` is stored with 1e18 precision. The accumulator pattern is a well-tested design (used in MasterChef and hundreds of derivatives). The key invariant:
+
+```
+Σ (userStaked[u] × accVTPerShare / 1e18 - userDebt[u]) 
+  ≤ IERC20(underlying).balanceOf(address(this))
+```
+
+This inequality holds at all times — the total claimable rewards never exceed the available balance.
+
+### Phase 2 Invariant
+
+The Phase 2 redemption formula maintains:
+
+```
+Σ redeemVT(u) = excessT  (exactly)
+```
+
+Because `redeemed = vtAmount × (excessT / totalSupplyAtEnd)` and all VTs are burned on redemption, the contract balance reaches exactly 0 after all VTs are redeemed.
+
+## Audits
+
+<Callout type="warning" title="Audit status">
+Minke is currently completing its first audit cycle. Audit reports will be published at this URL before mainnet deployment. Do not interact with mainnet contracts until audit reports are published.
+</Callout>
+
+Planned audit scope:
+- `VestingFactory.sol`
+- `VestingToken.sol`
+- `BuybackPool.sol`
+- `ContractRegistry.sol`
+
+Auditors will be announced alongside the report publication.
+
+## Bug Bounty
+
+A bug bounty program will launch alongside mainnet. Reward tiers (planned):
+
+| Severity | Reward |
+|---|---|
+| Critical (direct fund loss) | Up to $500,000 USDC |
+| High (significant risk) | Up to $50,000 USDC |
+| Medium (limited impact) | Up to $10,000 USDC |
+| Low (informational) | Up to $1,000 USDC |
+
+Scope, rules, and submission process will be published at `security.minke.finance`.
+
+## Responsible Disclosure
+
+Before the bug bounty program launches, please report vulnerabilities privately to:
+
+- Email: `security@minke.finance`
+- PGP key: published on the GitHub repository
+
+Do not disclose vulnerabilities publicly before coordinating with the team.
