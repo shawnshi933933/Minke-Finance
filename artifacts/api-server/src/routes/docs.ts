@@ -3,6 +3,7 @@ import { readFile, writeFile } from "fs/promises";
 import { readFileSync, existsSync } from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
+import { logger } from "../lib/logger";
 
 const router = Router();
 
@@ -112,7 +113,7 @@ async function serveContent(slug: string, req: Request, res: Response): Promise<
     const content = await readFile(filePath, "utf-8");
     res.json(buildDocResponse(slug, content, sidebar));
   } catch (err) {
-    (req as any).log.error({ err }, "Failed to read doc file");
+    logger.error({ err, slug }, "Failed to read doc file");
     res.status(500).json({ error: "Internal server error" });
   }
 }
@@ -146,7 +147,7 @@ async function saveContent(slug: string, req: Request, res: Response): Promise<v
     const sidebar = loadSidebar();
     res.json(buildDocResponse(slug, content, sidebar));
   } catch (err) {
-    (req as any).log.error({ err }, "Failed to write doc file");
+    logger.error({ err, slug }, "Failed to write doc file");
     res.status(500).json({ error: "Internal server error" });
   }
 }
