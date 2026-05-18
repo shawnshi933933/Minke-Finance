@@ -10,6 +10,8 @@ servers:
 tags:
   - name: health
     description: Health operations
+  - name: docs
+    description: Documentation content management
 paths:
   /healthz:
     get:
@@ -24,6 +26,82 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HealthStatus"
+
+  /docs/pages:
+    get:
+      operationId: listDocPages
+      tags: [docs]
+      summary: List all documentation pages
+      responses:
+        "200":
+          description: List of doc pages
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/DocPage"
+
+  /docs/content/{slug}:
+    get:
+      operationId: getDocContent
+      tags: [docs]
+      summary: Get documentation page content by slug
+      parameters:
+        - in: path
+          name: slug
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Doc page content
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DocContent"
+        "404":
+          description: Page not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+    put:
+      operationId: updateDocContent
+      tags: [docs]
+      summary: Update documentation page content (admin only)
+      parameters:
+        - in: path
+          name: slug
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DocContentInput"
+      responses:
+        "200":
+          description: Updated doc page content
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DocContent"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "404":
+          description: Page not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
 components:
   schemas:
     HealthStatus:
@@ -34,3 +112,50 @@ components:
       required:
         - status
 
+    DocPage:
+      type: object
+      required: [slug, title, section, order]
+      properties:
+        slug:
+          type: string
+        title:
+          type: string
+        section:
+          type: string
+        order:
+          type: integer
+        comingSoon:
+          type: ["boolean", "null"]
+
+    DocContent:
+      type: object
+      required: [slug, title, section, order, content]
+      properties:
+        slug:
+          type: string
+        title:
+          type: string
+        section:
+          type: string
+        order:
+          type: integer
+        content:
+          type: string
+        comingSoon:
+          type: ["boolean", "null"]
+        updatedAt:
+          type: string
+
+    DocContentInput:
+      type: object
+      required: [content]
+      properties:
+        content:
+          type: string
+
+    ErrorResponse:
+      type: object
+      required: [error]
+      properties:
+        error:
+          type: string

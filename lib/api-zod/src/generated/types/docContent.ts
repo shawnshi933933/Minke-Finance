@@ -5,18 +5,6 @@
  * API specification
  * OpenAPI spec version: 0.1.0
  */
-export interface HealthStatus {
-  status: string;
-}
-
-export interface DocPage {
-  slug: string;
-  title: string;
-  section: string;
-  order: number;
-  /** @nullable */
-  comingSoon?: boolean | null;
-}
 
 export interface DocContent {
   slug: string;
@@ -27,12 +15,4 @@ export interface DocContent {
   /** @nullable */
   comingSoon?: boolean | null;
   updatedAt?: string;
-}
-
-export interface DocContentInput {
-  content: string;
-}
-
-export interface ErrorResponse {
-  error: string;
 }

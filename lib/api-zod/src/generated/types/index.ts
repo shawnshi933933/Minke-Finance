@@ -6,4 +6,8 @@
  * OpenAPI spec version: 0.1.0
  */
 
+export * from "./docContent";
+export * from "./docContentInput";
+export * from "./docPage";
+export * from "./errorResponse";
 export * from "./healthStatus";

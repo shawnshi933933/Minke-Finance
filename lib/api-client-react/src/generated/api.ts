@@ -5,18 +5,27 @@
  * API specification
  * OpenAPI spec version: 0.1.0
  */
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import type {
+  MutationFunction,
   QueryFunction,
   QueryKey,
+  UseMutationOptions,
+  UseMutationResult,
   UseQueryOptions,
   UseQueryResult,
 } from "@tanstack/react-query";
 
-import type { HealthStatus } from "./api.schemas";
+import type {
+  DocContent,
+  DocContentInput,
+  DocPage,
+  ErrorResponse,
+  HealthStatus,
+} from "./api.schemas";
 
 import { customFetch } from "../custom-fetch";
-import type { ErrorType } from "../custom-fetch";
+import type { ErrorType, BodyType } from "../custom-fetch";
 
 type AwaitedInput<T> = PromiseLike<T> | T;
 
@@ -99,3 +108,252 @@ export function useHealthCheck<
 
   return { ...query, queryKey: queryOptions.queryKey };
 }
+
+/**
+ * @summary List all documentation pages
+ */
+export const getListDocPagesUrl = () => {
+  return `/api/docs/pages`;
+};
+
+export const listDocPages = async (
+  options?: RequestInit,
+): Promise<DocPage[]> => {
+  return customFetch<DocPage[]>(getListDocPagesUrl(), {
+    ...options,
+    method: "GET",
+  });
+};
+
+export const getListDocPagesQueryKey = () => {
+  return [`/api/docs/pages`] as const;
+};
+
+export const getListDocPagesQueryOptions = <
+  TData = Awaited<ReturnType<typeof listDocPages>>,
+  TError = ErrorType<unknown>,
+>(options?: {
+  query?: UseQueryOptions<
+    Awaited<ReturnType<typeof listDocPages>>,
+    TError,
+    TData
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
+
+  const queryKey = queryOptions?.queryKey ?? getListDocPagesQueryKey();
+
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof listDocPages>>> = ({
+    signal,
+  }) => listDocPages({ signal, ...requestOptions });
+
+  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof listDocPages>>,
+    TError,
+    TData
+  > & { queryKey: QueryKey };
+};
+
+export type ListDocPagesQueryResult = NonNullable<
+  Awaited<ReturnType<typeof listDocPages>>
+>;
+export type ListDocPagesQueryError = ErrorType<unknown>;
+
+/**
+ * @summary List all documentation pages
+ */
+
+export function useListDocPages<
+  TData = Awaited<ReturnType<typeof listDocPages>>,
+  TError = ErrorType<unknown>,
+>(options?: {
+  query?: UseQueryOptions<
+    Awaited<ReturnType<typeof listDocPages>>,
+    TError,
+    TData
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+  const queryOptions = getListDocPagesQueryOptions(options);
+
+  const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
+    queryKey: QueryKey;
+  };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+/**
+ * @summary Get documentation page content by slug
+ */
+export const getGetDocContentUrl = (slug: string) => {
+  return `/api/docs/content/${slug}`;
+};
+
+export const getDocContent = async (
+  slug: string,
+  options?: RequestInit,
+): Promise<DocContent> => {
+  return customFetch<DocContent>(getGetDocContentUrl(slug), {
+    ...options,
+    method: "GET",
+  });
+};
+
+export const getGetDocContentQueryKey = (slug: string) => {
+  return [`/api/docs/content/${slug}`] as const;
+};
+
+export const getGetDocContentQueryOptions = <
+  TData = Awaited<ReturnType<typeof getDocContent>>,
+  TError = ErrorType<ErrorResponse>,
+>(
+  slug: string,
+  options?: {
+    query?: UseQueryOptions<
+      Awaited<ReturnType<typeof getDocContent>>,
+      TError,
+      TData
+    >;
+    request?: SecondParameter<typeof customFetch>;
+  },
+) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
+
+  const queryKey = queryOptions?.queryKey ?? getGetDocContentQueryKey(slug);
+
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof getDocContent>>> = ({
+    signal,
+  }) => getDocContent(slug, { signal, ...requestOptions });
+
+  return {
+    queryKey,
+    queryFn,
+    enabled: !!slug,
+    ...queryOptions,
+  } as UseQueryOptions<
+    Awaited<ReturnType<typeof getDocContent>>,
+    TError,
+    TData
+  > & { queryKey: QueryKey };
+};
+
+export type GetDocContentQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getDocContent>>
+>;
+export type GetDocContentQueryError = ErrorType<ErrorResponse>;
+
+/**
+ * @summary Get documentation page content by slug
+ */
+
+export function useGetDocContent<
+  TData = Awaited<ReturnType<typeof getDocContent>>,
+  TError = ErrorType<ErrorResponse>,
+>(
+  slug: string,
+  options?: {
+    query?: UseQueryOptions<
+      Awaited<ReturnType<typeof getDocContent>>,
+      TError,
+      TData
+    >;
+    request?: SecondParameter<typeof customFetch>;
+  },
+): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+  const queryOptions = getGetDocContentQueryOptions(slug, options);
+
+  const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
+    queryKey: QueryKey;
+  };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+/**
+ * @summary Update documentation page content (admin only)
+ */
+export const getUpdateDocContentUrl = (slug: string) => {
+  return `/api/docs/content/${slug}`;
+};
+
+export const updateDocContent = async (
+  slug: string,
+  docContentInput: DocContentInput,
+  options?: RequestInit,
+): Promise<DocContent> => {
+  return customFetch<DocContent>(getUpdateDocContentUrl(slug), {
+    ...options,
+    method: "PUT",
+    headers: { "Content-Type": "application/json", ...options?.headers },
+    body: JSON.stringify(docContentInput),
+  });
+};
+
+export const getUpdateDocContentMutationOptions = <
+  TError = ErrorType<ErrorResponse>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof updateDocContent>>,
+    TError,
+    { slug: string; data: BodyType<DocContentInput> },
+    TContext
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof updateDocContent>>,
+  TError,
+  { slug: string; data: BodyType<DocContentInput> },
+  TContext
+> => {
+  const mutationKey = ["updateDocContent"];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof updateDocContent>>,
+    { slug: string; data: BodyType<DocContentInput> }
+  > = (props) => {
+    const { slug, data } = props ?? {};
+
+    return updateDocContent(slug, data, requestOptions);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type UpdateDocContentMutationResult = NonNullable<
+  Awaited<ReturnType<typeof updateDocContent>>
+>;
+export type UpdateDocContentMutationBody = BodyType<DocContentInput>;
+export type UpdateDocContentMutationError = ErrorType<ErrorResponse>;
+
+/**
+ * @summary Update documentation page content (admin only)
+ */
+export const useUpdateDocContent = <
+  TError = ErrorType<ErrorResponse>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof updateDocContent>>,
+    TError,
+    { slug: string; data: BodyType<DocContentInput> },
+    TContext
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseMutationResult<
+  Awaited<ReturnType<typeof updateDocContent>>,
+  TError,
+  { slug: string; data: BodyType<DocContentInput> },
+  TContext
+> => {
+  return useMutation(getUpdateDocContentMutationOptions(options));
+};

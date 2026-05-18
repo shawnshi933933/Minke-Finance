@@ -14,3 +14,53 @@ import * as zod from "zod";
 export const HealthCheckResponse = zod.object({
   status: zod.string(),
 });
+
+/**
+ * @summary List all documentation pages
+ */
+export const ListDocPagesResponseItem = zod.object({
+  slug: zod.string(),
+  title: zod.string(),
+  section: zod.string(),
+  order: zod.number(),
+  comingSoon: zod.boolean().nullish(),
+});
+export const ListDocPagesResponse = zod.array(ListDocPagesResponseItem);
+
+/**
+ * @summary Get documentation page content by slug
+ */
+export const GetDocContentParams = zod.object({
+  slug: zod.coerce.string(),
+});
+
+export const GetDocContentResponse = zod.object({
+  slug: zod.string(),
+  title: zod.string(),
+  section: zod.string(),
+  order: zod.number(),
+  content: zod.string(),
+  comingSoon: zod.boolean().nullish(),
+  updatedAt: zod.string().optional(),
+});
+
+/**
+ * @summary Update documentation page content (admin only)
+ */
+export const UpdateDocContentParams = zod.object({
+  slug: zod.coerce.string(),
+});
+
+export const UpdateDocContentBody = zod.object({
+  content: zod.string(),
+});
+
+export const UpdateDocContentResponse = zod.object({
+  slug: zod.string(),
+  title: zod.string(),
+  section: zod.string(),
+  order: zod.number(),
+  content: zod.string(),
+  comingSoon: zod.boolean().nullish(),
+  updatedAt: zod.string().optional(),
+});

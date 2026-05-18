@@ -1,0 +1,31 @@
+kind = "web"
+previewPath = "/minke-docs/"
+title = "Minke Finance Docs"
+version = "1.0.0"
+id = "artifacts/minke-docs"
+router = "path"
+
+[[integratedSkills]]
+name = "react-vite"
+version = "1.0.0"
+
+[[services]]
+name = "web"
+paths = [ "/minke-docs/" ]
+localPort = 23168
+
+[services.development]
+run = "pnpm --filter @workspace/minke-docs run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/minke-docs", "run", "build" ]
+publicDir = "artifacts/minke-docs/dist/public"
+serve = "static"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "23168"
+BASE_PATH = "/minke-docs/"
