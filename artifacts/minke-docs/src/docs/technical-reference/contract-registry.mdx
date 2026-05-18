@@ -1,0 +1,116 @@
+# ContractRegistry
+
+`ContractRegistry` is the on-chain discovery layer for Minke. It maps Suite and Tranche IDs to their deployed contract addresses, enabling permissionless discovery by frontends, indexers, and integrators.
+
+## Purpose
+
+Because `VestingFactory` deploys a new `VestingToken` and `BuybackPool` per tranche, tracking all deployed contracts requires either:
+
+1. Reading `TrancheCreated` events from `VestingFactory` — works but requires an indexer
+2. Querying `ContractRegistry` — instant on-chain lookup with no off-chain dependency
+
+`ContractRegistry` serves option 2.
+
+## Interface
+
+```solidity
+interface IContractRegistry {
+    struct SuiteRecord {
+        address suiteAddress;
+        address underlying;
+        string name;
+        uint256[] trancheIds;
+    }
+
+    struct TrancheRecord {
+        address vestingToken;
+        address buybackPool;
+        uint256 suiteId;
+        uint256 vestStart;
+        uint256 vestEnd;
+    }
+
+    function registerSuite(
+        uint256 suiteId,
+        address suiteAddress,
+        address underlying,
+        string calldata name
+    ) external;
+
+    function registerTranche(
+        uint256 trancheId,
+        uint256 suiteId,
+        address vestingToken,
+        address buybackPool,
+        uint256 vestStart,
+        uint256 vestEnd
+    ) external;
+
+    function getSuite(uint256 suiteId) external view returns (SuiteRecord memory);
+    function getTranche(uint256 trancheId) external view returns (TrancheRecord memory);
+    function getTranchesByUnderlying(address underlying) external view returns (uint256[] memory);
+    function totalSuites() external view returns (uint256);
+    function totalTranches() external view returns (uint256);
+}
+```
+
+## Usage Examples
+
+### Finding all tranches for a given token
+
+```typescript
+const registry = new ethers.Contract(REGISTRY_ADDRESS, registryAbi, provider);
+
+// Get all tranche IDs for a token
+const trancheIds = await registry.getTranchesByUnderlying(tokenAddress);
+
+// Fetch each tranche's contracts
+for (const trancheId of trancheIds) {
+  const tranche = await registry.getTranche(trancheId);
+  console.log({
+    vestingToken: tranche.vestingToken,
+    buybackPool: tranche.buybackPool,
+    vestStart: new Date(Number(tranche.vestStart) * 1000),
+    vestEnd: new Date(Number(tranche.vestEnd) * 1000),
+  });
+}
+```
+
+### Checking if a VestingToken is legitimate
+
+```typescript
+async function isLegitVestingToken(vtAddress: string): Promise<boolean> {
+  const totalTranches = await registry.totalTranches();
+  for (let id = 1; id <= totalTranches; id++) {
+    const tranche = await registry.getTranche(id);
+    if (tranche.vestingToken.toLowerCase() === vtAddress.toLowerCase()) {
+      return true;
+    }
+  }
+  return false;
+}
+```
+
+For high-throughput use cases, use the `TrancheCreated` event from `VestingFactory` instead of iterating.
+
+## Access Control
+
+Only addresses authorised in the registry's `authorizedFactories` mapping can call `registerSuite` and `registerTranche`. Initially, only `VestingFactory` is authorized.
+
+The registry owner (timelocked governance multisig) can add new factories as the protocol evolves — enabling future versions of `VestingFactory` to register in the same registry without breaking existing integrations.
+
+<Callout type="tip" title="Integration tip">
+Index `SuiteCreated` and `TrancheCreated` events from `VestingFactory` for real-time updates. Use `ContractRegistry` for synchronous lookups when you already have an ID.
+</Callout>
+
+## Deployment
+
+`ContractRegistry` is deployed once per network, before `VestingFactory`. The factory's constructor takes the registry address as an immutable parameter:
+
+```solidity
+constructor(address _registry) {
+    registry = IContractRegistry(_registry);
+}
+```
+
+See [Deployments](/technical-reference/deployments) for network-specific addresses.

@@ -1,0 +1,71 @@
+# DePIN and AI Nodes
+
+Decentralized Physical Infrastructure Networks (DePIN) and AI compute node operators earn deterministic token emissions over fixed periods. These are among the fastest-growing DFI categories and a natural fit for Minke.
+
+## The DePIN Emission Model
+
+DePIN protocols bootstrap real-world infrastructure (wireless networks, storage, compute, maps, sensors) by rewarding node operators with tokens. These rewards are:
+
+- **Deterministic** — published emission curves tied to node count, uptime, and tier
+- **Long-horizon** — emission periods of 3–10 years are common
+- **Illiquid today** — no secondary market for future node rewards
+
+This makes DePIN emissions structurally identical to token vesting: a stream of future tokens with a known schedule and amount.
+
+## AI Node Categories
+
+The AI compute wave has created several new DePIN-adjacent categories:
+
+| Network | Node Type | Reward Type |
+|---|---|---|
+| Render Network | GPU rendering | RENDER tokens, per-job |
+| Akash Network | Cloud compute | AKT tokens, per-deployment |
+| Bittensor | AI inference | TAO tokens, per-subnet |
+| io.net | GPU cluster | IO tokens, per-hour |
+| XAI / Gala | Game servers | Token emissions, per epoch |
+| Helium | Wireless hotspots | HNT / IOT / MOBILE |
+| Hivemapper | Dashcam mapping | HONEY tokens |
+
+Each of these follows a published schedule. Minke can tokenize the expected future stream.
+
+## Example: AI Inference Node
+
+An operator running a Bittensor subnet validator expects 10,000 TAO over 36 months:
+
+```
+Month 0: Deposit 10,000 TAO future stream
+         VTs minted: 9,500 VT (95%)
+         Operator lists on Uniswap at 0.75 TAO discount
+
+         → Receives 7,125 TAO equivalent today
+         
+Months 1–36: TAO vests per emission schedule
+             VT buyers stake, earn pro-rata TAO unlocks
+
+Month 36: endVesting → Phase 2 → 1:1 redemption
+```
+
+The operator funded hardware upgrades or diversified their portfolio at month 0 for a 25% time-discount. The buyer got discounted TAO exposure with defined maturity.
+
+## Why DePIN Is Ideal for Minke
+
+**High operational costs.** DePIN operators have significant upfront hardware costs — GPUs, routers, cameras, storage drives. Accessing present value of future rewards helps finance operations without selling the entire position.
+
+**Long-horizon emissions.** 3–10 year emission schedules are common. Operators don't want to wait years to recover their investment.
+
+**Fragmented, long-tail nodes.** Unlike large protocol treasuries or institutional SAFTs, DePIN nodes are held by individual operators in small quantities. Minke's permissionless approach (no minimums) serves this long tail.
+
+**Growing TVL.** DePIN TVL has grown from near-zero in 2022 to $50B+ in 2025. As the sector matures, liquid secondary markets for node rewards become increasingly important.
+
+## Minke's DePIN Roadmap
+
+The Minke team is actively working on:
+
+1. **Standardized DePIN tranche templates** — pre-configured for the most common emission schedules
+2. **Node operator dashboard** — create and manage tranches from a purpose-built UI
+3. **Emissions oracle integration** — for networks where rewards vary slightly from projections
+4. **Cross-chain VT** — bridge VTs to the chains where DePIN rewards are native
+
+<Callout type="tip" title="Phase 2 relevance">
+For DePIN networks with variable emissions (dependent on node count or protocol activity), Minke's Phase 2 Yield Token will provide the right primitive. Phase 1 VT is ideal for networks with fixed, pre-published emission schedules.
+</Callout>

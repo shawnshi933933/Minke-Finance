@@ -1,0 +1,50 @@
+# FAQ
+
+<ComingSoon feature="Full FAQ" />
+
+## Frequently Asked Questions
+
+A selection of common questions. A full FAQ will be published at mainnet launch.
+
+### General
+
+**What is Minke?**
+Minke Finance is a protocol that converts illiquid vesting positions and future-income streams into tradable ERC-20 tokens (VTs). See [What is Minke?](/introduction/what-is-minke) for a full explanation.
+
+**Is Minke audited?**
+Audit reports will be published before mainnet launch. See [Deployments](/technical-reference/deployments) for current status.
+
+**Who controls the protocol?**
+Minke's deployed contracts are immutable — no admin can modify terms post-deploy. The `ContractRegistry` owner (a timelocked multisig) can authorize new factory contracts.
+
+**Is there a Minke token?**
+There is no MINKE governance token at launch. Future governance plans are described in [Long-Term Vision](/vision/long-term).
+
+### Protocol Mechanics
+
+**What is a VT?**
+A Vesting Token — a fungible ERC-20 representing a 1:1 claim on the underlying asset at vesting maturity. See [Vesting Token (VT)](/protocol/vesting-token).
+
+**Can I lose money using Minke?**
+If you sell VTs at a discount before maturity, you give up some value. If you hold VTs to maturity, you receive the underlying 1:1. The main risk is smart contract risk (bugs) and underlying token price risk.
+
+**What is the 5% fee for?**
+It funds the BuybackPool (exit liquidity in Phase 1) and protocol operations. It is collected once at deposit and never again. See [Fee Structure](/protocol/fee-structure).
+
+**Why does Minke not need an oracle?**
+DFI vesting schedules are deterministic — the contract knows exactly how many tokens vest at each moment without an external price feed. This is by design. See [Design Principles](/protocol/design-principles).
+
+### Trading VTs
+
+**Where can I buy or sell VTs?**
+VTs are standard ERC-20 tokens tradable on any DEX. Minke will maintain official liquidity pools on supported AMMs.
+
+**Are VTs transferable?**
+Yes, fully. There are no transfer restrictions on VTs.
+
+**What determines the VT price?**
+Market supply and demand, anchored by the 1:1 redemption guarantee at maturity. VTs trade at a discount to par that reflects time value and risk.
+
+<Callout type="info">
+More FAQs will be added regularly. For unanswered questions, reach out on Discord.
+</Callout>

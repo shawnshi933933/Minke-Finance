@@ -1,0 +1,71 @@
+# SAFTs and Team Vesting
+
+Simple Agreements for Future Tokens (SAFTs) and team/advisor vesting allocations are the highest-concentration DFI category in crypto — and the most natural fit for Minke.
+
+## The Status Quo
+
+Most token launches allocate 15–40% of total supply to team, advisors, and investors, vesting over 2–4 years with a 12-month cliff. This creates a structural problem:
+
+- **Teams** are locked in for years with significant personal wealth concentrated in one illiquid asset
+- **Investors** who want early returns must negotiate OTC deals at 20–40% discounts
+- **Protocols** face ongoing selling pressure as vesting unlocks create market overhangs
+
+None of this is necessary. Minke provides an alternative that preserves vesting terms while unlocking present value.
+
+## How Minke Solves It
+
+A team member with a 4-year vesting schedule can:
+
+1. Deposit their unvested allocation into Minke's `VestingFactory`
+2. Receive VTs representing the full vesting value (at 1:1 minus 5% fee)
+3. List VTs on a secondary market at a time-discount
+4. Access immediate liquidity without breaking the original vesting terms
+
+<Callout type="tip" title="Vesting terms preserved">
+The underlying tokens remain in the Minke contract on the original vesting schedule. From the protocol's perspective, nothing changes. Only the economic claim has been tokenized and made liquid.
+</Callout>
+
+## Example Flow
+
+Suppose an advisor holds 500,000 TOKEN vesting linearly over 24 months:
+
+```
+Month 0:  Deposit 500,000 TOKEN unvested position
+          → VestingFactory creates Tranche (24-month linear)
+          → Advisor receives 475,000 VT (95%)
+          → 25,000 TOKEN → BuybackPool
+
+Month 0:  Advisor sells 475,000 VT on Uniswap at 0.82 (18% discount)
+          → Receives 389,500 USDC immediately
+
+Month 1–24: Underlying tokens vest on schedule
+            VT buyers stake VTs, claim monthly unlocks
+            
+Month 24: endVesting() called
+          Remaining VT holders call redeemVT() → 1:1 TOKEN
+```
+
+The advisor obtained liquidity at month 0. The buyer obtained a 18% discount on future TOKEN exposure.
+
+## SAFT-Specific Considerations
+
+SAFTs are typically larger ($1M–$100M) and have more complex vesting terms (cliff + linear, multiple tranches). Minke handles these via:
+
+| SAFT Feature | Minke Mechanism |
+|---|---|
+| Cliff period | VTs are issued but Phase 1 distributions begin only after cliff |
+| Linear unlock | Checkpoints distribute pro-rata unlocks each period |
+| Multiple tranches | Multiple `VestingToken` contracts, one per tranche |
+| Token Generation Event | Deposit occurs at TGE; schedule starts from that block |
+
+## Benefits for Protocols
+
+Protocols that adopt Minke for their vesting infrastructure gain:
+
+- **Reduced selling pressure** — holders get liquidity without market selling
+- **Alignment signaling** — the underlying still vests; recipients haven't exited their belief in the protocol
+- **Institutional-grade tooling** — large funds and family offices can manage SAFT exposure through a standardised on-chain instrument
+
+<Callout type="info">
+Several protocols are exploring Minke-native vesting launches, where VTs are distributed directly to investors at TGE, removing the illiquidity friction from the outset.
+</Callout>

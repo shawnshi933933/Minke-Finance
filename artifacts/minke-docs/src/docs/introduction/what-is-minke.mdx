@@ -1,0 +1,56 @@
+# What is Minke?
+
+Minke Finance is a DeFi protocol that makes the time value of money tradable on-chain. By wrapping any vested or staked position into a fungible **Vesting Token (VT)**, Minke lets holders access the present value of their future claims — without waiting for lock-up periods to expire.
+
+<Callout type="tip" title="Core mission">
+Making future income positions as liquid and composable as any other on-chain asset.
+</Callout>
+
+## The Central Problem Minke Solves
+
+Most DeFi wealth sits in the future. Team tokens vest over four years. Staking rewards accumulate over months. RWA bonds mature in 12–36 months. Node licenses emit tokens over years.
+
+Holders of these positions face a hard trade-off:
+
+- **Wait** — and accept full illiquidity
+- **Sell the underlying** — and forfeit the entire position
+
+Minke introduces a third option: **tokenize the future claim, trade the token today**.
+
+## How the Protocol Works
+
+When you deposit a future-income position into Minke's `VestingFactory`, you receive a **Vesting Token (VT)** — an ERC-20 representing a 1:1 claim on the underlying asset.
+
+VTs are:
+- **Fungible** — any VT from the same tranche is identical
+- **Tradable** — list on any AMM or OTC desk immediately
+- **Composable** — use as collateral, borrow against them, or earn yield
+- **Redeemable** — present the VT at maturity for the underlying 1:1 (plus excess)
+
+```
+Holder → deposits future position → VestingFactory → mints VT
+Buyer  → acquires VT at discount → holds or stakes → claims at maturity
+```
+
+## Liquidity Without Sacrifice
+
+Traditional DeFi offers two extremes. Minke creates a new middle path:
+
+| Approach | Liquidity | Full Upside |
+|---|---|---|
+| Hold and wait | None | Yes |
+| Sell underlying | Immediate | No |
+| **Minke VT** | **Immediate** | **Yes (via VT price)** |
+
+The protocol is non-custodial, oracle-free, and permissionless — any team, protocol, or institution can create a tranche from a minimum of $1,000 worth of vested assets to a $100M SAFT.
+
+## Who It's For
+
+- **Token holders** with vested allocations who need present liquidity
+- **Protocols** that want to offer more attractive vesting structures to contributors
+- **Buyers** seeking discounted exposure to high-conviction assets with a defined maturity
+- **Institutional desks** managing large vesting book risk
+
+<Callout type="info">
+Minke is chain-agnostic and EVM-compatible. Initial deployment targets Ethereum mainnet and EVM L2s.
+</Callout>

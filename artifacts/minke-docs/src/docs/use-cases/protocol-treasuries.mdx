@@ -1,0 +1,84 @@
+# Protocol Treasuries
+
+On-chain protocol treasuries face a structural challenge: they hold billions in native tokens with future vesting schedules but cannot access present value without creating market selling pressure. Minke solves this.
+
+## The Treasury Dilemma
+
+Most DeFi protocols allocate 20–40% of token supply to a treasury, typically vesting over 2–5 years. This treasury is supposed to fund operations, grants, and growth — but it sits illiquid while the protocol needs cash for:
+
+- Engineering salaries (paid in stablecoins)
+- Security audits
+- Marketing and ecosystem grants
+- Regulatory and legal costs
+
+The naive solution — sell native tokens — creates immediate selling pressure and signals weakness. DAOs have learned this lesson repeatedly.
+
+## Minke for Treasury Management
+
+### Convert Vesting Treasury Into Liquid Instrument
+
+A DAO governance proposal can authorise the treasury multisig to:
+
+1. Deposit a portion of the unvested treasury allocation into Minke
+2. Receive VTs representing the future token stream
+3. Sell VTs on a secondary market at a time-discount
+
+This achieves liquidity for operational needs without market-selling the native token. The underlying token remains vesting on schedule — it's just the *claim* that has been tokenized.
+
+<Callout type="info" title="DAO governance compatible">
+Minke's interaction requires a standard multisig transaction. Any DAO using Gnosis Safe, Llama, or similar tooling can interact with Minke contracts without custom integrations.
+</Callout>
+
+### Example: Ecosystem Fund
+
+A DeFi protocol has 50M TOKEN in its ecosystem fund, vesting linearly over 4 years. It needs $2M USDC for the next 12 months of operations.
+
+```
+Treasury holds: 50,000,000 TOKEN vesting over 48 months
+
+Step 1: Deposit 12.5M TOKEN (12-month tranche)
+        VTs minted: 11,875,000 VT (95%)
+
+Step 2: Sell 11,875,000 VT on Uniswap at 0.92
+        → Receives ~10.9M USDC equivalent
+
+Step 3: Use USDC for operations, grants, audits
+
+Remaining 48-month treasury: unaffected
+VT buyers earn monthly TOKEN unlocks from the sold tranche
+```
+
+The protocol funded 12 months of operations at a 7–8% cost of capital — far cheaper than equity dilution or stablecoin debt.
+
+### Vesting VTs to Contributors
+
+Minke-native vesting is a powerful alternative to traditional vesting:
+
+Instead of granting contributors raw tokens with a cliff + linear schedule, protocols can:
+
+1. Create a Minke tranche with the contributor's allocation
+2. Grant the contributor VTs at day one
+3. The contributor receives VTs immediately — liquid, tradable, compostable
+
+This provides contributors real economic value at grant time while the underlying continues to vest.
+
+## Treasury Risk Management
+
+| Traditional Treasury | Minke-Enhanced Treasury |
+|---|---|
+| All future tokens illiquid | Portion tokenized as VTs |
+| Sell pressure if operations need funds | VTs sold OTC without direct market impact |
+| No yield on unvested allocation | Stake VTs for pro-rata unlocks |
+| Opaque valuation | VTs have observable market prices |
+
+## Protocol Integration
+
+The Minke team works directly with DAO treasuries to structure appropriate tranches. Considerations include:
+
+- **Tranche size** — typically 10–20% of total unvested treasury per tranche
+- **Schedule** — match Minke tranche to the treasury's actual vesting schedule
+- **Governance approval** — propose via DAO forum and execute via multisig
+
+<Callout type="tip">
+Protocols with active Minke integration receive co-marketing support and preferred liquidity bootstrapping from the Minke ecosystem fund. Reach out to the team to discuss.
+</Callout>

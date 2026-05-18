@@ -1,0 +1,56 @@
+# Yield Token (YT)
+
+The Yield Token is Minke's Phase 2 primitive for **Variable Future Income (VFI)** positions. While the Vesting Token (VT) handles deterministic schedules, the YT strips and tokenises variable yield for speculation or hedging.
+
+<ComingSoon feature="Yield Token (YT) — Phase 2" />
+
+## What YTs Will Enable
+
+When Phase 2 launches, YT will allow:
+
+- **Yield sellers** to lock in a fixed return by selling their future variable yield today
+- **Yield buyers** to gain leveraged exposure to a protocol's APY without holding the principal
+- **DAOs and treasuries** to hedge against yield compression in their core staking positions
+
+This mirrors how interest rate swaps work in TradFi: one party exchanges floating-rate exposure for fixed, the other takes on the floating rate in exchange for a premium.
+
+## VFI Asset Classes
+
+Phase 2 targets the following variable-yield categories:
+
+| Asset Type | Underlying Yield Source |
+|---|---|
+| Liquid staking (stETH, rETH) | ETH validator rewards |
+| Lending protocols (Aave, Compound) | Utilisation-rate APY |
+| LP positions | Trading fees + incentives |
+| Restaking operators | AVS fees via EigenLayer |
+| Governance incentives | Protocol emissions |
+
+## Planned Mechanism
+
+```
+Principal Token (PT) = claim on principal at maturity
+Yield Token (YT)     = claim on all yield until maturity
+
+PT + YT = original position
+```
+
+This mirrors Pendle's architecture but with Minke's oracle-free design philosophy extended where possible. For variable yield, a rate model will be required — the design details are under active research.
+
+<Callout type="info" title="Phase 2 timeline">
+Phase 2 development begins after Phase 1 (VT/DFI) reaches stability and sufficient TVL. Follow our roadmap for updates.
+</Callout>
+
+## Why VFI Is Different
+
+Unlike DFI, variable yield positions require:
+
+1. **A rate model** — to price the yield stream at origination
+2. **Ongoing settlement** — yield must be routed to YT holders continuously
+3. **Oracle integration** — the "fair value" of the yield stream depends on external data
+
+These additional requirements are why Minke launched with DFI first: oracle-free architecture is simpler, safer, and auditable. VFI adds complexity that requires a mature protocol foundation.
+
+<Callout type="warning">
+Yield Token documentation will be published when Phase 2 launches. The design described here is illustrative and subject to change.
+</Callout>

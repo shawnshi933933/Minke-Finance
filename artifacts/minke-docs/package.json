@@ -75,6 +75,9 @@
     "zod": "catalog:"
   },
   "dependencies": {
+    "@mdx-js/react": "^3.1.1",
+    "@mdx-js/rollup": "^3.1.1",
+    "@monaco-editor/react": "^4.7.0",
     "react-markdown": "^10.1.0",
     "remark-gfm": "^4.0.1"
   }

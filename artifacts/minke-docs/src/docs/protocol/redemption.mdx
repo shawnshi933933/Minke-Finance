@@ -1,0 +1,114 @@
+# Redemption
+
+Minke's redemption model has two distinct phases: Phase 1 (pro-rata streaming while vesting is active) and Phase 2 (1:1 redemption after vesting ends).
+
+## Phase 1: Pro-Rata Streaming
+
+During Phase 1, underlying tokens vest continuously according to the schedule. VT holders who have staked their tokens receive pro-rata shares of these unlocks.
+
+### How Phase 1 Claims Work
+
+1. The vesting contract accumulates newly vested tokens over time
+2. Any account can call `checkpointVesting()` to distribute newly vested tokens
+3. Stakers call `claimT()` to withdraw their share
+
+```
+Phase 1 flow:
+time passes → tokens vest → checkpoint → accVTPerShare increases
+staker calls claimT() → receives (staked × accVTPerShare) - debt
+```
+
+The checkpoint pattern ensures gas efficiency: the accumulator update is O(1) regardless of how many stakers are in the pool.
+
+<Callout type="info">
+Phase 1 claims are partial exits. Each claim reduces the amount of underlying that will be available for Phase 2 redemption. This is by design — it correctly prices the VT at market-determined time discount.
+</Callout>
+
+### Unstaking in Phase 1
+
+Stakers can unstake at any time by calling `unstakeVT(amount)`. This removes them from the staking pool and stops their accumulation of new unlocks. Their pending rewards up to that point remain claimable.
+
+## Phase 2: 1:1 Redemption
+
+### Triggering endVesting
+
+Once the tranche's vesting end time has passed, anyone can call:
+
+```solidity
+function endVesting() external;
+```
+
+This is a permissionless call. It:
+1. Performs a final `checkpointVesting()` to distribute any remaining unlocks
+2. Records `excessT` — the total underlying remaining in the contract after all Phase 1 claims
+3. Records `totalSupplyAtEnd` — the total outstanding VT supply
+4. Sets `phase2Active = true`
+
+### The excessT Calculation
+
+```
+excessT = totalDeposited × 0.95 − Σ (all Phase 1 claims)
+```
+
+Where `totalDeposited × 0.95` is the deposited amount after the 5% protocol fee.
+
+### Redeeming VTs
+
+In Phase 2, VT holders call:
+
+```solidity
+function redeemVT(uint256 vtAmount) external;
+```
+
+The redemption amount is:
+
+```
+received = vtAmount × (excessT / totalSupplyAtEnd)
+```
+
+Because every Phase 1 claimer reduces both `excessT` and the outstanding VT supply proportionally, this ratio remains stable at approximately 1:1 regardless of how much was claimed in Phase 1.
+
+### Worked Example
+
+Suppose a tranche is created with 1,000,000 TOKEN deposited:
+
+```
+Initial deposit:     1,000,000 TOKEN
+Protocol fee (5%):      50,000 TOKEN → BuybackPool
+Net underlying:        950,000 TOKEN
+VTs minted:            950,000 VT
+
+Phase 1 claims (50%):  475,000 TOKEN claimed by stakers
+                       475,000 VT burned on unstake/claim
+
+Phase 2 begins:
+  excessT:             475,000 TOKEN remaining
+  totalSupplyAtEnd:    475,000 VT remaining
+
+Redemption ratio:      475,000 / 475,000 = 1.0
+Each VT redeems for:   1.00 TOKEN ✓
+```
+
+<Callout type="tip" title="Always 1:1 at maturity">
+The mathematical design ensures that regardless of Phase 1 staking behaviour, VTs always redeem at exactly 1:1 (or better) in Phase 2. This is the protocol's core value guarantee.
+</Callout>
+
+## Redemption Timeline
+
+| Event | Who Can Call | When |
+|---|---|---|
+| `stakeVT` | VT holder | Any time in Phase 1 |
+| `claimT` | Staker | Any time in Phase 1 |
+| `unstakeVT` | Staker | Any time in Phase 1 |
+| `endVesting` | Anyone | After vesting end time |
+| `redeemVT` | VT holder | Phase 2 only |
+
+## Edge Cases
+
+### What if nobody stakes in Phase 1?
+
+If no VT holder stakes during Phase 1, `excessT = totalDeposited × 0.95` and `totalSupplyAtEnd = 950,000 VT`. Redemption is still 1:1. The underlying simply accumulates in the contract until Phase 2.
+
+### What if all VTs are burned in Phase 1?
+
+If all stakers claim their full allocation during Phase 1, `excessT = 0` and `totalSupplyAtEnd = 0`. Phase 2 has nothing to distribute — but there are also no outstanding VTs to redeem. No value is lost.

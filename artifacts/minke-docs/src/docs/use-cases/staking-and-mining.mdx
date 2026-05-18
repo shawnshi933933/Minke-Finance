@@ -1,0 +1,67 @@
+# Staking and Mining
+
+Proof-of-Stake validators and proof-of-work miners accumulate future rewards that are structurally similar to vesting schedules: deterministic rates, known schedules, rule-based emissions. Minke tokenises these streams.
+
+## Staking Rewards as DFI
+
+A validator running on Ethereum earns a predictable APY (currently ~4%). While individual block rewards have slight variance, the total expected reward over a fixed period is calculable and can be treated as DFI.
+
+The same logic applies to:
+
+- **Ethereum validators** — 32 ETH staked, ~4% APY in ETH
+- **Solana delegators** — staking rewards paid every epoch
+- **Cosmos validators** — ATOM, OSMO, and IBC chain rewards
+- **Binance Smart Chain** — BNB staking emissions
+
+<Callout type="info">
+Minke's VT model works best for staking positions where the reward amount and schedule are fixed at commitment time. Liquid staking derivatives (stETH, rETH) represent already-liquid staking positions and require the YT mechanism instead.
+</Callout>
+
+## Mining Future Rewards
+
+Bitcoin miners have known revenue curves based on hashrate share, difficulty adjustments, and block rewards. While individual block rewards are probabilistic, a mining operation with stable hashrate can project future BTC income with reasonable confidence.
+
+Some mining entities write binding agreements to receive a fixed BTC amount over a defined period (hash rate agreements). These are pure DFI and ideal Minke candidates.
+
+Similarly, **DePIN mining operations** emit tokens to node operators on fixed schedules. See [DePIN and AI Nodes](/use-cases/depin-and-ai-nodes) for details.
+
+## Example: ETH Validator Pool
+
+A validator pool operator has 1,000 ETH staked and expects 40 ETH in rewards over the next 12 months:
+
+```
+Deposit: 40 ETH (future rewards, linear monthly)
+VTs minted: 38 ETH worth of VT (95%)
+ 
+Pool participants sell VTs at 0.93 ETH discount
+→ Receive 35.34 ETH today
+
+Buyers stake VTs, earn monthly ETH unlocks
+Month 12: endVesting → redeemVT for remaining ETH
+```
+
+The pool accessed 35.34 ETH today instead of waiting 12 months for 38 ETH. A 7% cost of liquidity compared to a 12-month wait.
+
+## Node License Rewards
+
+Node licenses are a growing category: protocols sell the right to run a node for a fixed term, with deterministic token emissions over that term. Examples include:
+
+- Helium node operators
+- Hivemapper drivers (dashcam rewards)
+- Render Network GPU providers
+- XAI Sentry nodes
+
+Each of these follows a published emission schedule. Minke can tokenize the future emission stream into VTs that can be traded, staked, or held.
+
+## Key Advantages for Stakers/Miners
+
+| Benefit | Detail |
+|---|---|
+| **No unstaking required** | The underlying staking position remains intact |
+| **Portfolio diversification** | Convert concentrated staking exposure into stablecoins or other assets |
+| **Operational capital** | Mining operations can fund hardware purchases against future mining rewards |
+| **Yield on yield** | VT buyers who stake earn the pro-rata unlocks — effectively compounding |
+
+<Callout type="warning" title="Variable staking rewards">
+Staking rewards that depend on utilisation rates, validator count changes, or protocol governance decisions are VFI — they are better suited for Minke Phase 2 (Yield Token). Only use Phase 1 VT for staking positions with deterministic, pre-committed schedules.
+</Callout>

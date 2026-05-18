@@ -1,0 +1,133 @@
+# VestingFactory
+
+`VestingFactory` is the primary entry-point contract for the Minke protocol. It orchestrates the creation of Suites, Tranches, VestingToken deployments, and BuybackPool deployments.
+
+## Overview
+
+```solidity
+contract VestingFactory {
+    ContractRegistry public immutable registry;
+
+    event SuiteCreated(uint256 suiteId, address underlying, string name);
+    event TrancheCreated(uint256 trancheId, uint256 suiteId, address vestingToken, address buybackPool);
+
+    function createSuite(address underlying, string calldata name) external returns (uint256 suiteId);
+    function createTranche(uint256 suiteId, uint256 amount, uint256 vestStart, uint256 vestEnd)
+        external returns (uint256 trancheId, address vestingToken, address buybackPool);
+}
+```
+
+## Suite Creation
+
+```solidity
+function createSuite(
+    address underlying,
+    string calldata name
+) external returns (uint256 suiteId)
+```
+
+Creates a logical grouping for all tranches with the same underlying ERC-20.
+
+**Parameters:**
+- `underlying` — the ERC-20 token address (e.g., the protocol's native token)
+- `name` — human-readable name (e.g., "Acme Protocol — Team Vesting")
+
+**Returns:** `suiteId` — a unique integer identifier for this Suite
+
+**Effects:**
+- Increments internal Suite counter
+- Stores `underlying` and `name` against the new `suiteId`
+- Registers Suite in `ContractRegistry`
+- Emits `SuiteCreated`
+
+## Tranche Creation
+
+```solidity
+function createTranche(
+    uint256 suiteId,
+    uint256 amount,
+    uint256 vestStart,
+    uint256 vestEnd
+) external returns (
+    uint256 trancheId,
+    address vestingToken,
+    address buybackPool
+)
+```
+
+Deploys a `VestingToken` and `BuybackPool` for a specific vesting schedule within a Suite.
+
+**Parameters:**
+- `suiteId` — the Suite this Tranche belongs to
+- `amount` — total amount of underlying to deposit (before fee)
+- `vestStart` — Unix timestamp when vesting begins (can be in the past for already-vesting positions)
+- `vestEnd` — Unix timestamp when vesting ends
+
+**Pre-conditions:**
+- Caller must have approved `VestingFactory` to spend `amount` of the underlying token
+- `vestStart < vestEnd`
+- `amount > 0`
+
+**Effects on creation:**
+1. Transfers `amount` of underlying from `msg.sender` to the new `VestingToken` contract
+2. Applies 5% protocol fee: routes `amount × 0.05` to `BuybackPool`
+3. Mints `amount × 0.95` VTs to `msg.sender`
+4. Registers the Tranche in `ContractRegistry`
+5. Emits `TrancheCreated`
+
+## Fee Application
+
+```solidity
+uint256 constant FEE_BPS = 500; // 5%
+uint256 constant FEE_DENOM = 10_000;
+
+uint256 fee = amount * FEE_BPS / FEE_DENOM;          // 5%
+uint256 netDeposit = amount - fee;                    // 95%
+
+// Transfer fee to BuybackPool
+IERC20(underlying).transferFrom(msg.sender, buybackPool, fee);
+
+// Transfer net deposit to VestingToken
+IERC20(underlying).transferFrom(msg.sender, vestingToken, netDeposit);
+
+// Mint VTs to depositor
+VestingToken(vestingToken).mint(msg.sender, netDeposit);
+```
+
+<Callout type="info">
+The fee is calculated with integer division. Dust from rounding (< 1 wei) is handled by the VestingToken's accumulator precision.
+</Callout>
+
+## Events
+
+```solidity
+event SuiteCreated(
+    uint256 indexed suiteId,
+    address indexed underlying,
+    string name
+);
+
+event TrancheCreated(
+    uint256 indexed trancheId,
+    uint256 indexed suiteId,
+    address vestingToken,
+    address buybackPool,
+    uint256 amount,
+    uint256 vestStart,
+    uint256 vestEnd
+);
+```
+
+## Access Control
+
+`VestingFactory` has no `onlyOwner` or `onlyAdmin` modifiers on its public functions. Any address can call `createSuite` and `createTranche`. This is intentional — the protocol is permissionless.
+
+The only privileged address in the system is the `ContractRegistry` owner, which can add new authorized factory contracts in future upgrades. This owner is a timelocked governance multisig.
+
+## Gas Estimates
+
+| Operation | Approximate Gas |
+|---|---|
+| `createSuite` | ~80,000 gas |
+| `createTranche` | ~350,000 gas |
+| (includes 2× ERC-20 transfers and 2 contract deployments) | |

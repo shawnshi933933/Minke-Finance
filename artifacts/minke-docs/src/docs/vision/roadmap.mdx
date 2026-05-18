@@ -1,0 +1,74 @@
+# Roadmap
+
+Minke's development is structured in two major phases, with long-term composability goals that extend the protocol into the foundational infrastructure layer for all on-chain future income.
+
+## Phase 1: DFI and Vesting Tokens (Now)
+
+Phase 1 is the oracle-free, deterministic future income layer. It is live on testnet and launching on mainnet in 2025.
+
+### Deliverables
+
+| Milestone | Status |
+|---|---|
+| `VestingFactory` smart contract | Complete |
+| `VestingToken` ERC-20 contract | Complete |
+| `ContractRegistry` | Complete |
+| `BuybackPool` contract | Complete |
+| Security audits | In progress |
+| Minke web app (create + manage tranches) | In progress |
+| Ethereum mainnet deployment | Planned Q3 2025 |
+| Base + Arbitrum deployment | Planned Q4 2025 |
+
+### Target Users in Phase 1
+
+- Protocol teams with unvested treasury allocations
+- SAFT investors seeking present liquidity
+- DePIN node operators with fixed emission schedules
+- Institutional desks managing vesting book risk
+
+## Phase 2: VFI and Yield Tokens (2026)
+
+Phase 2 extends Minke to variable future income — the yield stripping layer.
+
+### What Changes
+
+Phase 2 introduces the **Yield Token (YT)**, a new primitive for VFI positions where the amount of future income is not fixed. This requires:
+
+1. A rate model for pricing variable yield streams
+2. Ongoing yield routing (vs. one-time deposit in Phase 1)
+3. Oracle integration for yield streams that depend on external market state
+
+### Target Users in Phase 2
+
+- Liquid staking holders (stETH, rETH, cbETH)
+- Lending protocol yield sellers (Aave, Compound, Morpho)
+- Restaking operators (EigenLayer AVS participants)
+- LP fee income holders
+
+See [Phase 2: VFI and YT](/vision/phase-2-vfi) for detailed architecture.
+
+## Long-Term Goals
+
+Beyond Phase 1 and 2, Minke aims to become the shared standard for every future-income position on-chain:
+
+### AMM Integration
+
+Purpose-built AMM curves for VT/underlying pairs that account for time-to-maturity — similar to how Curve's V2 handles pegged assets. This removes the need for external AMMs and improves price efficiency.
+
+### Lending Protocol Integration
+
+VTs as first-class collateral in Aave, Morpho, and Euler. Because VTs have a deterministic maturity value, they are ideal collateral for fixed-term loans.
+
+### Structured Products
+
+- **Zero-coupon notes** — bundle VTs into tranched notes for institutional buyers
+- **Discount bonds** — wrap VT positions into bond-format instruments for TradFi distribution
+- **VT index funds** — diversified baskets of VTs across multiple protocols and maturities
+
+### Cross-Chain
+
+Minke VTs as a cross-chain primitive. Bridge VTs to any EVM chain without losing the redemption guarantee. This enables VT holders on Ethereum to provide liquidity on high-throughput L2s.
+
+<Callout type="tip" title="The long-term vision">
+Minke's goal is to be the standard financial primitive that any future-income position plugs into — the same role that ERC-20 plays for fungible tokens, but specifically designed for time-valued claims.
+</Callout>

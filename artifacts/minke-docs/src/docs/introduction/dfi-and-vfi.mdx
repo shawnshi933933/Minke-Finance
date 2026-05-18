@@ -1,0 +1,75 @@
+# DFI and VFI
+
+Minke introduces a formal classification framework for on-chain future income: **Deterministic Future Income (DFI)** and **Variable Future Income (VFI)**. This distinction shapes which protocol primitives apply to each asset class.
+
+## Deterministic Future Income (DFI)
+
+DFI is any on-chain income stream where both the **amount** and the **schedule** are fully known in advance.
+
+### Characteristics
+- Fixed principal amount per time unit
+- Predictable unlock or maturity date
+- No oracle dependency for valuation
+- Compatible with Phase 1 of Minke (Vesting Token)
+
+### Examples
+
+| Asset Type | Schedule Source | Amount Source |
+|---|---|---|
+| Team / advisor vesting | Smart contract cliff + linear | Token allocation |
+| SAFT allocations | Legal agreement + unlock contract | Investment amount |
+| Node licenses | Protocol emission schedule | Published emission curve |
+| Tokenized RWA bonds | Bond indenture | Face value + coupon |
+| Fixed-term staking | Validator lockup period | Committed reward APR |
+
+<Callout type="info">
+DFI positions are ideal for Minke's **Vesting Token (VT)** model. Because both amount and schedule are known, VTs can be priced against a discount curve without any oracle.
+</Callout>
+
+## Variable Future Income (VFI)
+
+VFI is any on-chain income stream where the **amount** is unknown at origination — it depends on future protocol state, utilisation, or market conditions.
+
+### Characteristics
+- Amount unknown at time of deposit
+- Yield varies with external factors (TVL, utilisation rate, emissions)
+- Requires a different stripping mechanism
+- Addressed by Minke's Phase 2 **Yield Token (YT)** primitive
+
+### Examples
+
+| Asset Type | Why Variable |
+|---|---|
+| Lending protocol yield (Aave, Compound) | APY fluctuates with utilisation |
+| LP fee income | Proportional to trading volume |
+| Restaking operator rewards | Depends on AVS fees and slashing |
+| Liquid staking derivatives | ETH staking APR shifts with validator set |
+| Farming / incentive emissions | Subject to governance changes |
+
+## Why the Distinction Matters
+
+The DFI/VFI classification is not just taxonomic — it determines the correct pricing model and risk structure for each protocol primitive.
+
+```
+DFI → fixed schedule → no oracle needed → VT (Phase 1)
+VFI → variable yield → needs rate model → YT (Phase 2)
+```
+
+By separating these two categories, Minke can build purpose-fit primitives rather than one-size-fits-all wrappers:
+
+- **VT** achieves oracle-free pricing because the underlying cash flow is deterministic
+- **YT** strips yield for speculation or hedging — useful for DAOs managing APY exposure without exiting their core positions
+
+<Callout type="tip" title="Design implication">
+The DFI model was specifically chosen for Phase 1 because it eliminates the need for any oracle dependency. This means Minke can launch without any price feed and without any liquidation mechanism.
+</Callout>
+
+## Classification in Practice
+
+When a protocol or individual deposits a position into Minke, the first question is classification:
+
+1. **Is the total future amount fixed?** → DFI
+2. **Is the schedule deterministic?** → DFI (still)
+3. **Does the yield depend on future market conditions?** → VFI
+
+Most early-phase token positions (team allocations, SAFT unlocks, investor tranches) are **DFI** by this definition, even if the underlying token price is variable. Minke's VT prices the *claim* at a discount — not the token itself.

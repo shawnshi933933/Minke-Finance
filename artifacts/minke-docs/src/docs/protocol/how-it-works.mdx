@@ -1,0 +1,84 @@
+# How It Works
+
+Minke converts illiquid future-income positions into tradable tokens in four steps. No oracles. No counterparty. No haircuts.
+
+## The Four-Step Flow
+
+```
+1. DEPOSIT    — Holder deposits future-income position into VestingFactory
+2. RECEIVE VT — Protocol mints VTs (1:1 with underlying) into holder's wallet
+3. TRADE/HOLD — Holder sells VTs at a discount, stakes them, or holds to maturity
+4. REDEEM     — VT holder redeems at maturity for underlying 1:1 (plus excess)
+```
+
+Each step is a permissionless on-chain action. There is no centralized intermediary in any step.
+
+## Step 1: Deposit
+
+A protocol team, investor, or individual calls `VestingFactory.createTranche()` (or uses the Minke app) to deposit a vesting position.
+
+**What happens on-chain:**
+1. `VestingFactory` creates a new `VestingToken` contract for the tranche
+2. Deposits the underlying token into the `VestingToken` contract
+3. Registers the tranche in `ContractRegistry`
+4. Applies the 5% protocol fee (routed to BuybackPool)
+
+<Callout type="info">
+The minimum deposit is flexible — any amount works. The protocol is designed for everything from a $1k personal vesting position to a $100M institutional SAFT.
+</Callout>
+
+## Step 2: Receive VT
+
+Immediately after deposit, the depositor receives Vesting Tokens at a **1:1 ratio** with the net deposited amount (after the 5% fee).
+
+```solidity
+// Example: deposit 1,000,000 TOKEN
+// Fee: 50,000 TOKEN → BuybackPool
+// VTs minted: 950,000 VT
+```
+
+VTs are standard ERC-20 tokens. They can be:
+- Transferred to any wallet
+- Listed on Uniswap, Curve, or any AMM
+- Deposited into lending protocols as collateral
+- Sold OTC to buyers seeking discounted future exposure
+
+## Step 3: Trade, Hold, or Stake
+
+The depositor now chooses what to do with their VTs:
+
+| Action | Mechanism | Outcome |
+|---|---|---|
+| **Sell** | List on AMM at a discount | Immediate liquidity, give up future upside |
+| **Hold** | Keep VTs | Appreciate as maturity approaches |
+| **Stake** | Call `stakeVT()` | Earn pro-rata unlocks during Phase 1 |
+
+VT buyers on secondary markets are making a time-value-of-money bet: they acquire future claims at a discount and redeem at par at maturity.
+
+## Step 4: Redeem
+
+Once the vesting schedule ends, the protocol calls `endVesting()` which:
+1. Locks Phase 1 staking
+2. Calculates total excess tokens (unclaimed underlying)
+3. Opens Phase 2 — `redeemVT()` is now available
+
+In Phase 2, any VT holder calls `redeemVT(amount)` and receives:
+```
+redeemed = amount × (excessT / totalVT)
+```
+
+Because VTs are 1:1 backed (and excess may have accumulated from unclaimed rewards), holders typically receive **≥ 1 underlying per VT**.
+
+<Callout type="tip" title="No oracles, no liquidations">
+At no point does Minke consult an external price feed. The 1:1 backing guarantee is mathematical — not economic — making the system immune to oracle manipulation and collateral cascades.
+</Callout>
+
+## Protocol Parameters
+
+| Parameter | Value | Changeable? |
+|---|---|---|
+| Protocol fee | 5% at deposit | No (per-tranche, set at creation) |
+| User share | 95% | No |
+| Min deposit | No minimum | N/A |
+| Vesting schedule | Set at tranche creation | No |
+| Admin key | None after deploy | N/A |

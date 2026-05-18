@@ -1,0 +1,91 @@
+# Phase 2: VFI and Yield Tokens
+
+Phase 2 extends Minke from deterministic future income (DFI) to variable future income (VFI) — the yield stripping layer.
+
+## Background: Why Phase 2 Exists
+
+Phase 1 works perfectly for DFI because vesting schedules are deterministic: the amount and timing are fixed. No oracle is required.
+
+VFI positions — lending APY, LP fees, restaking rewards — have unknown future amounts. Pricing them requires a model for the expected yield, which introduces oracle dependency and rate risk. This added complexity is why Minke tackled DFI first.
+
+Phase 2 addresses VFI with a new primitive: the **Yield Token (YT)**.
+
+## The YT Model
+
+```
+Original position = Principal + Variable Yield
+
+VFI Deposit
+    │
+    ├── Principal Token (PT) — fixed claim on principal at maturity
+    └── Yield Token (YT)    — claim on all yield until maturity
+```
+
+YT holders receive variable yield as it accrues. PT holders receive the principal back at maturity. Together, PT + YT reconstruct the original position.
+
+### Yield Sellers
+
+A holder of a VFI position who wants to **lock in a fixed return** sells their YTs:
+
+```
+I hold 100 stETH earning ~4% APY
+I sell 1-year YTs for 3.6 ETH fixed today
+I keep 100 PT (get 100 ETH back at year end)
+Net: I locked in 3.6 ETH immediately, gave up variable upside
+```
+
+### Yield Buyers
+
+A trader who wants **leveraged yield exposure** buys YTs:
+
+```
+I pay 3.6 ETH today for 1-year YTs on 100 stETH
+If stETH APY goes to 6%, I earn 6 ETH → 2.4 ETH profit
+If stETH APY drops to 2%, I earn 2 ETH → 1.6 ETH loss
+```
+
+This is structurally equivalent to an interest rate swap: one party exchanges floating for fixed, the other takes floating.
+
+## Key Differences from Phase 1
+
+| Dimension | Phase 1 (VT) | Phase 2 (YT) |
+|---|---|---|
+| Income type | Deterministic (DFI) | Variable (VFI) |
+| Oracle needed | No | Yes (yield rate) |
+| Liquidation risk | None | Possible (for PT borrowers) |
+| Pricing model | Time discount only | Rate model required |
+| Redemption | 1:1 + excess | PT at par, YT at accrued yield |
+
+## VFI Asset Classes for Phase 2
+
+| Asset | Yield Source | Oracle Type |
+|---|---|---|
+| stETH / cbETH | ETH staking APR | On-chain (EIP-4788) |
+| Aave aTokens | Utilisation-rate APY | Aave oracle |
+| Curve LP tokens | Trading fees + CRV | Fee accumulator |
+| EigenLayer AVS | Restaking rewards | Custom per-AVS |
+| Pendle PT/YT | Pendle rate market | Pendle oracle |
+
+## Rate Model Design
+
+The central challenge of YT pricing is: **what is a fair price for 1 year of 4% APY today?**
+
+Minke's Phase 2 rate model will:
+1. Observe historical and implied yield rates for the underlying
+2. Apply a discount curve (similar to TradFi term structure)
+3. Enable AMM-based price discovery to refine the rate over time
+
+The model is under active research. Minke will publish a technical whitepaper before Phase 2 testnet launch.
+
+<Callout type="info">
+Phase 2 development begins after Phase 1 reaches mainnet stability and sufficient TVL milestones. Target: mainnet H1 2026.
+</Callout>
+
+## Composability with Phase 1
+
+Phase 1 VTs and Phase 2 YTs/PTs will coexist in the same registry. A single underlying position could have:
+
+- A VT for its DFI component (fixed unlock schedule)
+- A YT/PT pair for its VFI component (variable yield layer)
+
+This composability is the foundation for Minke's long-term goal of becoming the unified primitive layer for all on-chain future income.

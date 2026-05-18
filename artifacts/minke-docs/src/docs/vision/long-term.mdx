@@ -1,0 +1,91 @@
+# Long-Term Vision
+
+Minke's long-term goal is to become the shared standard for every future-income position on-chain — the infrastructure layer that makes time value of money as composable as any ERC-20.
+
+## The Thesis
+
+Finance, at its core, is about moving value through time. Every major financial market has solved this problem for its asset class:
+
+- **Fixed income** — bond markets, repo, futures, strip markets
+- **Equity** — options, warrants, convertibles
+- **Commodities** — futures, forwards, term contracts
+
+**DeFi has not solved this for on-chain future income.** Minke is building that solution.
+
+## The Infrastructure Vision
+
+Minke aims to be as foundational to DeFi's future-income layer as:
+
+- **Uniswap** is to spot trading
+- **Aave** is to borrowing and lending
+- **Chainlink** is to price data
+
+A world where every vesting schedule, staking reward, bond coupon, and emission stream is represented on-chain as a liquid, composable, 1:1-backed token.
+
+## Key Long-Term Goals
+
+### Universal VT Standard
+
+Propose and advocate for an EIP/ERC standard for future-income tokens:
+
+```
+ERC-XXXX: Future Income Token Standard
+- Interface for VT-like tokens
+- Standard events for checkpoint, stake, redeem
+- Metadata schema for maturity date, underlying, schedule type
+```
+
+This standard would allow any protocol that emits tokens on a schedule to issue VTs without using Minke specifically — while Minke VTs would be the reference implementation.
+
+### On-Chain Term Structure
+
+Build the primitive for a DeFi yield curve:
+
+```
+VT/underlying price by maturity → yield curve
+3-month VT yield: 4.2%
+6-month VT yield: 4.8%
+12-month VT yield: 5.5%
+24-month VT yield: 6.1%
+```
+
+This is the foundation for interest-rate derivatives on-chain — a market that doesn't yet exist in DeFi.
+
+### Protocol-Native Vesting
+
+Make Minke-native vesting the default for new protocol launches:
+
+> Instead of minting raw tokens to a vesting contract that nobody can access, mint VTs directly. Your contributors get immediate liquidity; your protocol gets reduced selling pressure; the market gets a tradable time-value instrument.
+
+### Institutional Fixed Income
+
+Partner with RWA tokenization protocols to create on-chain bond strip markets comparable to TradFi STRIPS:
+
+- **P-STRIPS** (Principal STRIPS) = Principal Token (PT)
+- **C-STRIPS** (Coupon STRIPS) = VT series for each coupon date
+
+This would bring DeFi into alignment with the $130T global fixed income market.
+
+## Governance
+
+Minke's long-term governance model is under design. Key principles:
+
+- **Protocol parameters** (fee, BuybackPool split) governed by token holders
+- **Contract upgrades** require timelocked proposals with supermajority
+- **Immutability of existing tranches** — governance cannot change terms for already-deployed tranches
+
+A governance token will be introduced at an appropriate point in protocol maturity. The team is committed to a fair distribution that prioritizes actual users and protocol participants over speculation.
+
+<Callout type="tip" title="Shared standard vision">
+Minke's ultimate success is not measured by Minke's own TVL — it is measured by how much of the world's future income is represented on-chain as composable, liquid instruments. Whether that's via Minke directly or via protocols that adopt the standard Minke established.
+</Callout>
+
+## Timeline Summary
+
+| Phase | Focus | Target |
+|---|---|---|
+| Phase 1 | DFI / VT / oracle-free | 2025 mainnet |
+| Phase 2 | VFI / YT / rate model | H1 2026 |
+| Phase 3 | AMM curves + lending | H2 2026 |
+| Phase 4 | Cross-chain + institutional | 2027 |
+| Long-term | Universal standard + governance | Ongoing |

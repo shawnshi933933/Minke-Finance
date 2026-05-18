@@ -1,0 +1,141 @@
+# VestingToken Contract
+
+`VestingToken` is the ERC-20 contract deployed per tranche. It holds deposited underlying tokens, manages staking and pro-rata distribution in Phase 1, and enables 1:1 redemption in Phase 2.
+
+## Contract Signature
+
+```solidity
+contract VestingToken is ERC20 {
+    address public immutable underlying;
+    address public immutable buybackPool;
+    uint256 public immutable vestStart;
+    uint256 public immutable vestEnd;
+
+    uint256 public accVTPerShare;       // 1e18 scaled accumulator
+    uint256 public totalStaked;
+    uint256 public lastCheckpointTime;
+    bool public phase2Active;
+
+    mapping(address => uint256) public userStaked;
+    mapping(address => uint256) public userDebt;
+}
+```
+
+## Immutable State
+
+All tranche parameters are set once at construction and cannot be changed:
+
+| Variable | Description |
+|---|---|
+| `underlying` | The ERC-20 token being vested |
+| `buybackPool` | The BuybackPool contract for this tranche |
+| `vestStart` | Unix timestamp when vesting begins |
+| `vestEnd` | Unix timestamp when vesting ends |
+
+## Phase 1 Functions
+
+### stakeVT
+
+```solidity
+function stakeVT(uint256 amount) external
+```
+
+Moves `amount` of VT from the caller's wallet into the staking pool.
+
+1. Calls `checkpointVesting()` to bring accumulator current
+2. Settles any pending rewards for the caller (adds to `claimable` mapping)
+3. Transfers `amount` VT from caller to this contract
+4. Updates `userStaked[msg.sender]` and `userDebt[msg.sender]`
+
+### unstakeVT
+
+```solidity
+function unstakeVT(uint256 amount) external
+```
+
+Removes `amount` of staked VT from the pool and returns it to the caller.
+
+### claimT
+
+```solidity
+function claimT() external
+```
+
+Transfers the caller's accumulated pending rewards (underlying tokens) to their wallet.
+
+```solidity
+uint256 pending = (userStaked[msg.sender] * accVTPerShare / 1e18) - userDebt[msg.sender];
+userDebt[msg.sender] = userStaked[msg.sender] * accVTPerShare / 1e18;
+IERC20(underlying).transfer(msg.sender, pending);
+```
+
+### checkpointVesting
+
+```solidity
+function checkpointVesting() public
+```
+
+Updates `accVTPerShare` based on newly vested tokens since the last checkpoint.
+
+```solidity
+uint256 currentTime = block.timestamp < vestEnd ? block.timestamp : vestEnd;
+uint256 elapsed = currentTime - lastCheckpointTime;
+uint256 totalDuration = vestEnd - vestStart;
+
+uint256 totalUnderlying = IERC20(underlying).balanceOf(address(this));
+uint256 vestedSinceLast = totalUnderlying * elapsed / totalDuration;
+
+if (totalStaked > 0) {
+    accVTPerShare += vestedSinceLast * 1e18 / totalStaked;
+}
+lastCheckpointTime = currentTime;
+```
+
+<Callout type="info">
+`checkpointVesting()` is permissionless and can be called by anyone. Frontends call it automatically before staking/claiming to ensure up-to-date reward accounting.
+</Callout>
+
+## Phase Transition
+
+### endVesting
+
+```solidity
+function endVesting() external
+```
+
+**Requirements:** `block.timestamp >= vestEnd`
+
+1. Performs a final `checkpointVesting()`
+2. Records `excessT = IERC20(underlying).balanceOf(address(this))`
+3. Records `totalSupplyAtEnd = totalSupply()`
+4. Sets `phase2Active = true`
+
+After `endVesting()`, staking and claiming are disabled.
+
+## Phase 2 Functions
+
+### redeemVT
+
+```solidity
+function redeemVT(uint256 vtAmount) external
+```
+
+**Requirements:** `phase2Active == true`
+
+Burns `vtAmount` of VT and transfers the proportional underlying to the caller:
+
+```solidity
+uint256 redeemed = vtAmount * excessT / totalSupplyAtEnd;
+_burn(msg.sender, vtAmount);
+IERC20(underlying).transfer(msg.sender, redeemed);
+```
+
+## Error Conditions
+
+| Error | Condition |
+|---|---|
+| `VT__NotPhase2` | `redeemVT` called before `endVesting` |
+| `VT__AlreadyPhase2` | `stakeVT` / `claimT` called after `endVesting` |
+| `VT__VestingNotEnded` | `endVesting` called before `vestEnd` |
+| `VT__ZeroAmount` | Any function called with `amount = 0` |
+| `VT__InsufficientBalance` | Caller has less VT than requested |

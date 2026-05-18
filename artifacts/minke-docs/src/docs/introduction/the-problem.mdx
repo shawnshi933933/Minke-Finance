@@ -1,0 +1,55 @@
+# The Problem
+
+There is over **$1 trillion of on-chain future income** with no present-value infrastructure. Vested token allocations, staking rewards, RWA bonds, and DePIN node emissions are all promises of future cash flows — but the DeFi stack treats them as if they don't exist until maturity.
+
+## Three Structural Pain Points
+
+### 1. Illiquidity
+
+Future-income positions cannot be monetised before maturity without surrendering the entire position. A team member holding a 4-year vesting schedule must choose between waiting and forfeiting. There is no middle path.
+
+The scale of this problem is significant:
+
+- Exchange employees, investors, and advisors hold hundreds of billions in unvested tokens
+- PoS validators receive staking rewards over multi-year horizons
+- RWA bond issuers lock coupon streams in smart contracts with no secondary market
+
+### 2. Non-Tradable Positions
+
+Even when a vesting position has clear economic value, it cannot be priced or transferred on-chain. There is no standardised representation for "future claim on 10,000 USDC in 18 months". Without a fungible format, there is no market.
+
+The result: off-chain OTC desks charge 15–40% spreads on vesting discounts. This is a value leak that accrues to intermediaries, not holders.
+
+<Callout type="warning" title="The spread problem">
+OTC desks facilitating early vesting exits extract 15–40% of notional value in spread. Minke replaces this with on-chain price discovery.
+</Callout>
+
+### 3. Broken Price Discovery
+
+Because vested positions cannot be traded on-chain, token markets ignore them entirely. This creates a systematic distortion:
+
+**Fully Diluted Valuation (FDV) vs Circulating Supply** is one of crypto's most debated metrics. The gap exists because vested and unvested tokens are structurally different instruments — one is a present asset, one is a future claim.
+
+Minke creates the infrastructure to make this distinction visible and tradeable on-chain, bringing DeFi closer to how fixed-income and equity derivative markets work in TradFi.
+
+## The Size of the Opportunity
+
+| Category | Estimated Value |
+|---|---|
+| Vested token allocations | $200B+ |
+| Staking rewards (ETH, SOL, BNB) | $150B+ |
+| RWA bonds and coupons | $300B+ |
+| DePIN and AI node emissions | $50B+ |
+| **Total addressable** | **~$1T+** |
+
+None of this has a liquid on-chain present-value market. Minke is building it.
+
+## Why Now
+
+Three forces are converging:
+
+1. **RWA tokenization** is accelerating. BlackRock, Franklin Templeton, and dozens of protocols have moved real-world cash flows on-chain — but they still lack a PV rail.
+2. **Restaking** (via EigenLayer and equivalents) is creating new, complex yield streams that need to be unbundled and traded.
+3. **Institutional DeFi** is maturing. Compliance-conscious capital needs fixed-maturity instruments, not open-ended yield pools.
+
+The infrastructure layer for future-income DeFi is missing. Minke is that layer.

@@ -1,0 +1,67 @@
+# Design Principles
+
+Minke's architecture is shaped by four non-negotiable design principles. These principles were chosen to maximise safety and composability while minimising trust assumptions.
+
+## 1. No Oracles
+
+Minke's Phase 1 protocol requires zero external price feeds.
+
+Traditional DeFi protocols that accept collateral need an oracle to answer "what is this worth today?" and trigger liquidations when collateral falls below a threshold. Oracle manipulation is one of the most exploited attack vectors in DeFi history.
+
+Minke avoids this entirely by design:
+
+- VTs are **1:1 backed** by the underlying at deposit time — no collateral ratio
+- Vesting schedules are **deterministic** — the contract knows exactly how many tokens vest at each moment without consulting any external source
+- Phase 2 redemption is **mathematical** — `excessT / totalSupplyVT` requires no price data
+
+<Callout type="tip" title="Oracle-free = systemic safety">
+Every protocol that requires an oracle inherits that oracle's failure modes. Minke is immune to flash loan oracle attacks, price manipulation, and stale feed failures.
+</Callout>
+
+## 2. No Counterparty Risk
+
+When you deposit into Minke, you are not trusting a third party — you are executing a mathematical contract.
+
+- **Non-custodial**: the protocol never holds assets on your behalf in any discretionary sense. Deposited tokens are locked in a verified smart contract, not managed by a multisig or off-chain custodian.
+- **No admin withdrawal**: after tranche creation, no address (including the Minke team) can withdraw deposited funds. The contract is the custodian.
+- **Immutable schedules**: vesting schedules cannot be changed post-deployment. The depositor and all VT holders can verify the exact redemption timeline by reading the contract.
+
+Compare to OTC vesting desks: they hold your position off-chain, require KYC, can be dissolved, and extract 15–40% in spreads. Minke replaces all of this with code.
+
+## 3. Permissionless and Inclusive
+
+There is no whitelist. Anyone can:
+
+- Create a Suite and Tranche for any ERC-20 token
+- Deposit from $1,000 to $100,000,000+
+- Issue VTs to any address
+- List VTs on any AMM without permission
+
+This is not just a product decision — it's a scalability design. Permissionless infrastructure can serve the long tail of protocols and vesting positions that would never meet a centralised platform's minimum thresholds.
+
+<Callout type="info">
+Permissionless does not mean unaudited. Minke's core contracts are designed to be minimal, auditable, and upgradeable only via new deployments — not proxy-based upgrades.
+</Callout>
+
+## 4. Composable by Default
+
+VTs are standard ERC-20 tokens with no transfer restrictions. This means they slot into the existing DeFi stack immediately:
+
+| Integration | What It Enables |
+|---|---|
+| AMMs (Uniswap, Curve) | Price discovery, instant liquidity |
+| Lending protocols (Aave, Morpho) | Borrow against VT collateral |
+| Yield aggregators | Autocompound VT staking rewards |
+| Structured products | Build discount bonds, zero-coupon notes |
+| Options protocols | Write covered calls on future income |
+
+No SDK or special integration is required. If a protocol can hold ERC-20 tokens, it can hold VTs.
+
+## Summary
+
+| Principle | How it's enforced |
+|---|---|
+| No oracles | Deterministic vesting schedule; mathematical redemption |
+| No counterparty risk | Immutable contracts; no admin withdrawal function |
+| Permissionless | No whitelist; any ERC-20; any amount |
+| Composable | Standard ERC-20; unrestricted transfer |

@@ -1,0 +1,70 @@
+# Deployments
+
+<Callout type="warning" title="Mainnet not yet live">
+Minke is currently in testnet phase. Mainnet contract addresses will be published here at launch. Do not interact with any contracts claiming to be Minke mainnet contracts until this page is updated.
+</Callout>
+
+## Testnet Deployments
+
+### Ethereum Sepolia
+
+| Contract | Address |
+|---|---|
+| `ContractRegistry` | `0x...` (published at launch) |
+| `VestingFactory` | `0x...` (published at launch) |
+
+### Base Sepolia
+
+| Contract | Address |
+|---|---|
+| `ContractRegistry` | `0x...` (published at launch) |
+| `VestingFactory` | `0x...` (published at launch) |
+
+## Planned Mainnet Deployments
+
+Minke plans to deploy on the following networks at mainnet launch:
+
+| Network | Status | Notes |
+|---|---|---|
+| Ethereum Mainnet | Planned | Primary deployment |
+| Base | Planned | High DeFi activity, low fees |
+| Arbitrum One | Planned | EVM-compatible L2 |
+| Optimism | Roadmap | Q2 2026 target |
+
+## Verification
+
+All Minke contracts are fully verified on Etherscan and equivalent block explorers. Once deployed, you can verify any contract by:
+
+1. Looking up the address on Etherscan
+2. Clicking "Contract" → "Read Contract" to inspect immutable parameters
+3. Confirming `VestingFactory` address matches this page
+
+## Security
+
+Minke contracts are audited by independent security firms. Audit reports will be published to the Minke GitHub repository before mainnet launch.
+
+Active bug bounty program details will be published alongside the mainnet launch announcement.
+
+<Callout type="info" title="Stay updated">
+Watch the [Minke Finance Twitter](https://twitter.com/minke_finance) and Discord for deployment announcements. This page will be updated with all mainnet addresses at launch.
+</Callout>
+
+## ABI Downloads
+
+Contract ABIs will be available at:
+
+- GitHub: `github.com/minke-finance/contracts`
+- npm: `@minke-finance/contracts`
+
+The npm package will export TypeScript types, contract addresses, and ABIs for all supported networks.
+
+```typescript
+import { VestingFactory, ContractRegistry } from "@minke-finance/contracts";
+import { mainnet } from "@minke-finance/contracts/addresses";
+
+const factory = new ethers.Contract(
+  mainnet.VestingFactory,
+  VestingFactory.abi,
+  signer
+);
+```

@@ -1,0 +1,79 @@
+# Market Opportunity
+
+Minke is building the primitive layer for a $1T+ asset class that has no on-chain present-value market today.
+
+## The Unaddressed Market
+
+Every major financial market has a mechanism for trading future cash flows at present value:
+
+- **TradFi bonds**: yield curve + bond futures + repo market
+- **Equity options**: Black-Scholes pricing + CBOE listed options
+- **Credit markets**: CDS, CLOs, securitisation vehicles
+
+**DeFi has none of this for vesting and future-income positions.**
+
+The closest analog — OTC vesting desks — operates off-chain with 15–40% spreads and zero transparency. Minke replaces this with permissionless, on-chain price discovery.
+
+## Market Sizing
+
+### Total Addressable Market (TAM)
+
+| Segment | Estimated Notional | Liquid Today |
+|---|---|---|
+| Team + investor vesting | $200B+ | <1% |
+| PoS staking rewards | $150B+ | Partially (LSTs) |
+| RWA bonds and coupons | $300B+ | <5% |
+| DePIN / AI node emissions | $50B+ | <1% |
+| Mining future rewards | $100B+ | None |
+| **TAM** | **~$800B–$1T** | **~5%** |
+
+The illiquid portion — approximately $700–900B — is Minke's direct opportunity.
+
+### Serviceable Addressable Market (SAM)
+
+In the near term (12–24 months), Minke targets:
+
+1. **EVM-native token vesting** — the highest-density segment on Ethereum and major L2s
+2. **Institutional SAFT tranches** — large allocations with defined schedules
+3. **Restaking operators** — EigenLayer AVS and equivalent streams
+4. **Tokenized government bonds** — RWA protocols with fixed maturity dates
+
+This segment alone represents an estimated **$50–100B notional** that could be wrapped in Minke tranches.
+
+## Competitive Landscape
+
+<Callout type="info">
+Minke is creating a new category — there is no direct competitor offering an oracle-free, fungible, on-chain vesting token primitive.
+</Callout>
+
+| Protocol | What it does | Gap vs Minke |
+|---|---|---|
+| Pendle Finance | Yield stripping for liquid staking | VFI only, no DFI support, oracle-dependent pricing |
+| Ribbon Finance | Structured products on options | Options, not vesting claims |
+| OTC Vesting Desks | Off-chain secondary market | 15–40% spread, no on-chain composability |
+| Yearn / Convex | Yield optimisation | No future-income tokenisation |
+
+## Why Minke Wins
+
+**Oracle-free architecture.** Because DFI schedules are deterministic, Minke doesn't need a price feed. This removes the #1 systemic risk in DeFi — oracle manipulation.
+
+**1:1 backing at maturity.** VT holders have a mathematical guarantee of par redemption at maturity (less the 5% protocol fee). This is a first in DeFi future-income primitives.
+
+**Permissionless composability.** Any protocol can create a tranche with no permission required. VTs immediately slot into existing AMM, lending, and structured-product infrastructure.
+
+## Timing
+
+Three macro tailwinds accelerate Minke's go-to-market:
+
+### 1. RWA Acceleration
+BlackRock's BUIDL, Franklin Templeton's BENJI, and dozens of tokenized treasury protocols have moved >$10B of real-world cash flows on-chain. These are all DFI. None have a liquid secondary market.
+
+### 2. Restaking Maturation
+EigenLayer has crossed $15B TVL. Operators earn complex, multi-source yield streams. Minke can tokenise and strip these streams for the first time.
+
+### 3. Institutional DeFi
+Compliance-conscious capital wants fixed-maturity instruments. Minke's VT format — fixed schedule, deterministic payout — maps directly to institutional fixed-income needs.
+
+<Callout type="tip" title="The convergence thesis">
+TradFi is tokenizing cash flows. DeFi is maturing into fixed-income. Minke is the infrastructure that makes these two trends composable.
+</Callout>

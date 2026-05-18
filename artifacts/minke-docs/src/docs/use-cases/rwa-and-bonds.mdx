@@ -1,0 +1,66 @@
+# RWA and Bonds
+
+Tokenized real-world assets — government bonds, corporate bonds, trade finance instruments — are the most natural DFI category. They have fixed face value, fixed coupon schedules, and defined maturity dates. Minke provides the secondary market infrastructure these assets are missing.
+
+## Why RWA Bonds Need Minke
+
+The first wave of RWA tokenization (2022–2025) focused on putting bonds **on-chain**. BlackRock's BUIDL, Franklin Templeton's BENJI, Ondo Finance's USDY, and Backed Finance's tokenized Treasuries all represent fixed-income instruments on the blockchain.
+
+But they share a critical limitation: **there is no on-chain secondary market for the underlying cash flows**.
+
+- BUIDL holders can redeem for USDC but cannot sell individual bond cash flows
+- T-bill wrappers trade as a single unit; individual coupon streams are invisible
+- Institutional buyers who want to hedge duration risk have no on-chain tool
+
+Minke fills this gap.
+
+## How Bond Coupon Tokenisation Works
+
+A tokenized bond wrapper protocol (or its issuer) can integrate Minke to tokenise individual coupon streams:
+
+```
+Bond: $10M face, 5% annual coupon, 3-year maturity
+Coupon stream: $500K/year × 3 = $1.5M total
+
+Deposit: $1.5M USDC (coupon schedule)
+VTs minted: 1,425,000 VT (95%)
+VTs trade at discount to par reflecting time value
+Buyers earn pro-rata coupon distributions
+Maturity: Phase 2 redemption for remaining USDC 1:1
+```
+
+<Callout type="tip" title="TradFi familiar structure">
+Fixed-income investors will recognise this as equivalent to a zero-coupon bond structure. VTs are essentially on-chain zero-coupon notes on the coupon stream.
+</Callout>
+
+## Asset Classes
+
+| Asset | DFI Classification | Minke Fit |
+|---|---|---|
+| US Treasury bills (tokenized) | Fixed coupon + maturity | High |
+| Corporate bonds | Fixed coupon + maturity | High |
+| Trade finance invoices | Fixed payment date | High |
+| Mortgage-backed tranches | Predictable amortisation | Medium |
+| Real estate rental income | Variable (lease dependent) | Low (VFI) |
+
+## Compliance and KYC Considerations
+
+RWA protocols often require KYC/AML compliance for their underlying token holders. Minke is KYC-agnostic at the protocol layer — the VestingToken contract does not enforce any access controls.
+
+Compliance-sensitive deployments can use **transfer restriction hooks** on the underlying token, which Minke's contracts will respect automatically (since VT redemption requires holding the underlying).
+
+For protocols requiring fully permissioned VTs, a custom `VestingToken` variant with ERC-20 transfer restrictions can be deployed. This is on the Minke roadmap.
+
+<Callout type="info">
+Minke's initial deployment is permissionless and non-custodial. Regulated use cases should work with the Minke team to understand the appropriate deployment configuration.
+</Callout>
+
+## Convergence with TradFi
+
+The long-term thesis is simple: as real-world assets move on-chain, they will need the same financial infrastructure that TradFi fixed-income markets have built over decades:
+
+- **Repo markets** — borrow against bond holdings short-term
+- **Futures** — lock in future bond prices today
+- **Strip markets** — separate principal and coupons for specialised investors
+
+Minke provides the strip market primitive — and it is the first protocol to do so in a permissionless, oracle-free way.
