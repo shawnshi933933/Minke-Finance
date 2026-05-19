@@ -35,23 +35,23 @@ Setup:  Creates Tranche (12-month linear), deposits 40 ETH into Vault
         Stakes allocation NFT → Vault mints 40 ETH-VT (1:1)
 
 Goal:   Get liquidity today
-Action: Sells 40 ETH-VT on AMM at 0.93 discount
-Result: Receives ~37.2 ETH worth of USDC today ✓
-        (Foregoes 12 months of future rewards — paid 0.07 ETH/VT
-         as the cost of early liquidity)
+Action: Sells 40 ETH-VT on AMM at 0.93 ETH per VT
+Result: Receives ~37.2 ETH today ✓
+        (Cost of liquidity: 0.07 ETH per VT — 7% discount on par)
 
 ── BUYER (investor) ───────────────────────────────────────────
-Buys:   40 ETH-VT at 0.93 → pays ~37.2 ETH worth of USDC
+Buys:   40 ETH-VT at 0.93 ETH per VT → pays ~37.2 ETH
 
 Option A: Stake in BuybackPool
           → Receives ETH gradually over 12 months as vault releases
-          → e.g. 95% of pro-rata monthly release (e.g. 5% fee)
-          → Total ~38 ETH received over 12 months (vs 37.2 paid)
+          → e.g. ~3.17 ETH/month × 0.95 = ~3.01 ETH/month (after e.g. 5% fee)
+          → Total ~36.1 ETH over 12 months (vs 37.2 ETH paid) — lower return
+             due to fee, but faster than waiting for Phase 2
 
 Option B: Hold to Phase 2
           → vestingEnded = true at Month 12
           → redeemVT(40 VT) → 40 ETH (1:1, no fee)
-          → Earns the full 0.07 discount as profit
+          → Earns the full 2.8 ETH discount as profit
 ```
 
 ## Key Advantages for Stakers/Miners

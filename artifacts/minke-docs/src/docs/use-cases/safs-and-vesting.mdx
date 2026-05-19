@@ -35,17 +35,17 @@ Setup:  Project creates Tranche (24-month linear),
         Advisor stakes allocation NFT → Vault mints 500,000 VT (1:1)
 
 Goal:   Access value today without waiting 2 years
-Action: Sells 500,000 VT on AMM at 0.82 market discount
-Result: Receives ~410,000 USDC today ✓
+Action: Sells 500,000 VT on AMM at 0.82 T per VT
+Result: Receives ~410,000 TOKEN today ✓
         (Cost of liquidity: 18% discount on par)
 
 ── BUYER (investor) ───────────────────────────────────────────
-Buys:   500,000 VT at 0.82 → pays ~410,000 USDC
+Buys:   500,000 VT at 0.82 T per VT → pays ~410,000 TOKEN
 
 Option A: Stake in BuybackPool
           → Receives TOKEN gradually over 24 months as vault releases
           → e.g. ~19,792 TOKEN/month × 0.95 = ~18,802 TOKEN/month (after fee)
-          → Total ~451,250 TOKEN over 24 months (vs 410,000 USDC paid)
+          → Total ~451,250 TOKEN over 24 months (vs 410,000 TOKEN paid)
 
 Option B: Hold to Phase 2
           → vestingEnded = true at Month 24

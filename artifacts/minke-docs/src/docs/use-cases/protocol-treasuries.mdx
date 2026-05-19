@@ -34,24 +34,25 @@ Holdings: 50,000,000 TOKEN vesting over 48 months
 Step 1:  Creates 12-month Tranche, deposits 12,500,000 TOKEN into Vault
          Stakes NFT allocation → Vault mints 12,500,000 VT (1:1)
 
-Step 2:  Sells 12,500,000 VT on Uniswap at 0.92
-         → Receives ~11.5M USDC equivalent
+Step 2:  Sells 12,500,000 VT on Uniswap at 0.92 TOKEN per VT
+         → Receives ~11.5M TOKEN
+         → Swaps TOKEN → stablecoins for operational use
 
-Step 3:  Uses USDC for operations, grants, security audits
+Step 3:  Uses proceeds for operations, grants, security audits
 
 Remaining 48-month treasury: fully intact and unaffected ✓
 
 ── BUYER (investor) ───────────────────────────────────────────
-Buys:   12,500,000 VT at 0.92 → pays ~11.5M USDC
+Buys:   12,500,000 VT at 0.92 TOKEN per VT → pays ~11.5M TOKEN
 
 Option A: Stake in BuybackPool
-          → Receives TOKEN gradually over 12 months
-          → e.g. 95% of monthly releases (after e.g. 5% fee)
-          → Earns spread between 0.92 paid and TOKEN received
+          → Receives TOKEN gradually over 12 months as vault releases
+          → e.g. 95% of pro-rata monthly release (after e.g. 5% fee)
+          → Total ~11.875M TOKEN over 12 months (vs 11.5M TOKEN paid)
 
 Option B: Hold to Phase 2
-          → redeemVT() at Month 12 → 1:1 TOKEN (no fee)
-          → Full 8% discount becomes profit
+          → redeemVT() at Month 12 → 12.5M TOKEN (1:1, no fee)
+          → Full 8% discount (1M TOKEN) becomes profit
 ```
 
 The treasury funded 12 months of operations at ~8% cost of capital — far cheaper than equity dilution or on-chain debt.
