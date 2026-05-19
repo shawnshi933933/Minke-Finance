@@ -6,41 +6,4 @@
 
 This guide will walk you through your first Minke integration — from setting up a test environment to deploying a real tranche on testnet.
 
-## Prerequisites (Anticipated)
 
-- Node.js 18+ and a package manager (pnpm, npm, or yarn)
-- An Ethereum wallet with testnet funds
-- Basic familiarity with ethers.js or viem
-
-## Planned Quickstart
-
-```typescript
-// Install the Minke SDK (coming soon)
-// pnpm add @minke-finance/sdk
-
-import { MinkeClient } from "@minke-finance/sdk";
-import { sepolia } from "@minke-finance/sdk/chains";
-
-const client = new MinkeClient({ chain: sepolia, signer });
-
-// Create a Suite
-const suite = await client.createSuite({
-  underlying: "0xTokenAddress",
-  name: "My Protocol — Team Vesting",
-});
-
-// Create a Tranche
-const tranche = await client.createTranche({
-  suiteId: suite.id,
-  amount: parseUnits("1000000", 18),
-  vestStart: Math.floor(Date.now() / 1000),
-  vestEnd: Math.floor(Date.now() / 1000) + 365 * 24 * 3600,
-});
-
-console.log("VestingToken deployed at:", tranche.vestingToken);
-console.log("VTs minted to your wallet:", tranche.vtsMinted);
-```
-
-<Callout type="info">
-The `@minke-finance/sdk` package is under development and will be released alongside the mainnet launch.
-</Callout>

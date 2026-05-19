@@ -21,5 +21,5 @@
   { "slug": "integration/index",         "title": "Integration Guide",        "section": "Integration Guide",   "order": 20, "comingSoon": true },
   { "slug": "integration/getting-started", "title": "Getting Started",        "section": "Integration Guide",   "order": 21, "comingSoon": true },
   { "slug": "user-101/index",            "title": "User 101",                 "section": "User 101",            "order": 22, "comingSoon": true },
-  { "slug": "user-101/faq",              "title": "FAQ",                      "section": "User 101",            "order": 23, "comingSoon": true }
+  { "slug": "user-101/faq",              "title": "FAQ",                      "section": "User 101",            "order": 23 }
 ]
