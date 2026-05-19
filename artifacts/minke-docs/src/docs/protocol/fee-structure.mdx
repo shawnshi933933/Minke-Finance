@@ -20,18 +20,6 @@ Each staker receives their proportional share of the 95 T, based on their share 
 - **Not a VT minting fee** — staking an NFT to mint VT has no fee
 - **Not a Phase 2 redemption fee** — `redeemVT()` at maturity is always 1:1 with no fee
 
-## Comparing Exit Paths
-
-| Exit Path | Protocol Fee | Timing |
-|---|---|---|
-| Stake VT in BuybackPool + claimT() | e.g. 5% on T received | Gradual, per vesting schedule |
-| Sell VTs on AMM | None (market discount applies) | Instant |
-| Phase 2 redemption (`redeemVT`) | None | At or after maturity |
-| OTC vesting desk (off-chain) | 15–40% spread | Days to weeks |
-
-## Why the Fee Is on BuybackPool Staking
-
-VT holders who stake in the BuybackPool are choosing to receive T gradually as it vests, rather than waiting for Phase 2. The protocol fee compensates the system for providing this early-access mechanism. Holders who wait for Phase 2 pay no fee and receive 1:1.
 
 ## Fee Rate
 

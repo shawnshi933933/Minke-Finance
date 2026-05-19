@@ -7,22 +7,21 @@ Simple Agreements for Future Tokens (SAFTs) and team/advisor vesting allocations
 Most token launches allocate 15–40% of total supply to team, advisors, and investors, vesting over 2–4 years with a 12-month cliff. This creates a structural problem:
 
 - **Teams** are locked in for years with significant personal wealth concentrated in one illiquid asset
-- **Investors** who want early returns must negotiate OTC deals at 20–40% discounts
+- **Investors** who want early returns must negotiate OTC deals at 40–80% discounts with trusted counterparties
 - **Protocols** face ongoing selling pressure as vesting unlocks create market overhangs
 
-None of this is necessary. Minke provides an alternative that preserves vesting terms while unlocking present value.
+None of this is necessary. Minke provides an alternative.
 
 ## How Minke Solves It
 
-A team member with a 4-year vesting schedule can:
+A recipient with a vesting allocation (advisor, investor, team member) can:
 
 1. Stake their allocation NFT in the Vault to receive VTs 1:1
-2. List VTs on a secondary market at a time-discount for immediate liquidity
-3. Or stake VTs in the BuybackPool to receive T gradually as it vests (e.g. 5% protocol fee)
-4. Or hold to maturity and redeem at 1:1 in Phase 2 — no fee
+2. Sell VTs on a secondary market at a time-discount — getting liquidity today without breaking vesting terms
+3. The buyer takes on the time risk and earns T via BuybackPool or holds to Phase 2
 
 <Callout type="tip" title="Vesting terms preserved">
-The underlying tokens remain in the Minke contract on the original vesting schedule. From the protocol's perspective, nothing changes. Only the economic claim has been tokenized and made liquid.
+The underlying tokens remain in the Vault on the original vesting schedule. From the protocol's perspective, nothing changes. Only the economic claim has been tokenized and made liquid.
 </Callout>
 
 ## Example Flow
@@ -30,22 +29,28 @@ The underlying tokens remain in the Minke contract on the original vesting sched
 Suppose an advisor holds 500,000 TOKEN vesting linearly over 24 months:
 
 ```
-Month 0:  Project creates Tranche (24-month linear), deposits 500,000 TOKEN into Vault
-          Advisor stakes allocation NFT → Vault mints 500,000 VT (1:1)
+── ADVISOR (originator) ───────────────────────────────────────
+Setup:  Project creates Tranche (24-month linear),
+        deposits 500,000 TOKEN into Vault
+        Advisor stakes allocation NFT → Vault mints 500,000 VT (1:1)
 
-Option A: Sell on AMM
-          Advisor sells 500,000 VT at 0.82 market discount
-          → Receives 410,000 USDC immediately
+Goal:   Access value today without waiting 2 years
+Action: Sells 500,000 VT on AMM at 0.82 market discount
+Result: Receives ~410,000 USDC today ✓
+        (Cost of liquidity: 18% discount on par)
 
-Option B: Stake in BuybackPool (e.g. 5% fee on distributions)
-          Advisor stakes 500,000 VT in BuybackPool
-          → Receives T gradually each month as vault releases per schedule
-          → e.g. receives ~19,792 T/month × 0.95 = ~18,802 T/month (after fee)
+── BUYER (investor) ───────────────────────────────────────────
+Buys:   500,000 VT at 0.82 → pays ~410,000 USDC
 
-Month 1–24: TOKEN vests on schedule → BP pulls from Vault → burns VT → distributes T
-            
-Month 24: vestingEnded = true
-          Remaining VT holders call redeemVT() → 1:1 TOKEN (no fee)
+Option A: Stake in BuybackPool
+          → Receives TOKEN gradually over 24 months as vault releases
+          → e.g. ~19,792 TOKEN/month × 0.95 = ~18,802 TOKEN/month (after fee)
+          → Total ~451,250 TOKEN over 24 months (vs 410,000 USDC paid)
+
+Option B: Hold to Phase 2
+          → vestingEnded = true at Month 24
+          → redeemVT(500,000 VT) → 500,000 TOKEN (1:1, no fee)
+          → Earns the full 18% discount as profit
 ```
 
 ## SAFT-Specific Considerations
@@ -54,17 +59,17 @@ SAFTs are typically larger ($1M–$100M) and have more complex vesting terms (cl
 
 | SAFT Feature | Minke Mechanism |
 |---|---|
-| Cliff period | VTs are issued but Phase 1 distributions begin only after cliff |
-| Linear unlock | Checkpoints distribute pro-rata unlocks each period |
-| Multiple tranches | Multiple `VestingToken` contracts, one per tranche |
-| Token Generation Event | Deposit occurs at TGE; schedule starts from that block |
+| Cliff period | BuybackPool releases begin only after `releaseStartTime` (cliff end) |
+| Linear unlock | Vault releases pro-rata amounts per interval per schedule |
+| Multiple tranches | Multiple VTToken + BuybackPool pairs, one per tranche |
+| Token Generation Event | Deposit occurs at TGE; schedule starts from that timestamp |
 
 ## Benefits for Protocols
 
 Protocols that adopt Minke for their vesting infrastructure gain:
 
-- **Reduced selling pressure** — holders get liquidity without market selling
-- **Alignment signaling** — the underlying still vests; recipients haven't exited their belief in the protocol
+- **Reduced selling pressure** — recipients get liquidity via VT sales rather than spot token sales
+- **Alignment signaling** — the underlying still vests; recipients haven't exited their long-term position
 - **Institutional-grade tooling** — large funds and family offices can manage SAFT exposure through a standardised on-chain instrument
 
 <Callout type="info">

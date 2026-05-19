@@ -1,6 +1,6 @@
 # Staking and Mining
 
-Proof-of-Stake validators and proof-of-work miners accumulate future rewards that are structurally similar to vesting schedules: deterministic rates, known schedules, rule-based emissions. Minke tokenises these streams.
+Proof-of-Stake validators and proof-of-work miners accumulate future rewards that are structurally similar to vesting schedules: deterministic rates, known schedules, rule-based emissions. Minke tokenises these streams so operators can access their value today.
 
 ## Staking Rewards as DFI
 
@@ -27,42 +27,41 @@ Similarly, **DePIN mining operations** emit tokens to node operators on fixed sc
 
 ## Example: ETH Validator Pool
 
-A validator pool operator has 1,000 ETH staked and expects 40 ETH in rewards over the next 12 months:
+A validator pool operator has 1,000 ETH staked and expects 40 ETH in rewards over the next 12 months. They need capital now — hardware upgrades, operational costs — but don't want to sell their staking position.
 
 ```
-Project creates Tranche (12-month linear), deposits 40 ETH into Vault
-Operator stakes allocation NFT → Vault mints 40 VT (1:1)
+── OPERATOR (originator) ──────────────────────────────────────
+Setup:  Creates Tranche (12-month linear), deposits 40 ETH into Vault
+        Stakes allocation NFT → Vault mints 40 ETH-VT (1:1)
 
-Option A: Sell VTs on AMM at 0.93 discount
-→ Receive 37.2 ETH today
+Goal:   Get liquidity today
+Action: Sells 40 ETH-VT on AMM at 0.93 discount
+Result: Receives ~37.2 ETH worth of USDC today ✓
+        (Foregoes 12 months of future rewards — paid 0.07 ETH/VT
+         as the cost of early liquidity)
 
-Option B: Stake in BuybackPool (e.g. 5% fee on distributions)
-→ Receive ~3.17 ETH/month × 0.95 = ~3.01 ETH/month over 12 months
-→ Total received: ~36.1 ETH (after fee)
+── BUYER (investor) ───────────────────────────────────────────
+Buys:   40 ETH-VT at 0.93 → pays ~37.2 ETH worth of USDC
 
-Month 12: vestingEnded = true
-          Any remaining VT holders call redeemVT() → 1:1 ETH (no fee)
+Option A: Stake in BuybackPool
+          → Receives ETH gradually over 12 months as vault releases
+          → e.g. 95% of pro-rata monthly release (e.g. 5% fee)
+          → Total ~38 ETH received over 12 months (vs 37.2 paid)
+
+Option B: Hold to Phase 2
+          → vestingEnded = true at Month 12
+          → redeemVT(40 VT) → 40 ETH (1:1, no fee)
+          → Earns the full 0.07 discount as profit
 ```
-
-## Node License Rewards
-
-Node licenses are a growing category: protocols sell the right to run a node for a fixed term, with deterministic token emissions over that term. Examples include:
-
-- Helium node operators
-- Hivemapper drivers (dashcam rewards)
-- Render Network GPU providers
-- XAI Sentry nodes
-
-Each of these follows a published emission schedule. Minke can tokenize the future emission stream into VTs that can be traded, staked, or held.
 
 ## Key Advantages for Stakers/Miners
 
 | Benefit | Detail |
 |---|---|
-| **No unstaking required** | The underlying staking position remains intact |
-| **Portfolio diversification** | Convert concentrated staking exposure into stablecoins or other assets |
-| **Operational capital** | Mining operations can fund hardware purchases against future mining rewards |
-| **Yield on yield** | VT buyers who stake earn the pro-rata unlocks — effectively compounding |
+| **No unstaking required** | The validator position remains fully intact |
+| **Operational capital** | Fund hardware purchases against future rewards |
+| **Portfolio diversification** | Convert ETH yield exposure into stablecoins or other assets |
+| **No lock-up broken** | The underlying rewards still arrive per schedule in the Vault |
 
 <Callout type="warning" title="Variable staking rewards">
 Staking rewards that depend on utilisation rates, validator count changes, or protocol governance decisions are VFI — they are better suited for Minke Phase 2 (Yield Token). Only use Phase 1 VT for staking positions with deterministic, pre-committed schedules.

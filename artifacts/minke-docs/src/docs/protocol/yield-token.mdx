@@ -26,30 +26,6 @@ Phase 2 targets the following variable-yield categories:
 | Restaking operators | AVS fees via EigenLayer |
 | Governance incentives | Protocol emissions |
 
-## Planned Mechanism
-
-```
-Principal Token (PT) = claim on principal at maturity
-Yield Token (YT)     = claim on all yield until maturity
-
-PT + YT = original position
-```
-
-This mirrors Pendle's architecture but with Minke's oracle-free design philosophy extended where possible. For variable yield, a rate model will be required — the design details are under active research.
-
-<Callout type="info" title="Phase 2 timeline">
-Phase 2 development begins after Phase 1 (VT/DFI) reaches stability and sufficient TVL. Follow our roadmap for updates.
-</Callout>
-
-## Why VFI Is Different
-
-Unlike DFI, variable yield positions require:
-
-1. **A rate model** — to price the yield stream at origination
-2. **Ongoing settlement** — yield must be routed to YT holders continuously
-3. **Oracle integration** — the "fair value" of the yield stream depends on external data
-
-These additional requirements are why Minke launched with DFI first: oracle-free architecture is simpler, safer, and auditable. VFI adds complexity that requires a mature protocol foundation.
 
 <Callout type="warning">
 Yield Token documentation will be published when Phase 2 launches. The design described here is illustrative and subject to change.

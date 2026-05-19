@@ -10,7 +10,7 @@ DePIN protocols bootstrap real-world infrastructure (wireless networks, storage,
 - **Long-horizon** — emission periods of 3–10 years are common
 - **Illiquid today** — no secondary market for future node rewards
 
-This makes DePIN emissions structurally identical to token vesting: a stream of future tokens with a known schedule and amount.
+This creates a constant tension for operators: significant upfront hardware costs (GPUs, antennas, cameras, storage drives) against rewards that trickle in over years. Minke resolves this by letting operators access the present value of their future emission stream.
 
 ## AI Node Categories
 
@@ -30,31 +30,39 @@ Each of these follows a published schedule. Minke can tokenize the expected futu
 
 ## Example: AI Inference Node
 
-An operator running a Bittensor subnet validator expects 10,000 TAO over 36 months:
+An operator running a Bittensor subnet validator expects 10,000 TAO over 36 months. They need capital to expand their GPU cluster now:
 
 ```
-Month 0: Project creates Tranche (36-month linear), deposits 10,000 TAO into Vault
-         Operator stakes allocation NFT → Vault mints 10,000 VT (1:1)
+── OPERATOR (originator) ──────────────────────────────────────
+Setup:  Creates Tranche (36-month linear), deposits 10,000 TAO into Vault
+        Stakes allocation NFT → Vault mints 10,000 TAO-VT (1:1)
 
-Option A: Sell VTs on AMM at 0.75 TAO discount
-         → Receives 7,500 TAO equivalent today
+Goal:   Fund GPU hardware purchases today
+Action: Sells 10,000 TAO-VT on AMM at 0.75 discount
+Result: Receives ~7,500 TAO equivalent today ✓
+        (Cost of liquidity: 25% discount on par —
+         reasonable for 3-year forward income)
 
-Option B: Stake in BuybackPool (e.g. 5% fee on distributions)
-         → Receives ~277 TAO/month × 0.95 = ~263 TAO/month over 36 months
-         → Total received: ~9,500 TAO (after fee)
+── BUYER (investor) ───────────────────────────────────────────
+Buys:   10,000 TAO-VT at 0.75 → pays ~7,500 TAO equivalent
 
-Months 1–36: TAO vests per schedule → BP pulls from Vault → burns VT → distributes TAO
+Option A: Stake in BuybackPool
+          → Receives TAO gradually over 36 months as vault releases
+          → ~277 TAO/month × 0.95 = ~263 TAO/month (after e.g. 5% fee)
+          → Total ~9,500 TAO over 36 months (vs 7,500 TAO paid)
+          → Implied yield: ~26.7% over 3 years
 
-Month 36: vestingEnded = true → Phase 2 → redeemVT() 1:1 (no fee)
+Option B: Hold to Phase 2
+          → vestingEnded = true at Month 36
+          → redeemVT(10,000 VT) → 10,000 TAO (1:1, no fee)
+          → Earns the full 25% discount as profit
 ```
-
-The operator funded hardware upgrades or diversified their portfolio at month 0. The buyer got discounted TAO exposure with defined maturity.
 
 ## Why DePIN Is Ideal for Minke
 
-**High operational costs.** DePIN operators have significant upfront hardware costs — GPUs, routers, cameras, storage drives. Accessing present value of future rewards helps finance operations without selling the entire position.
+**High operational costs.** DePIN operators have significant upfront hardware costs — GPUs, routers, cameras, storage drives. Accessing present value of future rewards helps finance operations without waiting years.
 
-**Long-horizon emissions.** 3–10 year emission schedules are common. Operators don't want to wait years to recover their investment.
+**Long-horizon emissions.** 3–10 year emission schedules are common. Operators can't afford to wait that long to recover their hardware investment.
 
 **Fragmented, long-tail nodes.** Unlike large protocol treasuries or institutional SAFTs, DePIN nodes are held by individual operators in small quantities. Minke's permissionless approach (no minimums) serves this long tail.
 

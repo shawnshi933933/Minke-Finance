@@ -21,7 +21,6 @@ Minke's security model is built on minimalism, immutability, and the elimination
 |---|---|
 | Underlying token risk | Minke is neutral — VT value tracks the underlying token |
 | AMM price manipulation | VT/underlying AMM price is not used as an oracle inside Minke |
-| Smart contract upgrade risk | No upgrade proxies; contracts are immutable |
 
 ## Smart Contract Architecture Security Properties
 
@@ -30,12 +29,8 @@ Minke's security model is built on minimalism, immutability, and the elimination
 After deployment, there are no privileged functions that any address — including the Minke team — can call to:
 - Change fee parameters
 - Withdraw user funds
-- Pause or unpause the contract
 - Modify vesting schedules
 
-<Callout type="tip" title="Verify for yourself">
-You can confirm the absence of admin functions by reading the contract source on Etherscan. Every public function in `VestingToken` is either callable by anyone (permissionless) or enforces the mathematical invariants of the staking model.
-</Callout>
 
 ### Immutable Vesting Schedules
 
@@ -68,32 +63,4 @@ Because `redeemed = vtAmount × (excessT / totalSupplyAtEnd)` and all VTs are bu
 Minke is currently completing its first audit cycle. Audit reports will be published at this URL before mainnet deployment. Do not interact with mainnet contracts until audit reports are published.
 </Callout>
 
-Planned audit scope:
-- `VestingFactory.sol`
-- `VestingToken.sol`
-- `BuybackPool.sol`
-- `ContractRegistry.sol`
 
-Auditors will be announced alongside the report publication.
-
-## Bug Bounty
-
-A bug bounty program will launch alongside mainnet. Reward tiers (planned):
-
-| Severity | Reward |
-|---|---|
-| Critical (direct fund loss) | Up to $500,000 USDC |
-| High (significant risk) | Up to $50,000 USDC |
-| Medium (limited impact) | Up to $10,000 USDC |
-| Low (informational) | Up to $1,000 USDC |
-
-Scope, rules, and submission process will be published at `security.minke.finance`.
-
-## Responsible Disclosure
-
-Before the bug bounty program launches, please report vulnerabilities privately to:
-
-- Email: `security@minke.finance`
-- PGP key: published on the GitHub repository
-
-Do not disclose vulnerabilities publicly before coordinating with the team.

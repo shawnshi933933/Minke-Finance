@@ -5,8 +5,8 @@ Minke converts illiquid future-income positions into tradable tokens. No oracles
 ## The Flow
 
 ```
-1. SETUP      — Project deposits T into Vault; recipients receive ERC-1155 allocation NFTs
-2. MINT VT    — Recipient stakes NFT → Vault mints VT 1:1 into their wallet
+1. SETUP      — A project creates a Vesting Suite--a Vault and ERC1155NFT contract
+2. MINT VT    — Recipient stakes NFT → Vault mints VT into their wallet
 3. TRADE/HOLD — Holder sells VTs on AMM, stakes in BuybackPool, or holds to maturity
 4. REDEEM     — VT holder redeems at maturity 1:1 via redeemVT()
 ```
