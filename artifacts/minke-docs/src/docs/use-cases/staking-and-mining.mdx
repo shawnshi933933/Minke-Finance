@@ -31,7 +31,7 @@ A validator pool operator has 1,000 ETH staked and expects 40 ETH in rewards ove
 
 ```
 ── OPERATOR (originator) ──────────────────────────────────────
-Setup:  Creates Tranche (12-month linear), deposits 40 ETH into Vault
+Setup:  Creates Tranche (12-month linear)
         Stakes allocation NFT → Vault mints 40 ETH-VT (1:1)
 
 Goal:   Get liquidity today
@@ -44,9 +44,8 @@ Buys:   40 ETH-VT at 0.93 ETH per VT → pays ~37.2 ETH
 
 Option A: Stake in BuybackPool
           → Receives ETH gradually over 12 months as vault releases
-          → e.g. ~3.17 ETH/month × 0.95 = ~3.01 ETH/month (after e.g. 5% fee)
-          → Total ~36.1 ETH over 12 months (vs 37.2 ETH paid) — lower return
-             due to fee, but faster than waiting for Phase 2
+          → e.g. ~3.17 ETH/month × 0.99 = ~3.14 ETH/month (after e.g. 1% fee)
+          → Total ~37.6 ETH over 12 months (vs 37.2 ETH paid)
 
 Option B: Hold to Phase 2
           → vestingEnded = true at Month 12
