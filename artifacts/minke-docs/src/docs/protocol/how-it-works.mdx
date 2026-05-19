@@ -5,37 +5,23 @@ Minke converts illiquid future-income positions into tradable tokens in four ste
 ## The Four-Step Flow
 
 ```
-1. DEPOSIT    — Holder deposits future-income position into VestingFactory
+1. DEPOSIT    — Holder deposits future-income position into Minke Protocol
 2. RECEIVE VT — Protocol mints VTs (1:1 with underlying) into holder's wallet
 3. TRADE/HOLD — Holder sells VTs at a discount, stakes them, or holds to maturity
-4. REDEEM     — VT holder redeems at maturity for underlying 1:1 (plus excess)
+4. REDEEM     — VT holder redeems at maturity for underlying 1:1
 ```
 
 Each step is a permissionless on-chain action. There is no centralized intermediary in any step.
 
 ## Step 1: Deposit
 
-A protocol team, investor, or individual calls `VestingFactory.createTranche()` (or uses the Minke app) to deposit a vesting position.
+A protocol team creates a new `VestingToken` for the tranche. Investor, or individual deposit a vesting position.
 
-**What happens on-chain:**
-1. `VestingFactory` creates a new `VestingToken` contract for the tranche
-2. Deposits the underlying token into the `VestingToken` contract
-3. Registers the tranche in `ContractRegistry`
-4. Applies the 5% protocol fee (routed to BuybackPool)
-
-<Callout type="info">
-The minimum deposit is flexible — any amount works. The protocol is designed for everything from a $1k personal vesting position to a $100M institutional SAFT.
-</Callout>
 
 ## Step 2: Receive VT
 
-Immediately after deposit, the depositor receives Vesting Tokens at a **1:1 ratio** with the net deposited amount (after the 5% fee).
+Immediately after deposit, the depositor receives Vesting Tokens at a **1:1 ratio** with the net deposited amount.
 
-```solidity
-// Example: deposit 1,000,000 TOKEN
-// Fee: 50,000 TOKEN → BuybackPool
-// VTs minted: 950,000 VT
-```
 
 VTs are standard ERC-20 tokens. They can be:
 - Transferred to any wallet
@@ -73,12 +59,4 @@ Because VTs are 1:1 backed (and excess may have accumulated from unclaimed rewar
 At no point does Minke consult an external price feed. The 1:1 backing guarantee is mathematical — not economic — making the system immune to oracle manipulation and collateral cascades.
 </Callout>
 
-## Protocol Parameters
-
-| Parameter | Value | Changeable? |
-|---|---|---|
-| Protocol fee | 5% at deposit | No (per-tranche, set at creation) |
-| User share | 95% | No |
-| Min deposit | No minimum | N/A |
-| Vesting schedule | Set at tranche creation | No |
 | Admin key | None after deploy | N/A |

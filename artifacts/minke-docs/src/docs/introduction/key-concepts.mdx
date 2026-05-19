@@ -14,7 +14,7 @@ An ERC-20 token representing a 1:1 claim on the underlying asset from a specific
 
 ### Yield Token (YT)
 
-An ERC-20 representing rights to the variable yield of a VFI position. YTs are a Phase 2 primitive — they allow yield stripping for speculative or hedging purposes. See [Phase 2: VFI and YT](/vision/phase-2-vfi).
+An ERC-20 representing rights to the variable yield of a VFI position. YTs are a Phase 2 primitive — they allow yield stripping for speculative or hedging purposes.
 
 ### DFI (Deterministic Future Income)
 
@@ -47,7 +47,7 @@ A registry contract that maps Suite/Tranche identifiers to deployed contract add
 
 ### BuybackPool
 
-A liquidity pool seeded by protocol fees (5% of deposited principal). VT holders can convert staked positions to liquid claims through the BuybackPool at any time during Phase 1.
+A liquidity pool seeded by protocol fees. VT holders can convert staked positions to liquid claims through the BuybackPool at any time during Phase 1.
 
 ---
 
@@ -99,12 +99,12 @@ The market-determined value today of a future cash flow. In Minke, VTs trade at 
 
 ### Excess Tokens
 
-The difference between tokens deposited minus protocol fee (95%) and tokens actually claimed via staking. Accumulates over Phase 1 and becomes available for 1:1 redemption in Phase 2.
+The difference between tokens deposited minus protocol fee (eg. 95%) and tokens actually claimed via staking. Accumulates over Phase 1 and becomes available for 1:1 redemption in Phase 2.
 
 ### Protocol Fee
 
-5% of deposited tokens are allocated to the protocol at tranche creation. These seed the BuybackPool and fund protocol operations.
+eg.5% of deposited tokens are allocated to the protocol at tranche creation. These seed the BuybackPool and fund protocol operations.
 
 <Callout type="note">
-The 95/5 fee split is fixed at contract deployment. There is no admin key that can change fee parameters post-deploy.
+The fee split is fixed at contract deployment. There is no admin key that can change fee parameters post-deploy.
 </Callout>

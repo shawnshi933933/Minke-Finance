@@ -44,12 +44,17 @@ accVTPerShare += newTokens / totalStakedVT
 function claimT() external;
 ```
 
-Transfers the caller's pending rewards:
+Transfers the caller's pending rewards. The calculation runs in two steps:
 
 ```
+// Step 1: compute how much has accrued since last claim
 pending = (stakedVT × accVTPerShare) - userDebt
-userDebt = stakedVT × accVTPerShare
+
+// Step 2: reset the debt baseline so future claims start from now
+userDebt ← stakedVT × accVTPerShare
 ```
+
+`userDebt` tracks the accumulator value already accounted for. At any point before claiming, `userDebt` is lower than `stakedVT × accVTPerShare` because the accumulator has grown since the last interaction — that difference is the unclaimed amount. After the claim, the debt is brought up to the current accumulator value, so the next claim starts fresh.
 
 <Callout type="info">
 Stakers who claim early "exit" the vesting position with partial value. Their remaining staked VT continues to accumulate unlocks until they claim again or unstake.
