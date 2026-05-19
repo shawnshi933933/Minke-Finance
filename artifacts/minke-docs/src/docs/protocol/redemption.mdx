@@ -47,7 +47,7 @@ This is a permissionless call. It:
 ### The excessT Calculation
 
 ```
-excessT = net deposited underlying − Σ (all Phase 1 claims)
+excessT = total deposited − Σ (all Phase 1 claims)
 ```
 
 ### Redeeming VTs
@@ -64,7 +64,7 @@ The redemption amount is:
 received = vtAmount × (excessT / totalSupplyAtEnd)
 ```
 
-Because each Phase 1 claim reduces both `excessT` and the outstanding VT supply by the same amount, this ratio is always exactly **1:1** at Phase 2.
+Because each Phase 1 claim reduces both `excessT` and the outstanding VT supply by the same amount, this ratio is always exactly **1:1**.
 
 ### Worked Example
 
@@ -72,23 +72,22 @@ Suppose a tranche is created with 1,000,000 TOKEN deposited:
 
 ```
 Initial deposit:     1,000,000 TOKEN
-Protocol fee (e.g. 5%):  50,000 TOKEN → BuybackPool
-Net underlying:        950,000 TOKEN
-VTs minted:            950,000 VT
+VTs minted:          1,000,000 VT  (1:1, no upfront fee)
 
-Phase 1 claims (50%):  475,000 TOKEN claimed by stakers
-                       475,000 VT burned on unstake/claim
+Phase 1 — staking claims (50%):
+  500,000 TOKEN claimed by stakers (no fee)
+  500,000 VT burned
 
 Phase 2 begins:
-  excessT:             475,000 TOKEN remaining
-  totalSupplyAtEnd:    475,000 VT remaining
+  excessT:             500,000 TOKEN remaining
+  totalSupplyAtEnd:    500,000 VT remaining
 
-Redemption ratio:      475,000 / 475,000 = 1.0
+Redemption ratio:      500,000 / 500,000 = 1.0
 Each VT redeems for:   1.00 TOKEN ✓
 ```
 
 <Callout type="tip" title="Always exactly 1:1 at maturity">
-The mathematical design ensures that regardless of Phase 1 staking behaviour, VTs always redeem at exactly 1:1 in Phase 2.
+The mathematical design ensures that regardless of Phase 1 staking behaviour, VTs always redeem at exactly 1:1 in Phase 2. No protocol fee applies to Phase 2 redemption.
 </Callout>
 
 ## Redemption Timeline
@@ -97,9 +96,10 @@ The mathematical design ensures that regardless of Phase 1 staking behaviour, VT
 |---|---|---|
 | `stakeVT` | VT holder | Any time in Phase 1 |
 | `claimT` | Staker | Any time in Phase 1 |
+| `convertViaBuyback` | VT holder | Any time in Phase 1 (e.g. 5% fee applies) |
 | `unstakeVT` | Staker | Any time in Phase 1 |
 | `endVesting` | Anyone | After vesting end time |
-| `redeemVT` | VT holder | Phase 2 only |
+| `redeemVT` | VT holder | Phase 2 only, 1:1 no fee |
 
 ## Edge Cases
 

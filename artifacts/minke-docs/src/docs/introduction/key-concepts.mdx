@@ -1,95 +1,66 @@
 # Key Concepts
 
-A reference glossary for Minke Finance protocol terminology.
+This page defines the core terminology used throughout Minke's documentation.
 
-## Core Primitives
+## Asset Types
 
-### Vesting Token (VT)
+### DFI — Deterministic Future Income
 
-An ERC-20 token representing a 1:1 claim on the underlying asset from a specific tranche. VTs are fungible within a tranche, tradable on any AMM, and redeemable for the underlying at maturity.
+A future income stream where the amount and schedule are fixed and known in advance. Examples:
+- Token vesting schedules (cliff + linear)
+- SAFT / investor allocation tranches
+- Node license emission schedules
+- Mining reward agreements
 
-- **Minted**: when a holder deposits a future-income position
-- **Burned**: when a holder redeems at maturity (1:1 plus excess)
-- **Ratio**: always 1 VT = 1 underlying token (at maturity)
+DFI is the primary asset class Minke Phase 1 handles. Because the schedule is deterministic, no oracle is needed.
 
-### Yield Token (YT)
+### VFI — Variable Future Income
 
-An ERC-20 representing rights to the variable yield of a VFI position. YTs are a Phase 2 primitive — they allow yield stripping for speculative or hedging purposes.
+A future income stream where the amount depends on external factors — utilisation rates, price feeds, governance decisions. Examples:
+- Liquid staking yields (stETH)
+- AMM LP fees
+- Lending protocol interest
 
-### DFI (Deterministic Future Income)
+VFI requires Minke Phase 2 (Yield Token). Phase 1 VT is not suitable for VFI.
 
-Any on-chain future income where both the total amount and the vesting/unlock schedule are known at origination. Examples: team vesting, SAFTs, node license rewards, tokenized bond coupons.
+## Protocol Primitives
 
-### VFI (Variable Future Income)
+### VT — Vesting Token
 
-On-chain future income where the amount depends on future market conditions. Examples: lending APY, LP fees, restaking rewards. Addressed by Phase 2 YT.
+A fungible ERC-20 that represents a 1:1 claim on the underlying token at vesting maturity. VTs are:
+- Minted 1:1 at tranche creation (no upfront fee)
+- Tradable on any DEX as standard ERC-20
+- Stakeable to earn pro-rata vesting unlocks in Phase 1
+- Redeemable 1:1 for underlying at or after Phase 2
 
----
+### YT — Yield Token (Phase 2)
 
-## Protocol Contracts
-
-### VestingFactory
-
-The entry-point contract. Protocols and institutions call `VestingFactory` to:
-1. Create a new **Suite** (collection of tranches for one underlying token)
-2. Create a **Tranche** (a specific vesting schedule within a Suite)
-3. Deposit underlying tokens and receive VTs
-
-### VestingToken
-
-Each tranche deploys one `VestingToken` — the ERC-20 contract that issues VTs for that tranche. Two phases:
-- **Phase 1** — staking and rewards distribution (`stakeVT`, `claimT`)
-- **Phase 2** — 1:1 redemption for excess tokens (`redeemVT`)
-
-### ContractRegistry
-
-A registry contract that maps Suite/Tranche identifiers to deployed contract addresses. Used by frontends and integrators to discover active tranches.
-
-### BuybackPool
-
-A liquidity pool seeded by protocol fees. VT holders can convert staked positions to liquid claims through the BuybackPool at any time during Phase 1.
-
----
-
-## Mechanics
-
-### Suite
-
-A logical grouping of tranches for a single underlying ERC-20. One protocol = one Suite = many Tranches.
+A future token type designed for VFI streams where yield is variable. Not yet live — see the roadmap for planned release.
 
 ### Tranche
 
-A single vesting schedule within a Suite. Each Tranche has:
-- A fixed vesting start and end time
-- A total underlying amount
-- Its own `VestingToken` contract
+A single VestingToken deployment representing one vesting position. Each tranche has:
+- A specific underlying token
+- A fixed `vestStart` and `vestEnd`
+- Its own accumulator (`accVTPerShare`) tracking pro-rata unlocks
+
+### BuybackPool
+
+An early exit facility deployed alongside each VestingToken. VT holders can convert VTs into the underlying token at any time during Phase 1 by paying a protocol fee (e.g. 5%). The BuybackPool sources its T from the vault as tokens vest per the schedule.
+
+## Staking Mechanics
 
 ### accVTPerShare
 
-A per-share accumulator used by `VestingToken` to track how much underlying has vested per VT held. Inspired by Chef-style staking contracts. Updated on each checkpoint.
+A global accumulator that tracks the total underlying tokens unlocked per staked VT. Updated each time `checkpointVesting()` is called. Increases monotonically as the vesting schedule progresses.
 
-```
-pendingReward = (userVT × accVTPerShare) - userDebt
-```
+### userDebt
+
+A per-user baseline that records the `accVTPerShare` value at the time of the user's last interaction (stake, unstake, or claim). The difference between the current `accVTPerShare × stakedVT` and `userDebt` is the user's pending claimable amount.
 
 ### Checkpoint
 
-A periodic update to `accVTPerShare` that distributes newly vested tokens proportionally to all active stakers. Anyone can trigger a checkpoint; the protocol is permissionless.
-
----
-
-## Lifecycle States
-
-| State | Description |
-|---|---|
-| **Active (Phase 1)** | Vesting is in progress. VT holders can stake and claim pro-rata unlocks. |
-| **Post-vest (Phase 2)** | All tokens have vested. `endVesting()` is called. Excess T has accumulated. Holders can `redeemVT` 1:1. |
-
-### endVesting
-
-The transaction that closes Phase 1 and opens Phase 2. Called after the vesting end time. Triggers the final accumulator update and transfers excess tokens to the `VestingToken` contract for redemption.
-
----
+A call to `checkpointVesting()` that reads the current vested amount from the schedule and updates `accVTPerShare`. Anyone can call it at any time — it is a permissionless, idempotent operation.
 
 ## Economic Terms
 
@@ -99,12 +70,12 @@ The market-determined value today of a future cash flow. In Minke, VTs trade at 
 
 ### Excess Tokens
 
-The difference between tokens deposited minus the protocol fee (e.g. 95% remaining) and tokens actually claimed via staking. Accumulates over Phase 1 and becomes available for 1:1 redemption in Phase 2.
+The underlying tokens remaining in the vault after all Phase 1 claims. These become available for 1:1 redemption in Phase 2 by outstanding VT holders.
 
 ### Protocol Fee
 
-E.g. 5% of deposited tokens are allocated to the protocol at tranche creation. These seed the BuybackPool and fund protocol operations.
+A fee (e.g. 5%) charged when a VT holder converts VTs into the underlying token via the BuybackPool. The fee is not charged at deposit, on staking rewards (`claimT()`), or on Phase 2 redemption (`redeemVT()`).
 
 <Callout type="note">
-The fee split is fixed at contract deployment. There is no admin key that can change fee parameters post-deploy.
+The fee rate is fixed at contract deployment. There is no admin key that can change fee parameters post-deploy.
 </Callout>

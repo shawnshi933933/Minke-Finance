@@ -17,8 +17,8 @@ None of this is necessary. Minke provides an alternative that preserves vesting 
 A team member with a 4-year vesting schedule can:
 
 1. Deposit their unvested allocation into Minke's `VestingFactory`
-2. Receive VTs representing the full vesting value (at 1:1 minus the protocol fee, e.g. 5%)
-3. List VTs on a secondary market at a time-discount
+2. Receive VTs 1:1 with the deposited amount (no upfront fee)
+3. List VTs on a secondary market at a time-discount, or convert via BuybackPool (e.g. 5% fee)
 4. Access immediate liquidity without breaking the original vesting terms
 
 <Callout type="tip" title="Vesting terms preserved">
@@ -32,11 +32,14 @@ Suppose an advisor holds 500,000 TOKEN vesting linearly over 24 months:
 ```
 Month 0:  Deposit 500,000 TOKEN unvested position
           → VestingFactory creates Tranche (24-month linear)
-          → Advisor receives 475,000 VT (e.g. 95%)
-          → 25,000 TOKEN → BuybackPool
+          → Advisor receives 500,000 VT (1:1, no upfront fee)
 
-Month 0:  Advisor sells 475,000 VT on Uniswap at 0.82 (18% discount)
-          → Receives 389,500 USDC immediately
+Option A: Sell on AMM
+          Advisor sells 500,000 VT at 0.82 market discount
+          → Receives 410,000 USDC immediately
+
+Option B: BuybackPool conversion (e.g. 5% fee)
+          → Receives e.g. 475,000 TOKEN immediately
 
 Month 1–24: Underlying tokens vest on schedule
             VT buyers stake VTs, claim monthly unlocks
@@ -44,8 +47,6 @@ Month 1–24: Underlying tokens vest on schedule
 Month 24: endVesting() called
           Remaining VT holders call redeemVT() → 1:1 TOKEN
 ```
-
-The advisor obtained liquidity at month 0. The buyer obtained a 18% discount on future TOKEN exposure.
 
 ## SAFT-Specific Considerations
 

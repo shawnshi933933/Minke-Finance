@@ -1,86 +1,74 @@
 # BuybackPool
 
-The BuybackPool is a liquidity facility funded by the e.g. 5% protocol fee. It provides Phase 1 exit liquidity and creates a price floor for VTs within a tranche.
+The BuybackPool is a Phase 1 exit facility that lets VT holders convert their VTs into the underlying token (T) at any time, without waiting for maturity. A protocol fee (e.g. 5%) is charged on each conversion.
 
-## Purpose
+## How It Gets Its T
 
-In Phase 1, VT holders who want to exit early have two options:
-
-1. **Sell on an AMM** — sell VTs at the market-determined discount
-2. **Convert via BuybackPool** — exchange staked VT positions for a pro-rata share of the BuybackPool's underlying holdings
-
-The BuybackPool is not an AMM. It does not require liquidity providers or a counterparty. It holds the protocol fee tokens and allocates them proportionally to VT holders who choose to exit via it.
-
-## How It Works
-
-At tranche creation, the protocol fee (e.g. 5%) of deposited tokens is transferred to the BuybackPool:
+The BuybackPool does not hold a pre-funded reserve of tokens. Instead, it draws T from the vault as tokens vest according to the vesting schedule. As the schedule releases tokens over time, those released tokens become available for BuybackPool conversions.
 
 ```
-Deposited:    1,000,000 TOKEN
-BuybackPool:     50,000 TOKEN  (e.g. 5%, funded once at creation)
-VestingToken:   950,000 TOKEN
+Vault releases tokens per schedule:
+  Month 1:  ~4.2% of total vests → available in vault
+  Month 2:  ~4.2% of total vests → available in vault
+  ...
+  Each month's release can be used for BuybackPool conversions
 ```
 
-During Phase 1, a staker can call:
+This means the BuybackPool's available liquidity grows as the vesting schedule progresses — it is not front-loaded.
+
+## How Conversion Works
+
+During Phase 1, a VT holder can call:
 
 ```solidity
 function convertViaBuyback(uint256 vtAmount) external;
 ```
 
 This function:
-1. Checks the caller's staked VT balance
-2. Calculates the pro-rata share of BuybackPool the caller is entitled to:
+1. Checks the caller's VT balance
+2. Calculates the payout after the protocol fee:
 
 ```
-payout = vtAmount × (poolBalance / totalStakedVT)
+payout = vtAmount × (1 − fee)   // e.g. 95 T for every 100 VT converted
+fee    = vtAmount × fee_rate     // e.g. 5 T → protocol treasury
 ```
 
-3. Burns the staked VT
-4. Transfers `payout` TOKEN to the caller
+3. Burns the VT
+4. Transfers `payout` T to the caller
+5. Routes the fee to the protocol treasury
 
-<Callout type="warning" title="BuybackPool vs AMM">
-BuybackPool conversions are not the same as selling on an AMM. The BuybackPool pays from a fixed reserve — once it is depleted, no further BuybackPool conversions are possible. AMM liquidity is not affected.
+<Callout type="info" title="No fee on staking or Phase 2">
+The protocol fee only applies to BuybackPool conversions. Staking and claiming via `claimT()` carries no fee. Phase 2 redemption via `redeemVT()` is always 1:1 with no fee.
 </Callout>
 
 ## Price Floor Mechanics
 
-Because the BuybackPool always holds real underlying tokens, it creates an implicit floor price for VTs. Any rational VT holder will sell via the BuybackPool rather than an AMM if the AMM price falls below:
+Because the BuybackPool always offers a known conversion rate (1 − fee), it creates an implicit floor price for VTs. Any rational VT holder will use the BuybackPool rather than selling on an AMM if the AMM price falls below `(1 − fee)`:
 
 ```
-BuybackPool price = poolBalance / totalStakedVT
+BuybackPool floor ≈ (1 − protocol_fee_rate)
+e.g. 0.95 underlying per VT
 ```
 
-In practice, this means VT market prices tend to stay above the BuybackPool floor, creating a healthy price discovery range.
+In practice, VT market prices tend to stay above this floor as maturity approaches.
 
 ## BuybackPool and AMM Interaction
 
-The BuybackPool and AMM coexist and complement each other:
+The two exit mechanisms complement each other:
 
-- **AMMs** offer full liquidity at market-determined prices
-- **BuybackPool** offers a guaranteed minimum floor backed by real assets
+- **AMMs** offer full liquidity at market-determined prices (may be above or below BuybackPool floor)
+- **BuybackPool** offers a guaranteed minimum payout backed by vested tokens from the vault
 
-As VT maturity approaches, the AMM price converges to par (1:1 with underlying) and the BuybackPool floor becomes less relevant. In Phase 2, the BuybackPool is not used — `redeemVT()` provides direct 1:1 redemption.
+As the vesting schedule approaches its end, more tokens are available in the vault, increasing BuybackPool capacity. In Phase 2, `redeemVT()` replaces BuybackPool as the redemption mechanism.
 
 ## BuybackPool Depletion
 
-If the BuybackPool is exhausted before Phase 2 begins, `convertViaBuyback()` reverts. VT holders can still:
+If tokens have not yet vested (i.e. the schedule has not released enough T), BuybackPool capacity may be limited early in Phase 1. VT holders can still:
 
 - Sell VTs on AMMs
-- Stake and claim Phase 1 pro-rata unlocks
+- Stake and claim Phase 1 pro-rata unlocks via `claimT()`
 - Wait for Phase 2 and call `redeemVT()`
 
 <Callout type="info">
-The BuybackPool is designed to be a supplementary exit, not the primary one. The primary exits are AMM trading and Phase 2 redemption.
+The BuybackPool is designed as a supplementary early exit. The primary exits are AMM trading (Phase 1) and 1:1 Phase 2 redemption.
 </Callout>
-
-## Technical Notes
-
-The BuybackPool contract is deployed alongside each `VestingToken` by `VestingFactory`. Key parameters:
-
-```solidity
-address public immutable underlyingToken;
-address public immutable vestingToken;
-uint256 public poolBalance;     // decreases as conversions occur
-```
-
-The `poolBalance` is public and readable on-chain at all times, providing full transparency into available exit liquidity.

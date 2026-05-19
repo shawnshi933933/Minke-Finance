@@ -20,8 +20,8 @@ The naive solution — sell native tokens — creates immediate selling pressure
 A DAO governance proposal can authorise the treasury multisig to:
 
 1. Deposit a portion of the unvested treasury allocation into Minke
-2. Receive VTs representing the future token stream
-3. Sell VTs on a secondary market at a time-discount
+2. Receive VTs 1:1 with the deposited amount (no upfront fee)
+3. Sell VTs on a secondary market at a time-discount, or convert via BuybackPool
 
 This achieves liquidity for operational needs without market-selling the native token. The underlying token remains vesting on schedule — it's just the *claim* that has been tokenized.
 
@@ -37,10 +37,10 @@ A DeFi protocol has 50M TOKEN in its ecosystem fund, vesting linearly over 4 yea
 Treasury holds: 50,000,000 TOKEN vesting over 48 months
 
 Step 1: Deposit 12.5M TOKEN (12-month tranche)
-        VTs minted: 11,875,000 VT (e.g. 95%)
+        VTs minted: 12,500,000 VT (1:1, no upfront fee)
 
-Step 2: Sell 11,875,000 VT on Uniswap at 0.92
-        → Receives ~10.9M USDC equivalent
+Step 2: Sell 12,500,000 VT on Uniswap at 0.92
+        → Receives ~11.5M USDC equivalent
 
 Step 3: Use USDC for operations, grants, audits
 
@@ -58,7 +58,7 @@ Instead of granting contributors raw tokens with a cliff + linear schedule, prot
 
 1. Create a Minke tranche with the contributor's allocation
 2. Grant the contributor VTs at day one
-3. The contributor receives VTs immediately — liquid, tradable, compostable
+3. The contributor receives VTs immediately — liquid, tradable, composable
 
 This provides contributors real economic value at grant time while the underlying continues to vest.
 

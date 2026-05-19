@@ -1,51 +1,42 @@
 # Fee Structure
 
-Minke uses a single, transparent fee structure applied once at tranche creation.
+Minke charges a protocol fee only when VT holders use the BuybackPool to convert their VTs into the underlying token (T) before maturity. There is no upfront deposit fee.
 
-## The Protocol Fee Split
+## When the Fee Applies
 
-When a depositor creates a tranche and deposits underlying tokens, an **e.g. 5% protocol fee** is applied immediately:
+The protocol fee (e.g. 5%) is charged at the moment of BuybackPool conversion:
 
 ```
-Deposited:       1,000,000 TOKEN
-Protocol fee:       50,000 TOKEN (e.g. 5%) → BuybackPool
-Net underlying:    950,000 TOKEN → VestingToken contract
-VTs minted:        950,000 VT (1:1 with net underlying)
+VT holder calls convertViaBuyback(100 VT)
+  → receives e.g. 95 T  (payout after fee)
+  → 5 T  → protocol treasury  (e.g. 5% fee)
 ```
 
-There are no recurring fees, no performance fees, and no withdrawal fees. The protocol fee is collected once at deposit and never applied again.
-
-## Where the Fee Goes
-
-The protocol fee is routed directly to the **BuybackPool** contract for the tranche. The BuybackPool serves two functions:
-
-1. **Phase 1 exit liquidity** — VT holders can use the BuybackPool to convert staked positions to liquid claims without going to an AMM
-2. **Protocol sustainability** — a portion accrues to Minke's treasury to fund ongoing development and audits
-
-<Callout type="info">
-The BuybackPool allocation between exit liquidity and treasury is determined at the protocol level and published in governance documentation. The protocol fee is fixed per tranche at deployment and cannot be changed post-deploy.
-</Callout>
+**Depositing does not incur a fee.** Depositing 1,000,000 TOKEN mints exactly 1,000,000 VT.
 
 ## What the Fee Is NOT
 
-- **Not a spread** — unlike OTC vesting desks (15–40%), Minke's fee is fixed and visible
-- **Not a recurring fee** — it is collected once at deposit, never on claims or redemptions
-- **Not a liquidation penalty** — there are no liquidations in Minke Phase 1
+- **Not an upfront deposit fee** — 1,000,000 TOKEN in = 1,000,000 VT out
+- **Not a staking fee** — `claimT()` distributes pro-rata vesting unlocks with no deduction
+- **Not a Phase 2 redemption fee** — `redeemVT()` at maturity is always 1:1 with no fee
 
-## Comparing Costs
+## Why the Fee Is on BuybackPool Conversion
 
-| Exit Method | Effective Cost | Speed |
+Holders who use the BuybackPool are getting instant liquidity before their vesting schedule has ended. The protocol fee compensates the system for providing that early exit option. Holders who wait until Phase 2 pay no fee.
+
+## Comparing Exit Paths
+
+| Exit Path | Protocol Fee | Speed |
 |---|---|---|
-| OTC vesting desk | 15–40% spread | Days to weeks |
-| Sell on AMM at discount | Depends on VT/underlying price | Minutes |
-| Wait for maturity (no Minke) | 0% but full lockup | Months to years |
-| **Minke (at maturity)** | **e.g. 5% total** | **Instant in Phase 2** |
-
-For most holders, the Minke protocol fee is the cheapest option for accessing present value, compared to either waiting in full illiquidity or selling through an OTC desk.
+| Sell VTs on AMM | None (market discount applies) | Instant |
+| BuybackPool conversion | e.g. 5% | Instant |
+| Stake and claim via `claimT()` | None | Ongoing during Phase 1 |
+| Phase 2 redemption (`redeemVT`) | None | At or after maturity |
+| OTC vesting desk (off-chain) | 15–40% spread | Days to weeks |
 
 ## Fee Finality
 
-The fee parameters (e.g. 5% rate, BuybackPool destination) are set when the tranche is deployed and stored in the `VestingToken` contract. No function exists to change them after deployment. Users can verify this by reading the contract's immutable variables on any block explorer.
+The fee rate (e.g. 5%) is set at tranche deployment and stored in the contract. No function exists to change it after deployment. Users can verify this by reading the contract's immutable variables on any block explorer.
 
 <Callout type="note">
 Future protocol versions may introduce governance-controlled fee tiers. Any changes would apply to new tranches only — existing tranches are immutable.

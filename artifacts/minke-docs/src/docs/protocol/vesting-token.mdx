@@ -1,19 +1,26 @@
 # Vesting Token (VT)
 
-The Vesting Token is Minke's core primitive: a fungible ERC-20 representing a 1:1 claim on an underlying asset from a specific tranche.
+A Vesting Token (VT) is a fungible ERC-20 that represents a 1:1 claim on the underlying token at vesting maturity. VTs are minted when a depositor wraps a vesting position via `VestingFactory`.
 
-## Overview
+## Minting
 
-Each Minke tranche deploys one `VestingToken` contract. This contract:
-- Issues VTs to depositors at a 1:1 ratio
-- Manages Phase 1 staking and pro-rata unlock distribution
-- Transitions to Phase 2 for 1:1 redemption after `endVesting()`
+```solidity
+function createTranche(
+  address underlying,
+  uint256 amount,
+  uint64 vestStart,
+  uint64 vestEnd
+) external returns (address vestingToken);
+```
 
-VTs from different tranches are distinct tokens, even if they share the same underlying asset. A VT for a 12-month vesting schedule and a VT for a 24-month schedule are different instruments with different present values.
+The depositor transfers `amount` of the underlying token into the new `VestingToken` contract. The contract mints exactly `amount` VTs (1:1) and returns them to the depositor.
 
-## Phase 1: Staking and Pro-Rata Claims
+```
+Deposited:  1,000,000 TOKEN
+VTs minted: 1,000,000 VT  (1:1, no upfront fee)
+```
 
-During Phase 1 (while the underlying is still vesting), VT holders can stake their tokens to earn pro-rata unlocks.
+## Phase 1: Pro-Rata Staking
 
 ### Staking
 
@@ -29,14 +36,7 @@ Deposits `amount` of VT into the staking pool. The contract records the holder's
 function checkpointVesting() external;
 ```
 
-Anyone can call this to update `accVTPerShare`. The update distributes newly vested underlying tokens proportionally to all stakers based on their share of total staked VT.
-
-The accumulator pattern used is analogous to MasterChef-style staking:
-
-```
-newTokens = underlyingVested since last checkpoint
-accVTPerShare += newTokens / totalStakedVT
-```
+Reads the current vested amount from the schedule and updates the global `accVTPerShare` accumulator. Anyone can call this at any time — it is permissionless and idempotent.
 
 ### Claiming
 
@@ -44,7 +44,7 @@ accVTPerShare += newTokens / totalStakedVT
 function claimT() external;
 ```
 
-Transfers the caller's pending rewards. The calculation runs in two steps:
+Transfers the caller's pending staking rewards. The calculation runs in two steps:
 
 ```
 // Step 1: compute how much has accrued since last claim
@@ -60,15 +60,29 @@ userDebt ← stakedVT × accVTPerShare
 Stakers who claim early "exit" the vesting position with partial value. Their remaining staked VT continues to accumulate unlocks until they claim again or unstake.
 </Callout>
 
-### BuybackPool Conversion
+### Unstaking
 
-During Phase 1, stakers can exit via the BuybackPool rather than waiting:
+```solidity
+function unstakeVT(uint256 amount) external;
+```
+
+Removes `amount` from the staking pool. Pending rewards remain claimable via `claimT()`.
+
+## BuybackPool Early Exit
+
+During Phase 1, VT holders can exit early via the BuybackPool rather than waiting:
 
 ```solidity
 function convertViaBuyback(uint256 vtAmount) external;
 ```
 
-The BuybackPool (seeded by the e.g. 5% protocol fee) provides instant liquidity for VT holders who want to exit before Phase 2 without going to an AMM.
+The BuybackPool sources T from the vault as tokens vest according to the schedule. A protocol fee (e.g. 5%) is charged on the conversion:
+
+```
+convertViaBuyback(100 VT)
+  → caller receives: e.g. 95 T
+  → protocol fee:    e.g.  5 T → treasury
+```
 
 ## Phase 2: 1:1 Redemption
 
@@ -99,7 +113,7 @@ redeemed = 1 underlying per VT
 ```
 
 <Callout type="tip">
-Phase 2 redemption is always exactly 1:1, regardless of how much was claimed during Phase 1.
+Phase 2 redemption is always exactly 1:1, regardless of how much was claimed during Phase 1. No protocol fee applies to Phase 2 redemption.
 </Callout>
 
 ## VT Token Properties
@@ -107,22 +121,23 @@ Phase 2 redemption is always exactly 1:1, regardless of how much was claimed dur
 | Property | Value |
 |---|---|
 | Standard | ERC-20 |
-| Decimals | Same as underlying |
-| Mint authority | VestingFactory only |
-| Burn authority | VestingToken (on redeem) |
-| Transfer | Unrestricted |
-| Tradable | Yes — any AMM or wallet |
+| Minting | 1:1 with underlying at tranche creation |
+| Burning | On BuybackPool conversion or Phase 2 redemption |
+| Transferability | Fully transferable — no restrictions |
+| Decimals | Matches the underlying token |
 
-## accVTPerShare Precision
+## Lifecycle Summary
 
-`accVTPerShare` is stored with 1e18 precision to avoid rounding errors during distribution:
-
-```solidity
-uint256 public accVTPerShare; // scaled by 1e18
 ```
-
-Pending rewards for user `u`:
-
-```solidity
-uint256 pending = (userStaked[u] * accVTPerShare / 1e18) - userDebt[u];
+Deposit underlying → Mint VT (1:1)
+         ↓
+     Phase 1
+  ┌─────────────────────────────────────────┐
+  │  Stake VT → earn pro-rata unlocks (no fee) │
+  │  OR                                        │
+  │  BuybackPool → early T exit (e.g. 5% fee)  │
+  └─────────────────────────────────────────┘
+         ↓
+     Phase 2
+  redeemVT() → 1:1 T (no fee)
 ```
