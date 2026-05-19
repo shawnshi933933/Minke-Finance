@@ -1,112 +1,90 @@
 # Redemption
 
-Minke's redemption model has two distinct phases: Phase 1 (pro-rata streaming while vesting is active) and Phase 2 (1:1 redemption after vesting ends).
+Minke's redemption model has two distinct phases: Phase 1 (gradual T distribution as tokens vest via the BuybackPool) and Phase 2 (1:1 redemption from the excessT reserve after vesting ends).
 
-## Phase 1: Pro-Rata Streaming
+## Phase 1: BuybackPool Staking
 
-During Phase 1, underlying tokens vest continuously according to the schedule. VT holders who have staked their tokens receive pro-rata shares of these unlocks.
+During Phase 1, VT holders can stake their VT in the BuybackPool to receive T as it vests from the Vault. The pool pulls T automatically based on the release schedule.
 
-### How Phase 1 Claims Work
+### How Phase 1 Works
 
-1. The vesting contract accumulates newly vested tokens over time
-2. Any account can call `checkpointVesting()` to distribute newly vested tokens
-3. Stakers call `claimT()` to withdraw their share
+1. VT holder stakes VT in BuybackPool (`stakeVT`)
+2. BuybackPool pulls T from Vault per release schedule
+3. For each T pulled: equivalent VT is burned 1:1; T is distributed to stakers proportionally (minus e.g. 5% protocol fee)
+4. Staker calls `claimT()` to withdraw their accumulated T
 
 ```
 Phase 1 flow:
-time passes → tokens vest → checkpoint → accVTPerShare increases
-staker calls claimT() → receives (staked × accVTPerShare) - debt
+time passes → vault releases T → BP pulls T → burns VT
+staker calls claimT() → receives pro-rata T (minus fee)
 ```
 
-The checkpoint pattern ensures gas efficiency: the accumulator update is O(1) regardless of how many stakers are in the pool.
-
 <Callout type="info">
-Phase 1 claims are partial exits. Each claim reduces the amount of underlying that will be available for Phase 2 redemption. This is by design — it correctly prices the VT at market-determined time discount.
+Phase 1 claims are gradual. T arrives over the vesting schedule, not all at once. Each pull burns VT 1:1, reducing the staker's outstanding VT position over time.
 </Callout>
 
-### Unstaking in Phase 1
+### Withdrawing From BuybackPool
 
-Stakers can unstake at any time by calling `unstakeVT(amount)`. This removes them from the staking pool and stops their accumulation of new unlocks. Their pending rewards up to that point remain claimable.
+Stakers can withdraw at any time by calling `withdrawVT(uint256 shares)`. The parameter is the number of **shares** (not VT amount), because share value decreases as VT is burned during pulls. Pending claimable T remains withdrawable after exiting.
 
 ## Phase 2: 1:1 Redemption
 
-### Triggering endVesting
+### When Phase 2 Opens
 
-Once the tranche's vesting end time has passed, anyone can call:
+Once the release schedule has fully run, `vestingEnded` is set to `true` on the BuybackPool. New staking is disabled. VT holders — including those who never staked — can now call `redeemVT()`.
 
-```solidity
-function endVesting() external;
-```
+### The excessT Reserve
 
-This is a permissionless call. It:
-1. Performs a final `checkpointVesting()` to distribute any remaining unlocks
-2. Records `excessT` — the total underlying remaining in the contract after all Phase 1 claims
-3. Records `totalSupplyAtEnd` — the total outstanding VT supply
-4. Sets `phase2Active = true`
-
-### The excessT Calculation
-
-```
-excessT = total deposited − Σ (all Phase 1 claims)
-```
+`excessT` accumulates in the BuybackPool when more T is pulled from the Vault than can be burned (e.g. when the pool nears dust protection limits). This excess is reserved for Phase 2 1:1 redemptions.
 
 ### Redeeming VTs
-
-In Phase 2, VT holders call:
 
 ```solidity
 function redeemVT(uint256 vtAmount) external;
 ```
 
-The redemption amount is:
-
-```
-received = vtAmount × (excessT / totalSupplyAtEnd)
-```
-
-Because each Phase 1 claim reduces both `excessT` and the outstanding VT supply by the same amount, this ratio is always exactly **1:1**.
+Burns `vtAmount` VT from the caller's wallet and transfers an equal amount of T from the `excessT` reserve. No protocol fee.
 
 ### Worked Example
 
-Suppose a tranche is created with 1,000,000 TOKEN deposited:
+Suppose a tranche is created with 1,000,000 TOKEN in the Vault and 1,000,000 VT minted:
 
 ```
-Initial deposit:     1,000,000 TOKEN
-VTs minted:          1,000,000 VT  (1:1, no upfront fee)
-
-Phase 1 — staking claims (50%):
-  500,000 TOKEN claimed by stakers (no fee)
-  500,000 VT burned
+Phase 1 — BuybackPool activity:
+  Vault releases 600,000 T total (per schedule)
+  BP pulls 600,000 T → burns 600,000 VT
+  Stakers receive: 600,000 × 0.95 = 570,000 T  (95% after fee)
+  Protocol receives:               30,000 T  (5% fee)
 
 Phase 2 begins:
-  excessT:             500,000 TOKEN remaining
-  totalSupplyAtEnd:    500,000 VT remaining
+  excessT:          400,000 T remaining (1,000,000 − 600,000)
+  VT outstanding:   400,000 VT remaining (1,000,000 − 600,000 burned)
 
-Redemption ratio:      500,000 / 500,000 = 1.0
-Each VT redeems for:   1.00 TOKEN ✓
+redeemVT(400,000 VT):
+  Burns 400,000 VT
+  Sends 400,000 T → caller
+  Rate: 1:1 exactly ✓
 ```
 
-<Callout type="tip" title="Always exactly 1:1 at maturity">
-The mathematical design ensures that regardless of Phase 1 staking behaviour, VTs always redeem at exactly 1:1 in Phase 2. No protocol fee applies to Phase 2 redemption.
+<Callout type="tip" title="Phase 2 is always 1:1">
+Regardless of how much activity happened in Phase 1, outstanding VT always redeems 1:1 in Phase 2. No protocol fee applies.
 </Callout>
 
 ## Redemption Timeline
 
-| Event | Who Can Call | When |
-|---|---|---|
-| `stakeVT` | VT holder | Any time in Phase 1 |
-| `claimT` | Staker | Any time in Phase 1 |
-| `convertViaBuyback` | VT holder | Any time in Phase 1 (e.g. 5% fee applies) |
-| `unstakeVT` | Staker | Any time in Phase 1 |
-| `endVesting` | Anyone | After vesting end time |
-| `redeemVT` | VT holder | Phase 2 only, 1:1 no fee |
+| Event | Contract | Who Can Call | When |
+|---|---|---|---|
+| `stakeVT` | BuybackPool | VT holder | Phase 1 |
+| `claimT` | BuybackPool | Staker | Phase 1 |
+| `withdrawVT` | BuybackPool | Staker | Phase 1 |
+| `redeemVT` | BuybackPool | VT holder | Phase 2 only, 1:1 no fee |
 
 ## Edge Cases
 
 ### What if nobody stakes in Phase 1?
 
-If no VT holder stakes during Phase 1, all underlying accumulates in the contract. Phase 2 redemption is still exactly 1:1.
+All T released from the Vault accumulates as `excessT` in the BuybackPool. No VT is burned. Phase 2 `redeemVT()` distributes the full amount 1:1 (minus any dust).
 
 ### What if all VTs are burned in Phase 1?
 
-If all stakers claim their full allocation during Phase 1, `excessT = 0` and `totalSupplyAtEnd = 0`. Phase 2 has nothing to distribute — but there are also no outstanding VTs to redeem. No value is lost.
+All T has been distributed (minus fee). `excessT ≈ 0`, outstanding VT ≈ 0. Phase 2 has nothing to distribute — but no VTs remain to redeem either.

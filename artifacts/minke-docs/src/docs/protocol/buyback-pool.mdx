@@ -1,74 +1,102 @@
 # BuybackPool
 
-The BuybackPool is a Phase 1 exit facility that lets VT holders convert their VTs into the underlying token (T) at any time, without waiting for maturity. A protocol fee (e.g. 5%) is charged on each conversion.
+The BuybackPool is the core mechanism through which VT holders receive underlying tokens (T) during Phase 1. Users stake VT in the pool; the pool automatically pulls T from the Vault per the vesting release schedule, burns VT 1:1 as T arrives, and distributes T to stakers proportionally — minus a protocol fee (e.g. 5%).
 
-## How It Gets Its T
-
-The BuybackPool does not hold a pre-funded reserve of tokens. Instead, it draws T from the vault as tokens vest according to the vesting schedule. As the schedule releases tokens over time, those released tokens become available for BuybackPool conversions.
+## How It Works
 
 ```
-Vault releases tokens per schedule:
-  Month 1:  ~4.2% of total vests → available in vault
-  Month 2:  ~4.2% of total vests → available in vault
-  ...
-  Each month's release can be used for BuybackPool conversions
+User stakes VT → receives shares
+                      ↓
+   BP pulls T from Vault per release schedule
+                      ↓
+   For every T pulled: 1 VT is burned 1:1
+                      ↓
+   Stakers accumulate claimable T
+   (pro-rata by shares, minus e.g. 5% protocol fee)
+                      ↓
+   User calls claimT() → receives their T
 ```
 
-This means the BuybackPool's available liquidity grows as the vesting schedule progresses — it is not front-loaded.
+The BuybackPool does not hold a pre-funded reserve of T. Liquidity grows gradually as the vesting schedule releases tokens from the Vault.
 
-## How Conversion Works
+## Numeric Example
 
-During Phase 1, a VT holder can call:
+From the contract comments (5% fee, userRewardRate = 950):
+
+```
+TotalStakedVT = 50, user holds 5 VT → 5 shares
+
+Vault releases 10 T → BP pulls 10 T
+→ Burns 10 VT (pool shrinks: 40 VT remaining, 50 shares)
+→ Share value drops: 40/50 = 0.8 VT per share
+
+User's claimable T += 10 × (5/50) × 0.95 = 0.95 T
+                        (proportional) (after fee)
+```
+
+The 5% fee (e.g. 0.05 T here) accrues to the protocol treasury. Users receive 95%.
+
+## User Functions
+
+### Stake VT
 
 ```solidity
-function convertViaBuyback(uint256 vtAmount) external;
+function stakeVT(uint256 amount) external;
 ```
 
-This function:
-1. Checks the caller's VT balance
-2. Calculates the payout after the protocol fee:
+Deposits `amount` VT into the pool. Shares are issued at the current share-to-VT ratio. A lazy pull from the Vault is triggered first to ensure staking starts with up-to-date rewards accounted for.
+
+### Withdraw VT
+
+```solidity
+function withdrawVT(uint256 shares) external;
+```
+
+Returns the VT equivalent of `shares` to the caller. Note: the parameter is **shares**, not VT amount — share value declines over time as VT is burned during pulls.
+
+### Claim T
+
+```solidity
+function claimT() external;
+```
+
+Triggers a Vault pull first, then transfers all accumulated claimable T to the caller. The fee (e.g. 5%) has already been deducted from the accumulated amount at distribution time.
+
+## Release Schedule
+
+The Vault must explicitly approve the BuybackPool to pull T (`approvePool` or `unlimitedApprovePool`). The pull behaviour is controlled by three parameters set at tranche creation:
+
+| Parameter | Description |
+|---|---|
+| `releaseStartTime` | Earliest timestamp pulls can occur (cliff end) |
+| `releaseInterval` | Minimum seconds between pulls (0 = unlimited) |
+| `releaseBatchSize` | Max T per pull (0 = pull all available) |
+
+Pulls are lazy: they happen automatically when a user calls `stakeVT` or `claimT`, not on a cron schedule.
+
+## Price Floor Effect
+
+Because staking in the BuybackPool guarantees receiving (1 − fee) of the underlying over time, it creates a soft floor for VT market prices. VTs trading below `(1 − fee)` on an AMM represent an arbitrage: a buyer could purchase cheap VTs and stake them to recover e.g. 95% of par.
 
 ```
-payout = vtAmount × (1 − fee)   // e.g. 95 T for every 100 VT converted
-fee    = vtAmount × fee_rate     // e.g. 5 T → protocol treasury
-```
-
-3. Burns the VT
-4. Transfers `payout` T to the caller
-5. Routes the fee to the protocol treasury
-
-<Callout type="info" title="No fee on staking or Phase 2">
-The protocol fee only applies to BuybackPool conversions. Staking and claiming via `claimT()` carries no fee. Phase 2 redemption via `redeemVT()` is always 1:1 with no fee.
-</Callout>
-
-## Price Floor Mechanics
-
-Because the BuybackPool always offers a known conversion rate (1 − fee), it creates an implicit floor price for VTs. Any rational VT holder will use the BuybackPool rather than selling on an AMM if the AMM price falls below `(1 − fee)`:
-
-```
-BuybackPool floor ≈ (1 − protocol_fee_rate)
+Soft price floor ≈ (1 − protocol_fee_rate)
 e.g. 0.95 underlying per VT
 ```
 
-In practice, VT market prices tend to stay above this floor as maturity approaches.
+## Dust Protection
 
-## BuybackPool and AMM Interaction
+The pool enforces a minimum residual VT (`dustProtection`, default 1e18) that cannot be burned. This prevents the pool from reaching a degenerate state with zero VT. Any T that arrives when no further VT can be burned accumulates as `excessT` and becomes available for Phase 2 `redeemVT()`.
 
-The two exit mechanisms complement each other:
+## Phase 2: redeemVT
 
-- **AMMs** offer full liquidity at market-determined prices (may be above or below BuybackPool floor)
-- **BuybackPool** offers a guaranteed minimum payout backed by vested tokens from the vault
+After the vesting schedule ends, `vestingEnded` is set to `true` and staking is disabled. VT holders can then call:
 
-As the vesting schedule approaches its end, more tokens are available in the vault, increasing BuybackPool capacity. In Phase 2, `redeemVT()` replaces BuybackPool as the redemption mechanism.
+```solidity
+function redeemVT(uint256 vtAmount) external;
+```
 
-## BuybackPool Depletion
-
-If tokens have not yet vested (i.e. the schedule has not released enough T), BuybackPool capacity may be limited early in Phase 1. VT holders can still:
-
-- Sell VTs on AMMs
-- Stake and claim Phase 1 pro-rata unlocks via `claimT()`
-- Wait for Phase 2 and call `redeemVT()`
+This burns VT 1:1 from the `excessT` reserve. No protocol fee applies to Phase 2 redemption.
 
 <Callout type="info">
-The BuybackPool is designed as a supplementary early exit. The primary exits are AMM trading (Phase 1) and 1:1 Phase 2 redemption.
+Phase 2 redemption via `redeemVT()` is always 1:1 and fee-free. It covers VT that was never staked, or residual VT left after all Phase 1 pulls.
 </Callout>

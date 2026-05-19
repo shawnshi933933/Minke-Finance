@@ -16,10 +16,10 @@ None of this is necessary. Minke provides an alternative that preserves vesting 
 
 A team member with a 4-year vesting schedule can:
 
-1. Deposit their unvested allocation into Minke's `VestingFactory`
-2. Receive VTs 1:1 with the deposited amount (no upfront fee)
-3. List VTs on a secondary market at a time-discount, or convert via BuybackPool (e.g. 5% fee)
-4. Access immediate liquidity without breaking the original vesting terms
+1. Stake their allocation NFT in the Vault to receive VTs 1:1
+2. List VTs on a secondary market at a time-discount for immediate liquidity
+3. Or stake VTs in the BuybackPool to receive T gradually as it vests (e.g. 5% protocol fee)
+4. Or hold to maturity and redeem at 1:1 in Phase 2 — no fee
 
 <Callout type="tip" title="Vesting terms preserved">
 The underlying tokens remain in the Minke contract on the original vesting schedule. From the protocol's perspective, nothing changes. Only the economic claim has been tokenized and made liquid.
@@ -30,22 +30,22 @@ The underlying tokens remain in the Minke contract on the original vesting sched
 Suppose an advisor holds 500,000 TOKEN vesting linearly over 24 months:
 
 ```
-Month 0:  Deposit 500,000 TOKEN unvested position
-          → VestingFactory creates Tranche (24-month linear)
-          → Advisor receives 500,000 VT (1:1, no upfront fee)
+Month 0:  Project creates Tranche (24-month linear), deposits 500,000 TOKEN into Vault
+          Advisor stakes allocation NFT → Vault mints 500,000 VT (1:1)
 
 Option A: Sell on AMM
           Advisor sells 500,000 VT at 0.82 market discount
           → Receives 410,000 USDC immediately
 
-Option B: BuybackPool conversion (e.g. 5% fee)
-          → Receives e.g. 475,000 TOKEN immediately
+Option B: Stake in BuybackPool (e.g. 5% fee on distributions)
+          Advisor stakes 500,000 VT in BuybackPool
+          → Receives T gradually each month as vault releases per schedule
+          → e.g. receives ~19,792 T/month × 0.95 = ~18,802 T/month (after fee)
 
-Month 1–24: Underlying tokens vest on schedule
-            VT buyers stake VTs, claim monthly unlocks
+Month 1–24: TOKEN vests on schedule → BP pulls from Vault → burns VT → distributes T
             
-Month 24: endVesting() called
-          Remaining VT holders call redeemVT() → 1:1 TOKEN
+Month 24: vestingEnded = true
+          Remaining VT holders call redeemVT() → 1:1 TOKEN (no fee)
 ```
 
 ## SAFT-Specific Considerations

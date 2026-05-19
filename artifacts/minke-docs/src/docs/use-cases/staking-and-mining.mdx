@@ -30,17 +30,18 @@ Similarly, **DePIN mining operations** emit tokens to node operators on fixed sc
 A validator pool operator has 1,000 ETH staked and expects 40 ETH in rewards over the next 12 months:
 
 ```
-Deposit: 40 ETH future rewards (linear monthly)
-VTs minted: 40 ETH worth of VT (1:1, no upfront fee)
+Project creates Tranche (12-month linear), deposits 40 ETH into Vault
+Operator stakes allocation NFT → Vault mints 40 VT (1:1)
 
 Option A: Sell VTs on AMM at 0.93 discount
 → Receive 37.2 ETH today
 
-Option B: BuybackPool conversion (e.g. 5% fee)
-→ Receive e.g. 38 ETH today
+Option B: Stake in BuybackPool (e.g. 5% fee on distributions)
+→ Receive ~3.17 ETH/month × 0.95 = ~3.01 ETH/month over 12 months
+→ Total received: ~36.1 ETH (after fee)
 
-Buyers stake VTs, earn monthly ETH unlocks
-Month 12: endVesting → redeemVT for remaining ETH at 1:1
+Month 12: vestingEnded = true
+          Any remaining VT holders call redeemVT() → 1:1 ETH (no fee)
 ```
 
 ## Node License Rewards

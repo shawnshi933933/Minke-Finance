@@ -1,119 +1,82 @@
 # Vesting Token (VT)
 
-A Vesting Token (VT) is a fungible ERC-20 that represents a 1:1 claim on the underlying token at vesting maturity. VTs are minted when a depositor wraps a vesting position via `VestingFactory`.
+A Vesting Token (VT) is a fungible ERC-20 that represents a claim on the underlying project token (T) tied to a specific vesting tranche. VTs are minted when recipients stake their ERC-1155 allocation NFTs in the Vault.
 
-## Minting
+## The Vesting Suite Architecture
+
+Each project using Minke has one **Vesting Suite**: a `Vault` + `ERC1155NFT` pair deployed by `VestingFactory`. Within a suite, the project owner creates individual **tranches** — each tranche has its own `VTToken` and `BuybackPool`.
+
+```
+VestingFactory
+  └── Vault  (holds project T tokens)
+        └── ERC1155NFT  (allocation NFTs)
+        └── Tranche 0
+              ├── VTToken   (ERC-20)
+              └── BuybackPool
+        └── Tranche 1
+              ├── VTToken
+              └── BuybackPool
+```
+
+## Minting VT
+
+VT is minted when a recipient stakes their ERC-1155 allocation NFT in the Vault:
 
 ```solidity
-function createTranche(
-  address underlying,
-  uint256 amount,
-  uint64 vestStart,
-  uint64 vestEnd
-) external returns (address vestingToken);
+function stakeNFT(uint256 trancheId, uint256 amount) external;
 ```
 
-The depositor transfers `amount` of the underlying token into the new `VestingToken` contract. The contract mints exactly `amount` VTs (1:1) and returns them to the depositor.
+The Vault mints VT to the caller at a fixed rate set per tranche (`vtPerNft`):
 
 ```
-Deposited:  1,000,000 TOKEN
-VTs minted: 1,000,000 VT  (1:1, no upfront fee)
+Stake 1 NFT (Tranche 0, vtPerNft = 10,000)
+→ Vault mints 10,000 VT to recipient
 ```
 
-## Phase 1: Pro-Rata Staking
+- **Only the Vault can mint VT.** The VTToken contract enforces this on-chain.
+- **Only the BuybackPool can burn VT.** Burns occur automatically when T is pulled from the Vault per the release schedule.
 
-### Staking
+VTs are standard ERC-20 tokens: freely transferable, tradable on any DEX.
+
+## What VT Holders Can Do
+
+### Option A — Stake in BuybackPool
+
+Stake VT in the tranche's `BuybackPool`. The pool automatically pulls T from the Vault per the vesting schedule and distributes it to stakers proportionally, minus a protocol fee (e.g. 5%):
 
 ```solidity
+// Stake VT into BuybackPool
 function stakeVT(uint256 amount) external;
-```
 
-Deposits `amount` of VT into the staking pool. The contract records the holder's `userDebt` at the current `accVTPerShare` value.
-
-### Checkpointing
-
-```solidity
-function checkpointVesting() external;
-```
-
-Reads the current vested amount from the schedule and updates the global `accVTPerShare` accumulator. Anyone can call this at any time — it is permissionless and idempotent.
-
-### Claiming
-
-```solidity
+// Claim accumulated T (fee already deducted at distribution)
 function claimT() external;
+
+// Withdraw remaining VT (by shares, not by VT amount)
+function withdrawVT(uint256 shares) external;
 ```
 
-Transfers the caller's pending staking rewards. The calculation runs in two steps:
+See [BuybackPool](/protocol/buyback-pool) for full mechanics.
 
-```
-// Step 1: compute how much has accrued since last claim
-pending = (stakedVT × accVTPerShare) - userDebt
+### Option B — Trade on AMM
 
-// Step 2: reset the debt baseline so future claims start from now
-userDebt ← stakedVT × accVTPerShare
-```
+VTs are standard ERC-20 tokens. Holders can list them on Uniswap or any other DEX. Secondary buyers get discounted exposure to the underlying vesting stream.
 
-`userDebt` tracks the accumulator value already accounted for. At any point before claiming, `userDebt` is lower than `stakedVT × accVTPerShare` because the accumulator has grown since the last interaction — that difference is the unclaimed amount. After the claim, the debt is brought up to the current accumulator value, so the next claim starts fresh.
+### Option C — Wait for Phase 2
 
-<Callout type="info">
-Stakers who claim early "exit" the vesting position with partial value. Their remaining staked VT continues to accumulate unlocks until they claim again or unstake.
-</Callout>
-
-### Unstaking
-
-```solidity
-function unstakeVT(uint256 amount) external;
-```
-
-Removes `amount` from the staking pool. Pending rewards remain claimable via `claimT()`.
-
-## BuybackPool Early Exit
-
-During Phase 1, VT holders can exit early via the BuybackPool rather than waiting:
-
-```solidity
-function convertViaBuyback(uint256 vtAmount) external;
-```
-
-The BuybackPool sources T from the vault as tokens vest according to the schedule. A protocol fee (e.g. 5%) is charged on the conversion:
-
-```
-convertViaBuyback(100 VT)
-  → caller receives: e.g. 95 T
-  → protocol fee:    e.g.  5 T → treasury
-```
+Hold VT until the vesting schedule ends. Call `redeemVT()` on the BuybackPool for 1:1 redemption with no fee.
 
 ## Phase 2: 1:1 Redemption
 
-After `endVesting()` is called (once the vesting schedule end time is reached), Phase 2 opens.
-
-```solidity
-function endVesting() external;
-```
-
-This finalises the accumulator, computes `excessT` (all unclaimed underlying), and enables `redeemVT()`.
-
-### Redemption
+Once the release schedule has fully completed and `vestingEnded` is set to `true` on the BuybackPool, VT holders can redeem:
 
 ```solidity
 function redeemVT(uint256 vtAmount) external;
 ```
 
-Burns `vtAmount` of VT and transfers the proportional share of `excessT` to the caller:
-
-```
-redeemed = vtAmount × (excessT / totalSupplyVT)
-```
-
-Because each Phase 1 claim reduces both `excessT` and the outstanding VT supply by the same amount, this ratio is always exactly **1:1**:
-
-```
-redeemed = 1 underlying per VT
-```
+Burns `vtAmount` VT 1:1 from the BuybackPool's `excessT` reserve. No protocol fee.
 
 <Callout type="tip">
-Phase 2 redemption is always exactly 1:1, regardless of how much was claimed during Phase 1. No protocol fee applies to Phase 2 redemption.
+Phase 2 redemption is always exactly 1:1, with no protocol fee. VT holders who did not stake during Phase 1 can still redeem their full par value at maturity.
 </Callout>
 
 ## VT Token Properties
@@ -121,23 +84,29 @@ Phase 2 redemption is always exactly 1:1, regardless of how much was claimed dur
 | Property | Value |
 |---|---|
 | Standard | ERC-20 |
-| Minting | 1:1 with underlying at tranche creation |
-| Burning | On BuybackPool conversion or Phase 2 redemption |
+| Minting | Only Vault (on NFT stake) |
+| Burning | Only BuybackPool (on Vault T pull, or Phase 2 redeemVT) |
 | Transferability | Fully transferable — no restrictions |
 | Decimals | Matches the underlying token |
 
 ## Lifecycle Summary
 
 ```
-Deposit underlying → Mint VT (1:1)
+Project deposits T → Vault
+Project mints ERC-1155 NFTs → recipients
          ↓
-     Phase 1
-  ┌─────────────────────────────────────────┐
-  │  Stake VT → earn pro-rata unlocks (no fee) │
-  │  OR                                        │
-  │  BuybackPool → early T exit (e.g. 5% fee)  │
-  └─────────────────────────────────────────┘
+Recipients stake NFT → Vault mints VT (1:1 per vtPerNft)
          ↓
-     Phase 2
-  redeemVT() → 1:1 T (no fee)
+     Phase 1 (vesting active)
+  ┌──────────────────────────────────────────────────┐
+  │  Stake VT in BuybackPool                         │
+  │  → BP pulls T from Vault per schedule            │
+  │  → Burns VT 1:1, distributes T (minus e.g. 5%)  │
+  │  → claimT() to receive T                         │
+  │  OR                                              │
+  │  Sell / trade VT on AMM at market price          │
+  └──────────────────────────────────────────────────┘
+         ↓
+     Phase 2 (vestingEnded = true)
+  redeemVT() → 1:1 T from excessT (no fee)
 ```

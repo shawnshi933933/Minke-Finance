@@ -1,42 +1,48 @@
 # Fee Structure
 
-Minke charges a protocol fee only when VT holders use the BuybackPool to convert their VTs into the underlying token (T) before maturity. There is no upfront deposit fee.
+Minke charges a protocol fee when VT holders stake in the BuybackPool and receive the underlying token (T) as it vests. There is no upfront deposit fee and no fee on Phase 2 redemption.
 
 ## When the Fee Applies
 
-The protocol fee (e.g. 5%) is charged at the moment of BuybackPool conversion:
+The protocol fee (e.g. 5%) is deducted at the moment the BuybackPool distributes T to stakers. It is not a separate action — it is embedded in the staking/claiming process:
 
 ```
-VT holder calls convertViaBuyback(100 VT)
-  → receives e.g. 95 T  (payout after fee)
-  → 5 T  → protocol treasury  (e.g. 5% fee)
+BuybackPool pulls 100 T from Vault
+  → 95 T distributed to stakers (e.g. 95% → userRewardRate = 950/1000)
+  →  5 T → protocol treasury   (e.g. 5% fee)
 ```
 
-**Depositing does not incur a fee.** Depositing 1,000,000 TOKEN mints exactly 1,000,000 VT.
+Each staker receives their proportional share of the 95 T, based on their share of the pool at the time of the pull.
 
 ## What the Fee Is NOT
 
-- **Not an upfront deposit fee** — 1,000,000 TOKEN in = 1,000,000 VT out
-- **Not a staking fee** — `claimT()` distributes pro-rata vesting unlocks with no deduction
+- **Not an upfront deposit fee** — depositing T into the Vault has no fee
+- **Not a VT minting fee** — staking an NFT to mint VT has no fee
 - **Not a Phase 2 redemption fee** — `redeemVT()` at maturity is always 1:1 with no fee
-
-## Why the Fee Is on BuybackPool Conversion
-
-Holders who use the BuybackPool are getting instant liquidity before their vesting schedule has ended. The protocol fee compensates the system for providing that early exit option. Holders who wait until Phase 2 pay no fee.
 
 ## Comparing Exit Paths
 
-| Exit Path | Protocol Fee | Speed |
+| Exit Path | Protocol Fee | Timing |
 |---|---|---|
+| Stake VT in BuybackPool + claimT() | e.g. 5% on T received | Gradual, per vesting schedule |
 | Sell VTs on AMM | None (market discount applies) | Instant |
-| BuybackPool conversion | e.g. 5% | Instant |
-| Stake and claim via `claimT()` | None | Ongoing during Phase 1 |
 | Phase 2 redemption (`redeemVT`) | None | At or after maturity |
 | OTC vesting desk (off-chain) | 15–40% spread | Days to weeks |
 
-## Fee Finality
+## Why the Fee Is on BuybackPool Staking
 
-The fee rate (e.g. 5%) is set at tranche deployment and stored in the contract. No function exists to change it after deployment. Users can verify this by reading the contract's immutable variables on any block explorer.
+VT holders who stake in the BuybackPool are choosing to receive T gradually as it vests, rather than waiting for Phase 2. The protocol fee compensates the system for providing this early-access mechanism. Holders who wait for Phase 2 pay no fee and receive 1:1.
+
+## Fee Rate
+
+The fee rate is set at tranche deployment via `userRewardRate` (in basis points out of 1000):
+
+```
+userRewardRate = 950  →  95% to stakers, 5% to protocol
+userRewardRate = 900  →  90% to stakers, 10% to protocol
+```
+
+The rate is immutable after deployment. No admin function exists to change it on an existing tranche. Users can verify the rate by reading `userRewardRate` on the deployed BuybackPool contract.
 
 <Callout type="note">
 Future protocol versions may introduce governance-controlled fee tiers. Any changes would apply to new tranches only — existing tranches are immutable.

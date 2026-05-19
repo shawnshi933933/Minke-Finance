@@ -1,61 +1,65 @@
 # How It Works
 
-Minke converts illiquid future-income positions into tradable tokens in four steps. No oracles. No counterparty. No haircuts.
+Minke converts illiquid future-income positions into tradable tokens. No oracles. No counterparty. No haircuts.
 
-## The Four-Step Flow
+## The Flow
 
 ```
-1. DEPOSIT    — Holder deposits future-income position into Minke Protocol
-2. RECEIVE VT — Protocol mints VTs (1:1 with underlying) into holder's wallet
-3. TRADE/HOLD — Holder sells VTs at a discount, stakes them, or holds to maturity
-4. REDEEM     — VT holder redeems at maturity for underlying 1:1
+1. SETUP      — Project deposits T into Vault; recipients receive ERC-1155 allocation NFTs
+2. MINT VT    — Recipient stakes NFT → Vault mints VT 1:1 into their wallet
+3. TRADE/HOLD — Holder sells VTs on AMM, stakes in BuybackPool, or holds to maturity
+4. REDEEM     — VT holder redeems at maturity 1:1 via redeemVT()
 ```
 
-Each step is a permissionless on-chain action. There is no centralized intermediary in any step.
+Each step is a permissionless on-chain action. There is no centralized intermediary at any step.
 
-## Step 1: Deposit
+## Step 1: Project Setup
 
-A protocol team creates a new `VestingToken` for the tranche. Investor, or individual deposit a vesting position.
+A project creates a **Vesting Suite** via `VestingFactory` — this deploys a `Vault` and `ERC1155NFT` contract. The project owner then:
+- Deposits the underlying tokens (T) into the Vault
+- Creates tranches (each with its own `VTToken` and `BuybackPool`)
+- Mints ERC-1155 NFTs representing each recipient's vesting allocation and distributes them
 
+## Step 2: Mint VT
 
-## Step 2: Receive VT
+Recipients stake their ERC-1155 allocation NFTs into the Vault:
 
-Immediately after deposit, the depositor receives Vesting Tokens at a **1:1 ratio** with the net deposited amount.
+```solidity
+function stakeNFT(uint256 trancheId, uint256 amount) external;
+```
 
+The Vault mints VT to the recipient at the tranche's fixed rate (`vtPerNft`). VTs are standard ERC-20 tokens — transferable, listable, composable.
 
-VTs are standard ERC-20 tokens. They can be:
-- Transferred to any wallet
-- Listed on Uniswap, Curve, or any AMM
-- Deposited into lending protocols as collateral
-- Sold OTC to buyers seeking discounted future exposure
+## Step 3: Trade, Stake, or Hold
 
-## Step 3: Trade, Hold, or Stake
-
-The depositor now chooses what to do with their VTs:
+VT holders have three options:
 
 | Action | Mechanism | Outcome |
 |---|---|---|
-| **Sell** | List on AMM at a discount | Immediate liquidity, give up future upside |
-| **Hold** | Keep VTs | Appreciate as maturity approaches |
-| **Stake** | Call `stakeVT()` | Earn pro-rata unlocks during Phase 1 |
+| **Sell** | List VT on any AMM at a discount | Immediate liquidity |
+| **Stake** | Stake VT in the BuybackPool | Receive T gradually as it vests (e.g. 5% fee) |
+| **Hold** | Keep VTs until maturity | Redeem at par 1:1 in Phase 2 |
 
-VT buyers on secondary markets are making a time-value-of-money bet: they acquire future claims at a discount and redeem at par at maturity.
+### Staking in the BuybackPool
 
-## Step 4: Redeem
+When a VT holder stakes in the BuybackPool, the pool automatically pulls T from the Vault per the release schedule, burns VT 1:1 as T arrives, and distributes T to stakers proportionally minus the protocol fee (e.g. 5%). The holder calls `claimT()` to receive their accumulated T.
 
-Once the vesting schedule ends, the protocol calls `endVesting()` which:
-1. Locks Phase 1 staking
-2. Calculates total excess tokens (unclaimed underlying)
-3. Opens Phase 2 — `redeemVT()` is now available
+VT buyers on secondary markets make a time-value-of-money bet: they acquire future claims at a discount and either stake for gradual T receipt or redeem at par at maturity.
 
-In Phase 2, any VT holder calls `redeemVT(amount)` and receives:
+## Step 4: Phase 2 Redemption
+
+Once the vesting schedule completes, `vestingEnded` is set to `true` on the BuybackPool. Any VT holder can call:
+
+```solidity
+function redeemVT(uint256 vtAmount) external;
 ```
-redeemed = amount × (excessT / totalVT)
-```
 
-Because VTs are 1:1 backed (and excess may have accumulated from unclaimed rewards), holders typically receive **≥ 1 underlying per VT**.
+This burns `vtAmount` VT 1:1 from the BuybackPool's `excessT` reserve and transfers T to the caller. No protocol fee applies to Phase 2 redemption.
+
+```
+redeemed = 1 underlying per VT  (always exactly 1:1)
+```
 
 <Callout type="tip" title="No oracles, no liquidations">
 At no point does Minke consult an external price feed. The 1:1 backing guarantee is mathematical — not economic — making the system immune to oracle manipulation and collateral cascades.
 </Callout>
-

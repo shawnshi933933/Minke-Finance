@@ -33,19 +33,19 @@ Each of these follows a published schedule. Minke can tokenize the expected futu
 An operator running a Bittensor subnet validator expects 10,000 TAO over 36 months:
 
 ```
-Month 0: Deposit 10,000 TAO future stream
-         VTs minted: 10,000 VT (1:1, no upfront fee)
+Month 0: Project creates Tranche (36-month linear), deposits 10,000 TAO into Vault
+         Operator stakes allocation NFT → Vault mints 10,000 VT (1:1)
 
 Option A: Sell VTs on AMM at 0.75 TAO discount
          → Receives 7,500 TAO equivalent today
 
-Option B: BuybackPool conversion (e.g. 5% fee)
-         → Receives e.g. 9,500 TAO today
-         
-Months 1–36: TAO vests per emission schedule
-             VT buyers stake, earn pro-rata TAO unlocks
+Option B: Stake in BuybackPool (e.g. 5% fee on distributions)
+         → Receives ~277 TAO/month × 0.95 = ~263 TAO/month over 36 months
+         → Total received: ~9,500 TAO (after fee)
 
-Month 36: endVesting → Phase 2 → 1:1 redemption (no fee)
+Months 1–36: TAO vests per schedule → BP pulls from Vault → burns VT → distributes TAO
+
+Month 36: vestingEnded = true → Phase 2 → redeemVT() 1:1 (no fee)
 ```
 
 The operator funded hardware upgrades or diversified their portfolio at month 0. The buyer got discounted TAO exposure with defined maturity.
