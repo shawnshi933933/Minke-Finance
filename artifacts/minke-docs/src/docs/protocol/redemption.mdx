@@ -47,10 +47,8 @@ This is a permissionless call. It:
 ### The excessT Calculation
 
 ```
-excessT = totalDeposited × 0.95 − Σ (all Phase 1 claims)
+excessT = net deposited underlying − Σ (all Phase 1 claims)
 ```
-
-Where `totalDeposited × 0.95` is the deposited amount after the 5% protocol fee.
 
 ### Redeeming VTs
 
@@ -66,7 +64,7 @@ The redemption amount is:
 received = vtAmount × (excessT / totalSupplyAtEnd)
 ```
 
-Because every Phase 1 claimer reduces both `excessT` and the outstanding VT supply proportionally, this ratio remains stable at approximately 1:1 regardless of how much was claimed in Phase 1.
+Because each Phase 1 claim reduces both `excessT` and the outstanding VT supply by the same amount, this ratio is always exactly **1:1** at Phase 2.
 
 ### Worked Example
 
@@ -74,7 +72,7 @@ Suppose a tranche is created with 1,000,000 TOKEN deposited:
 
 ```
 Initial deposit:     1,000,000 TOKEN
-Protocol fee (5%):      50,000 TOKEN → BuybackPool
+Protocol fee (e.g. 5%):  50,000 TOKEN → BuybackPool
 Net underlying:        950,000 TOKEN
 VTs minted:            950,000 VT
 
@@ -89,8 +87,8 @@ Redemption ratio:      475,000 / 475,000 = 1.0
 Each VT redeems for:   1.00 TOKEN ✓
 ```
 
-<Callout type="tip" title="Always 1:1 at maturity">
-The mathematical design ensures that regardless of Phase 1 staking behaviour, VTs always redeem at exactly 1:1 (or better) in Phase 2. This is the protocol's core value guarantee.
+<Callout type="tip" title="Always exactly 1:1 at maturity">
+The mathematical design ensures that regardless of Phase 1 staking behaviour, VTs always redeem at exactly 1:1 in Phase 2.
 </Callout>
 
 ## Redemption Timeline
@@ -107,7 +105,7 @@ The mathematical design ensures that regardless of Phase 1 staking behaviour, VT
 
 ### What if nobody stakes in Phase 1?
 
-If no VT holder stakes during Phase 1, `excessT = totalDeposited × 0.95` and `totalSupplyAtEnd = 950,000 VT`. Redemption is still 1:1. The underlying simply accumulates in the contract until Phase 2.
+If no VT holder stakes during Phase 1, all underlying accumulates in the contract. Phase 2 redemption is still exactly 1:1.
 
 ### What if all VTs are burned in Phase 1?
 

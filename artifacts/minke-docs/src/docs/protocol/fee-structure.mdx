@@ -2,28 +2,28 @@
 
 Minke uses a single, transparent fee structure applied once at tranche creation.
 
-## The 95/5 Split
+## The Protocol Fee Split
 
-When a depositor creates a tranche and deposits underlying tokens, a **5% protocol fee** is applied immediately:
+When a depositor creates a tranche and deposits underlying tokens, an **e.g. 5% protocol fee** is applied immediately:
 
 ```
 Deposited:       1,000,000 TOKEN
-Protocol fee:       50,000 TOKEN (5%) → BuybackPool
+Protocol fee:       50,000 TOKEN (e.g. 5%) → BuybackPool
 Net underlying:    950,000 TOKEN → VestingToken contract
 VTs minted:        950,000 VT (1:1 with net underlying)
 ```
 
-There are no recurring fees, no performance fees, and no withdrawal fees. The 5% is collected once at deposit and never applied again.
+There are no recurring fees, no performance fees, and no withdrawal fees. The protocol fee is collected once at deposit and never applied again.
 
 ## Where the Fee Goes
 
-The 5% fee is routed directly to the **BuybackPool** contract for the tranche. The BuybackPool serves two functions:
+The protocol fee is routed directly to the **BuybackPool** contract for the tranche. The BuybackPool serves two functions:
 
 1. **Phase 1 exit liquidity** — VT holders can use the BuybackPool to convert staked positions to liquid claims without going to an AMM
 2. **Protocol sustainability** — a portion accrues to Minke's treasury to fund ongoing development and audits
 
 <Callout type="info">
-The BuybackPool allocation between exit liquidity and treasury is determined at the protocol level and published in governance documentation. The 5% total is fixed per tranche and cannot be changed post-deploy.
+The BuybackPool allocation between exit liquidity and treasury is determined at the protocol level and published in governance documentation. The protocol fee is fixed per tranche at deployment and cannot be changed post-deploy.
 </Callout>
 
 ## What the Fee Is NOT
@@ -39,13 +39,13 @@ The BuybackPool allocation between exit liquidity and treasury is determined at 
 | OTC vesting desk | 15–40% spread | Days to weeks |
 | Sell on AMM at discount | Depends on VT/underlying price | Minutes |
 | Wait for maturity (no Minke) | 0% but full lockup | Months to years |
-| **Minke (at maturity)** | **5% total** | **Instant in Phase 2** |
+| **Minke (at maturity)** | **e.g. 5% total** | **Instant in Phase 2** |
 
-For most holders, the 5% Minke fee is the cheapest option for accessing present value, compared to either waiting in full illiquidity or selling through an OTC desk.
+For most holders, the Minke protocol fee is the cheapest option for accessing present value, compared to either waiting in full illiquidity or selling through an OTC desk.
 
 ## Fee Finality
 
-The fee parameters (5% rate, BuybackPool destination) are set when the tranche is deployed and stored in the `VestingToken` contract. No function exists to change them after deployment. Users can verify this by reading the contract's immutable variables on any block explorer.
+The fee parameters (e.g. 5% rate, BuybackPool destination) are set when the tranche is deployed and stored in the `VestingToken` contract. No function exists to change them after deployment. Users can verify this by reading the contract's immutable variables on any block explorer.
 
 <Callout type="note">
 Future protocol versions may introduce governance-controlled fee tiers. Any changes would apply to new tranches only — existing tranches are immutable.

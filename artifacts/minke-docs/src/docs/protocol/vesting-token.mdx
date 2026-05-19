@@ -68,7 +68,7 @@ During Phase 1, stakers can exit via the BuybackPool rather than waiting:
 function convertViaBuyback(uint256 vtAmount) external;
 ```
 
-The BuybackPool (seeded by the 5% protocol fee) provides instant liquidity for VT holders who want to exit before Phase 2 without going to an AMM.
+The BuybackPool (seeded by the e.g. 5% protocol fee) provides instant liquidity for VT holders who want to exit before Phase 2 without going to an AMM.
 
 ## Phase 2: 1:1 Redemption
 
@@ -92,14 +92,14 @@ Burns `vtAmount` of VT and transfers the proportional share of `excessT` to the 
 redeemed = vtAmount × (excessT / totalSupplyVT)
 ```
 
-Because `excessT` is the **total deposited underlying minus what was claimed in Phase 1**, and the total VT supply equals the remaining unclaimed VTs, this simplifies to:
+Because each Phase 1 claim reduces both `excessT` and the outstanding VT supply by the same amount, this ratio is always exactly **1:1**:
 
 ```
-redeemed ≥ 1 underlying per VT (in most cases)
+redeemed = 1 underlying per VT
 ```
 
 <Callout type="tip">
-If no stakers claimed during Phase 1, then `excessT = totalDeposited × 0.95` and all VT holders redeem at exactly 1:1 (95% backing). The extra 5% went to the BuybackPool at creation.
+Phase 2 redemption is always exactly 1:1, regardless of how much was claimed during Phase 1.
 </Callout>
 
 ## VT Token Properties

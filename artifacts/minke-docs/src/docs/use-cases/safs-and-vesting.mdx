@@ -17,7 +17,7 @@ None of this is necessary. Minke provides an alternative that preserves vesting 
 A team member with a 4-year vesting schedule can:
 
 1. Deposit their unvested allocation into Minke's `VestingFactory`
-2. Receive VTs representing the full vesting value (at 1:1 minus 5% fee)
+2. Receive VTs representing the full vesting value (at 1:1 minus the protocol fee, e.g. 5%)
 3. List VTs on a secondary market at a time-discount
 4. Access immediate liquidity without breaking the original vesting terms
 
@@ -32,7 +32,7 @@ Suppose an advisor holds 500,000 TOKEN vesting linearly over 24 months:
 ```
 Month 0:  Deposit 500,000 TOKEN unvested position
           → VestingFactory creates Tranche (24-month linear)
-          → Advisor receives 475,000 VT (95%)
+          → Advisor receives 475,000 VT (e.g. 95%)
           → 25,000 TOKEN → BuybackPool
 
 Month 0:  Advisor sells 475,000 VT on Uniswap at 0.82 (18% discount)
